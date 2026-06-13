@@ -274,6 +274,42 @@ select{cursor:pointer}
 .drv-sum{margin-top:10px;font-size:.92rem;color:var(--text);display:flex;justify-content:space-between;flex-wrap:wrap;gap:6px}
 .drv-sum b{color:var(--orange)}
 
+/* activities catalog */
+.act-group{
+  background:var(--bg2);border:1px solid var(--bg3);border-radius:var(--radius);
+  padding:18px 20px;margin-bottom:14px;
+}
+.act-group h3{color:var(--teal);font-size:1.05rem;margin-bottom:8px}
+.act-row{
+  display:flex;align-items:center;gap:12px;flex-wrap:wrap;
+  padding:9px 0;border-bottom:1px dashed rgba(170,178,189,.15);
+}
+.act-row:last-child{border-bottom:none}
+.act-row .act-check{display:flex;align-items:center;gap:9px;flex:1;min-width:240px;cursor:pointer}
+.act-row input[type=checkbox]{width:18px;height:18px;accent-color:var(--orange);cursor:pointer;flex-shrink:0}
+.act-row .act-name{font-size:.93rem}
+.act-row .alt-badge{
+  background:rgba(118,171,174,.15);color:var(--teal);font-size:.7rem;
+  border-radius:999px;padding:1px 9px;margin-inline-start:6px;white-space:nowrap;
+}
+.act-row .act-price{font-size:.85rem;color:var(--teal);direction:ltr;min-width:150px;text-align:left;font-weight:700}
+.act-row .act-price small{color:var(--muted);font-weight:400}
+.act-row.off .act-price{opacity:.4}
+.act-row .act-edit-price{display:none;width:95px;background:var(--bg);border:1px solid var(--bg3);color:var(--text);border-radius:8px;padding:5px 9px;font-family:inherit;font-size:.88rem;outline:none}
+.edit-on .act-row .act-edit-price{display:inline-block}
+.act-summary{
+  background:var(--bg2);border:1px solid var(--orange);border-radius:var(--radius);
+  padding:14px 20px;display:flex;justify-content:space-between;align-items:center;
+  flex-wrap:wrap;gap:8px;font-size:.97rem;
+}
+.act-summary b{color:var(--orange);font-size:1.05rem}
+.act-summary .z{color:var(--teal);direction:ltr}
+@media print{
+  .act-row.off{display:none}
+  .act-group{background:#fff;border:1px solid #bbb}
+  .act-summary{background:#fff;border-color:#c53d12}
+}
+
 /* payment */
 .pay-options{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-bottom:16px}
 @media(max-width:560px){.pay-options{grid-template-columns:1fr}}
@@ -426,6 +462,7 @@ footer{
     <nav class="quicknav">
       <a href="#map">الخريطة</a>
       <a href="#itinerary">الجدول</a>
+      <a href="#activities">الفعاليات</a>
       <a href="#budget">الميزانية</a>
       <a href="#weather">الطقس</a>
       <a href="#safety">الأمان</a>
@@ -486,6 +523,17 @@ footer{
   </div>
 </section>
 
+<!-- ============ ACTIVITIES ============ -->
+<section id="activities">
+  <h2 class="sec-title">الفعاليات والأنشطة — اختر ما يناسبكم</h2>
+  <p class="sec-desc">علّم ✓ على الفعاليات التي تريدونها وستدخل الميزانية تلقائياً (السعر للشخص الواحد). الفعاليات الموسومة بـ"بديل" لا تُختار معاً — اختيار إحداها يلغي الأخرى. الأسعار تقديرية وقابلة للتعديل من وضع التعديل.</p>
+  <div id="activitiesContainer"></div>
+  <div class="act-summary">
+    <span id="actCount"></span>
+    <span><b id="actTotalSar"></b> <span class="z" id="actTotalZar"></span></span>
+  </div>
+</section>
+
 <!-- ============ BUDGET ============ -->
 <section id="budget">
   <h2 class="sec-title">حاسبة الميزانية المرنة</h2>
@@ -523,7 +571,7 @@ footer{
           </div>
         </div>
         <div class="field">
-          <label>الأنشطة والجولات (تلفريك، رحلات بحرية، كهوف...) — إجمالي</label>
+          <label>🎟️ أنشطة أخرى غير مدرجة في الكتالوج (ر.س، إجمالي — اختياري)</label>
           <input type="number" id="activitiesPrice" min="0" step="50">
         </div>
         <div class="field">
@@ -690,8 +738,8 @@ footer{
 <script>
 'use strict';
 /* ================= Constants ================= */
-const STORAGE_KEY = 'capetown-trip-2026-v2';
-const START_DATE = new Date(2026, 6, 10); // 10 July 2026
+const STORAGE_KEY = 'capetown-trip-2026-v3';
+const START_DATE = new Date(2026, 6, 21); // 21 July 2026
 const WEEKDAYS = ['الأحد','الاثنين','الثلاثاء','الأربعاء','الخميس','الجمعة','السبت'];
 const MONTHS = ['يناير','فبراير','مارس','أبريل','مايو','يونيو','يوليو','أغسطس','سبتمبر','أكتوبر','نوفمبر','ديسمبر'];
 
@@ -729,17 +777,11 @@ const DEFAULT_DAYS = [
    imgs:['Cape Point','Boulders Beach','Chapman\'s Peak'],
    tip:'لا تترك أي أغراض ظاهرة في السيارة عند المواقف، وانتبه من قرود البابون عند كيب بوينت — لا تُطعمها أبداً.'},
 
-  {place:'stellenbosch', title:'ستيلينبوش وفرانشهوك (الواينلاندز)',
-   acts:['رحلة يومية إلى ستيلينبوش: البلدة الجامعية التاريخية بطرازها الهولندي.','عبور ممر هيلشوغته الجبلي إلى فرانشهوك ومناظرها البانورامية.','غداء ريفي في إحدى المزارع التاريخية وتجربة الأجبان المحلية.','زيارة حديقة بابيلونستورن (Babylonstoren) النباتية الشهيرة، ثم العودة لكيب تاون.'],
-   links:[['بابيلونستورن (احجز مسبقاً)','https://babylonstoren.com'],['دليل ستيلينبوش','https://visitstellenbosch.org']],
-   imgs:['Stellenbosch','Franschhoek'],
-   tip:'احجز مدخل بابيلونستورن مسبقاً عبر الإنترنت؛ التذاكر محدودة وتنفد في نهايات الأسبوع.'},
-
-  {place:'capetown', title:'حدائق كيرستنبوش وكامبس باي',
-   acts:['صباحاً: حدائق كيرستنبوش النباتية الوطنية وممشى الجسر المعلّق (Boomslang).','زيارة أكواريوم المحيطين في الواترفرونت (مناسب لو كان الطقس ماطراً).','قهوة الغروب على شاطئ كامبس باي وقمم الرسل الاثني عشر خلفك.','عشاء وداع كيب تاون في حي سي بوينت على الكورنيش.'],
-   links:[['حدائق كيرستنبوش','https://www.sanbi.org/gardens/kirstenbosch'],['أكواريوم المحيطين','https://www.aquarium.co.za']],
-   imgs:['Kirstenbosch National Botanical Garden','Camps Bay'],
-   tip:'رتّب حقائبك الليلة — غداً تبدأ جولة الجاردن روت. عبّئ وقود السيارة مساءً.'},
+  {place:'stellenbosch', title:'كيرستنبوش والواينلاندز وكامبس باي',
+   acts:['صباحاً: حدائق كيرستنبوش النباتية الوطنية وممشى الجسر المعلّق (Boomslang).','رحلة قصيرة إلى ستيلينبوش: البلدة الجامعية التاريخية بطرازها الهولندي.','زيارة حديقة بابيلونستورن (Babylonstoren) وغداء ريفي في إحدى المزارع.','قهوة الغروب على شاطئ كامبس باي، وعشاء وداع كيب تاون في سي بوينت.'],
+   links:[['حدائق كيرستنبوش','https://www.sanbi.org/gardens/kirstenbosch'],['بابيلونستورن (احجز مسبقاً)','https://babylonstoren.com'],['دليل ستيلينبوش','https://visitstellenbosch.org']],
+   imgs:['Kirstenbosch National Botanical Garden','Stellenbosch','Camps Bay'],
+   tip:'احجز مدخل بابيلونستورن مسبقاً عبر الإنترنت. رتّب حقائبك الليلة — غداً تبدأ جولة الجاردن روت، وعبّئ وقود السيارة مساءً.'},
 
   {place:'hermanus', title:'إلى الجاردن روت عبر هيرمانوس 🐋 (بدون مبيت)',
    acts:['انطلاقة مبكرة (7 صباحاً) عبر الطريق الساحلي R44 (Clarence Drive) المذهل.','توقّف 3–4 ساعات في هيرمانوس: مشاهدة الحيتان الجنوبية من المنحدرات وممشى الجرف.','غداء سريع في هيرمانوس ثم مواصلة الطريق N2 شرقاً.','استراحة قهوة في سويلندام أو موسيل باي، والوصول إلى نيسنا مساءً (إجمالي ~500 كم).'],
@@ -765,12 +807,6 @@ const DEFAULT_DAYS = [
    imgs:['Cango Caves','Oudtshoorn'],
    tip:'احجز جولة الكهوف القياسية (Heritage Tour) وليست المغامرة إن كنتم لا تحبون الممرات الضيقة.'},
 
-  {place:'wilderness', title:'يوم حر: ويلدرنيس وشواطئ الجاردن روت',
-   acts:['صباح حر: شاطئ ويلدرنيس الممتد ونقطة Map of Africa البانورامية.','اختياري: تجديف كانو في نهر Touw أو ركوب دراجات على مسار السكة القديمة.','جولة تسوق وقهوة في بلدة جورج أو سيدجفيلد.','أمسية أخيرة هادئة في نيسنا وعشاء وداع الجاردن روت.'],
-   links:[['محمية ويلدرنيس (SANParks)','https://www.sanparks.org/parks/garden_route/camps/wilderness'],['دليل الجاردن روت','https://www.gardenroute.co.za']],
-   imgs:['Wilderness, Western Cape','Garden Route'],
-   tip:'يوم مرن — لو فاتكم نشاط سابق بسبب المطر فهذا اليوم فرصة تعويضه.'},
-
   {place:'capetown', title:'العودة إلى كيب تاون والمغادرة',
    acts:['انطلاقة مبكرة على الطريق N2 غرباً نحو كيب تاون (~500 كم، 5–6 ساعات).','توقّف للغداء في سويلندام — أقدم ثالث بلدة في جنوب أفريقيا.','تعبئة الوقود وتسليم السيارة في مطار كيب تاون.','المغادرة مساءً — في حفظ الله.'],
    links:[['مطار كيب تاون','https://www.airports.co.za/airports/cape-town-international-airport']],
@@ -778,15 +814,43 @@ const DEFAULT_DAYS = [
    tip:'اتركوا هامش 4 ساعات قبل الإقلاع — الطريق طويل وتسليم السيارة وإجراءات المطار تحتاج وقتاً.'}
 ];
 
+/* ================= Activities catalog =================
+   price = ر.س للشخص الواحد · alt = بدائل لا تُختار معاً */
+const DEFAULT_ACTIVITIES = [
+  // كيب تاون
+  {id:'cablecar',  group:'كيب تاون', name:'تلفريك جبل الطاولة (ذهاب وعودة)', price:95,  on:true,  url:'https://www.tablemountain.net'},
+  {id:'robben',    group:'كيب تاون', name:'جزيرة روبن — متحف مانديلا (عبّارة + جولة)', price:130, on:false, url:'https://www.robben-island.org.za'},
+  {id:'wheel',     group:'كيب تاون', name:'عجلة كيب الدوارة في الواترفرونت', price:50,  on:false, url:'https://capewheel.co.za'},
+  {id:'aquarium',  group:'كيب تاون', name:'أكواريوم المحيطين', price:55,  on:false, url:'https://www.aquarium.co.za'},
+  {id:'capepoint', group:'كيب تاون', name:'كيب بوينت: الدخول + القطار الجبلي', price:110, on:true,  url:'https://capepoint.co.za'},
+  {id:'boulders',  group:'كيب تاون', name:'شاطئ بولدرز — مستعمرة البطاريق', price:45,  on:true,  url:'https://www.sanparks.org/parks/table_mountain'},
+  {id:'kirsten',   group:'كيب تاون', name:'حدائق كيرستنبوش النباتية', price:50,  on:true,  url:'https://www.sanbi.org/gardens/kirstenbosch'},
+  {id:'babylon',   group:'كيب تاون', name:'حديقة بابيلونستورن (الواينلاندز)', price:25,  on:false, url:'https://babylonstoren.com'},
+  {id:'heli',      group:'كيب تاون', name:'جولة هيليكوبتر فوق كيب تاون (فاخر)', price:610, on:false, url:'https://capetownhelicopters.com'},
+  // هيرمانوس — بديلان: رحلة بحرية أو مشاهدة مجانية
+  {id:'whaleboat', group:'هيرمانوس (على المسار)', name:'رحلة بحرية لمشاهدة الحيتان عن قرب', price:230, on:true,  url:'https://southernrightcharters.co.za', alt:'whale'},
+  {id:'whalecliff',group:'هيرمانوس (على المسار)', name:'مشاهدة الحيتان من المنحدرات (مجاناً)', price:0,   on:false, url:'https://hermanus.co.za', alt:'whale'},
+  // الجاردن روت
+  {id:'featherbed',group:'الجاردن روت', name:'رحلة فيذربيد البيئية في بحيرة نيسنا', price:190, on:true,  url:'https://www.featherbed.co.za', alt:'kboat'},
+  {id:'sunsetboat',group:'الجاردن روت', name:'قارب الغروب في نيسنا (أخف وأرخص)', price:95,  on:false, url:'https://www.visitknysna.co.za', alt:'kboat'},
+  {id:'cangoher',  group:'الجاردن روت', name:'كهوف كانغو — الجولة التراثية (سهلة)', price:55,  on:true,  url:'https://www.cangocaves.co.za', alt:'cango'},
+  {id:'cangoadv',  group:'الجاردن روت', name:'كهوف كانغو — جولة المغامرة (ممرات ضيقة)', price:70,  on:false, url:'https://www.cangocaves.co.za', alt:'cango'},
+  {id:'ostrich',   group:'الجاردن روت', name:'مزرعة سفاري للنعام — جولة تفاعلية', price:50,  on:true,  url:'https://www.safariostrich.co.za'},
+  {id:'monkey',    group:'الجاردن روت', name:'Monkeyland + Birds of Eden (تذكرة مشتركة)', price:120, on:true,  url:'https://www.monkeyland.co.za'},
+  {id:'tsitsi',    group:'الجاردن روت', name:'حديقة تسيتسيكاما — الجسور المعلقة', price:55,  on:true,  url:'https://www.sanparks.org/parks/garden_route'},
+  {id:'bungee',    group:'الجاردن روت', name:'قفزة بنجي بلوكرانس 216م (للمغامرين)', price:380, on:false, url:'https://faceadrenalin.com'}
+];
+
 const DEFAULT_STATE = {
   travelers: 2,
   flightPrice: 4200,
   transportPrice: 2800,
-  activitiesPrice: 2600,
-  foodPrice: 3300,
+  activitiesPrice: 0,
+  foodPrice: 2700,
   payment: 'cash',
   rate: 4.75,
-  ctNights: 5,
+  ctNights: 4,
+  activities: DEFAULT_ACTIVITIES,
   driver: {
     capetown: {on:false, price:450},
     transfer: {on:false, price:800},
@@ -827,6 +891,12 @@ function loadState(){
     Object.assign(merged, saved);
     if(!Array.isArray(merged.days) || merged.days.length < 2) merged.days = structuredClone(DEFAULT_DAYS);
     merged.customPlaces = saved.customPlaces || {};
+    const savedActs = {};
+    (saved.activities || []).forEach(a=>{ if(a && a.id) savedActs[a.id] = a; });
+    merged.activities = DEFAULT_ACTIVITIES.map(a=>{
+      const s = savedActs[a.id];
+      return s ? Object.assign(structuredClone(a), {on:!!s.on, price:Math.max(0,+s.price||0)}) : structuredClone(a);
+    });
     merged.driver = {};
     for(const key of Object.keys(DEFAULT_STATE.driver)){
       merged.driver[key] = Object.assign(structuredClone(DEFAULT_STATE.driver[key]), saved.driver?.[key]);
@@ -1263,6 +1333,77 @@ function renderHotels(){
   document.getElementById('flightLinks').innerHTML = flightLinksHtml();
 }
 
+/* ================= Activities catalog ================= */
+function actTotal(){
+  return state.activities.reduce((t,a)=> t + (a.on ? a.price * state.travelers : 0), 0);
+}
+
+function renderActivities(){
+  const cont = document.getElementById('activitiesContainer');
+  const groups = {};
+  state.activities.forEach(a=>{ if(!groups[a.group]) groups[a.group]=[]; groups[a.group].push(a); });
+
+  let html = '';
+  for(const [gname, acts] of Object.entries(groups)){
+    html += `<div class="act-group"><h3>📍 ${escapeHtml(gname)}</h3>`;
+    acts.forEach(a=>{
+      const total = a.price * state.travelers;
+      const altBadge = a.alt ? `<span class="alt-badge">🔀 بديل</span>` : '';
+      const priceLabel = a.price === 0
+        ? `<span style="color:var(--teal);font-weight:700">مجاني ✓</span>`
+        : `${fmt(total)} ر.س <small>(${a.price} ر.س/شخص)</small>`;
+      html += `<div class="act-row${a.on?'':' off'}" data-actid="${escapeAttr(a.id)}">
+        <label class="act-check">
+          <input type="checkbox" data-act="${escapeAttr(a.id)}" ${a.on?'checked':''}>
+          <span class="act-name">${escapeHtml(a.name)}${altBadge}</span>
+        </label>
+        <input class="act-edit-price" type="number" min="0" step="5" data-actprice="${escapeAttr(a.id)}" value="${a.price}" aria-label="سعر ${escapeAttr(a.name)}">
+        <a class="chip" href="${escapeAttr(a.url)}" target="_blank" rel="noopener" style="font-size:.75rem;padding:3px 10px;flex-shrink:0" title="${escapeAttr(a.name)}">🔗</a>
+        <span class="act-price">${priceLabel}</span>
+      </div>`;
+    });
+    const groupTotal = acts.filter(a=>a.on).reduce((t,a)=> t + a.price * state.travelers, 0);
+    if(groupTotal > 0) html += `<div style="text-align:left;font-size:.8rem;color:var(--teal);margin-top:8px;direction:ltr">مجموع المحدد: ${sar(groupTotal)} · ${zar(groupTotal)}</div>`;
+    html += `</div>`;
+  }
+  cont.innerHTML = html;
+
+  cont.querySelectorAll('[data-act]').forEach(cb=>{
+    cb.addEventListener('change', ()=>{
+      const id = cb.dataset.act;
+      const act = state.activities.find(a=>a.id===id);
+      if(!act) return;
+      act.on = cb.checked;
+      if(act.on && act.alt)
+        state.activities.forEach(a=>{ if(a.id!==id && a.alt===act.alt) a.on=false; });
+      saveState(); renderActivities(); renderBudget();
+    });
+  });
+
+  cont.querySelectorAll('[data-actprice]').forEach(inp=>{
+    inp.addEventListener('input', ()=>{
+      const act = state.activities.find(a=>a.id===inp.dataset.actprice);
+      if(act){ act.price = Math.max(0, +inp.value||0); saveState(); renderBudget();
+        // update price label in-place
+        const row = cont.querySelector(`[data-actid="${CSS.escape(act.id)}"]`);
+        const lbl = row?.querySelector('.act-price');
+        if(lbl){
+          const t2 = act.price * state.travelers;
+          lbl.innerHTML = act.price===0
+            ? `<span style="color:var(--teal);font-weight:700">مجاني ✓</span>`
+            : `${fmt(t2)} ر.س <small>(${act.price} ر.س/شخص)</small>`;
+        }
+      }
+    });
+  });
+
+  const t = actTotal();
+  const sel = state.activities.filter(a=>a.on);
+  document.getElementById('actCount').textContent = `${sel.length} فعالية محددة`;
+  document.getElementById('actTotalSar').textContent = sar(t);
+  document.getElementById('actTotalZar').textContent = `≈ ${zar(t)}`;
+}
+
 /* ================= Private driver ================= */
 function driverSegments(){
   const ct = ctNights();
@@ -1331,7 +1472,7 @@ function hotelsTotal(){
 function calc(){
   const flights = state.flightPrice * state.travelers;
   const hotels = hotelsTotal();
-  const rest = state.transportPrice + driverTotal() + state.activitiesPrice + state.foodPrice;
+  const rest = state.transportPrice + driverTotal() + actTotal() + state.activitiesPrice + state.foodPrice;
   const discount = state.payment === 'cash' ? (flights + hotels) * 0.05 : 0;
   const instBase = flights + hotels;            // installments cover flights+hotels only
   const total = flights + hotels + rest - discount;
@@ -1343,8 +1484,9 @@ function renderBudget(){
     ['✈️ الطيران (' + state.travelers + ' ' + (state.travelers===1?'مسافر':state.travelers===2?'مسافرَين':'مسافرين') + ')', c.flights],
     ['🏨 الفنادق (' + totalNights() + ' ليالٍ × ' + roomsCount() + ' ' + (roomsCount()===1?'غرفة':'غرف') + ')', c.hotels],
     ['🚗 المواصلات (سيارة + وقود)', state.transportPrice],
-    ...(driverTotal() > 0 ? [['🚘 سائق خاص (' + driverSegments().filter(s=>state.driver[s.key].on).reduce((n,s)=>n+s.days,0) + ' أيام)', driverTotal()]] : []),
-    ['🎟️ الأنشطة والجولات', state.activitiesPrice],
+    ...(driverTotal()>0 ? [['🚘 سائق خاص (' + driverSegments().filter(s=>state.driver[s.key].on).reduce((n,s)=>n+s.days,0) + ' أيام)', driverTotal()]] : []),
+    ...(actTotal()>0    ? [['🎟️ الفعاليات والأنشطة (' + state.activities.filter(a=>a.on).length + ' فعالية)', actTotal()]] : []),
+    ...(state.activitiesPrice>0 ? [['🎟️ أنشطة أخرى', state.activitiesPrice]] : []),
     ['🍽️ الطعام والمطاعم', state.foodPrice],
   ];
   let html = rows.map(([label, v]) =>
@@ -1464,6 +1606,7 @@ function renderAll(){
   renderPayment();
   renderMap();
   renderItinerary();
+  renderActivities();
   renderHotels();
   renderDriver();
   renderBudget();
