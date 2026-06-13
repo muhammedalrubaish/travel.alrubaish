@@ -801,11 +801,11 @@ const DEFAULT_DAYS = [
    imgs:['Tsitsikamma National Park','Plettenberg Bay'],
    tip:'البس حذاء مشي مريحاً وخذ معطفاً مقاوماً للمطر — مسار الجسور المعلقة يستغرق ساعة تقريباً.'},
 
-  {place:'oudtshoorn', title:'رحلة يومية: كهوف كانغو ومزارع النعام',
-   acts:['انطلاق صباحي من نيسنا عبر ممر أوتينيكوا الجبلي إلى الكارو الصغرى (~ساعة ونصف).','جولة في كهوف كانغو (Cango Caves) — تشكيلات كلسية عمرها ملايين السنين.','زيارة مزرعة نعام تفاعلية وتجربة إطعام النعام.','غداء كارو محلي ثم العودة مساءً للمبيت في نيسنا.'],
-   links:[['كهوف كانغو (احجز الجولة)','https://www.cangocaves.co.za'],['مزرعة سفاري للنعام','https://www.safariostrich.co.za']],
-   imgs:['Cango Caves','Oudtshoorn'],
-   tip:'احجز جولة الكهوف القياسية (Heritage Tour) وليست المغامرة إن كنتم لا تحبون الممرات الضيقة.'},
+  {place:'capetown', title:'كهوف كانغو + طريق 62 + المبيت الأخير في كيب تاون',
+   acts:['انطلاقة مبكرة (7 صباحاً) من نيسنا عبر ممر أوتينيكوا الجبلي إلى أودتشورن (~ساعة ونصف).','جولة في كهوف كانغو (Heritage Tour) وزيارة مزرعة نعام تفاعلية.','الغداء في أودتشورن ثم الانطلاق عبر الطريق الأسطوري Route 62 نحو كيب تاون (~4 ساعات).','توقّف للقهوة في مونتاغو أو روبرتسون، والوصول لكيب تاون مساءً للمبيت الأخير.'],
+   links:[['كهوف كانغو (احجز الجولة)','https://www.cangocaves.co.za'],['مزرعة سفاري النعام','https://www.safariostrich.co.za'],['دليل طريق 62','https://www.route62.co.za']],
+   imgs:['Cango Caves','Oudtshoorn','Route 62'],
+   tip:'احجز جولة الكهوف التراثية مبكراً الساعة 9 صباحاً لتغادر أودتشورن قبل الظهر وتصل كيب تاون قبل المغيب. طريق 62 أجمل من الطريق N2.'},
 
   {place:'capetown', title:'العودة إلى كيب تاون والمغادرة',
    acts:['انطلاقة مبكرة على الطريق N2 غرباً نحو كيب تاون (~500 كم، 5–6 ساعات).','توقّف للغداء في سويلندام — أقدم ثالث بلدة في جنوب أفريقيا.','تعبئة الوقود وتسليم السيارة في مطار كيب تاون.','المغادرة مساءً — في حفظ الله.'],
@@ -849,7 +849,7 @@ const DEFAULT_STATE = {
   foodPrice: 2700,
   payment: 'cash',
   rate: 4.75,
-  ctNights: 4,
+  ctNights: 5,
   activities: DEFAULT_ACTIVITIES,
   driver: {
     capetown: {on:false, price:450},
@@ -1248,20 +1248,29 @@ document.getElementById('daysMinus').addEventListener('click', ()=>{
 /* ================= Hotels & booking ================= */
 function cityDates(key){
   const n = totalNights();
-  if(key === 'capetown') return [dayDate(0), dayDate(ctNights())];
-  return [dayDate(ctNights()), dayDate(n)];
+  const kn = knNights();
+  // Cape Town = first block (ctNights-1) + last night; Knysna = middle block
+  if(key === 'capetown'){
+    const firstBlock = ctNights() - 1; // nights before Knysna
+    const hasLastNight = ctNights() > firstBlock;
+    return [dayDate(0), dayDate(n), firstBlock, hasLastNight];
+  }
+  return [dayDate(ctNights()-1), dayDate(ctNights()-1 + kn)];
 }
 function bookingLinks(key){
   const cityEn = key === 'capetown' ? 'Cape Town, South Africa' : 'Knysna, South Africa';
   const slug = key === 'capetown' ? 'Cape-Town--South-Africa' : 'Knysna--South-Africa';
-  const [ci, co] = cityDates(key).map(isoDate);
   const t = state.travelers, rooms = roomsCount();
   const nights = key === 'capetown' ? ctNights() : knNights();
+  // For Cape Town use full trip dates (first check-in to last check-out)
+  const ci = isoDate(dayDate(0));
+  const co = key === 'capetown' ? isoDate(dayDate(totalNights())) : isoDate(cityDates(key)[1]);
+  const ci2 = key === 'capetown' ? ci : isoDate(cityDates(key)[0]);
   return [
-    ['Booking.com', `https://www.booking.com/searchresults.ar.html?ss=${encodeURIComponent(cityEn)}&checkin=${ci}&checkout=${co}&group_adults=${t}&no_rooms=${rooms}`],
-    ['Airbnb', `https://www.airbnb.com/s/${slug}/homes?checkin=${ci}&checkout=${co}&adults=${t}`],
-    ['Agoda', `https://www.agoda.com/ar-sa/search?textToSearch=${encodeURIComponent(cityEn)}&checkIn=${ci}&los=${Math.max(1,nights)}&adults=${t}&rooms=${rooms}`],
-    ['Expedia', `https://www.expedia.com/Hotel-Search?destination=${encodeURIComponent(cityEn)}&startDate=${ci}&endDate=${co}&adults=${t}`]
+    ['Booking.com', `https://www.booking.com/searchresults.ar.html?ss=${encodeURIComponent(cityEn)}&checkin=${ci2}&checkout=${co}&group_adults=${t}&no_rooms=${rooms}`],
+    ['Airbnb', `https://www.airbnb.com/s/${slug}/homes?checkin=${ci2}&checkout=${co}&adults=${t}`],
+    ['Agoda', `https://www.agoda.com/ar-sa/search?textToSearch=${encodeURIComponent(cityEn)}&checkIn=${ci2}&los=${Math.max(1,nights)}&adults=${t}&rooms=${rooms}`],
+    ['Expedia', `https://www.expedia.com/Hotel-Search?destination=${encodeURIComponent(cityEn)}&startDate=${ci2}&endDate=${co}&adults=${t}`]
   ];
 }
 function flightLinksHtml(){
@@ -1280,7 +1289,12 @@ function renderHotels(){
     const nights = key === 'capetown' ? ctNights() : knNights();
     const sel = city.options[city.selected] || city.options[0];
     const total = sel.price * nights * roomsCount();
-    const [ci, co] = cityDates(key);
+    const datesArr = cityDates(key);
+    const [ci, co] = datesArr;
+    const firstBlockNights = key === 'capetown' ? (ctNights()-1) : null;
+    const lastNightNote = key === 'capetown'
+      ? `<span style="color:var(--orange);font-size:.78rem;margin-inline-start:8px">🛏️ ${firstBlockNights} ليالٍ أول الرحلة + ليلة وداعية (${fmtDate(dayDate(totalNights()-1))})</span>`
+      : '';
     const nightsCtl = key === 'capetown'
       ? `<span class="nights-ctl no-print"><button type="button" data-n="-1" aria-label="إنقاص الليالي">−</button><b style="color:var(--orange)">${nights}</b><button type="button" data-n="1" aria-label="زيادة الليالي">+</button> ليالٍ</span>`
       : `<span class="nights-tag">${nights} ${nights===1?'ليلة':'ليالٍ'} (الباقي تلقائياً)</span>`;
@@ -1288,7 +1302,7 @@ function renderHotels(){
     block.className = 'hotel-block';
     block.innerHTML = `
       <h4>📍 ${escapeHtml(city.label)} ${nightsCtl}</h4>
-      <div style="color:var(--muted);font-size:.8rem;margin-bottom:8px">${fmtDate(ci)} ← ${fmtDate(co)}</div>
+      <div style="color:var(--muted);font-size:.8rem;margin-bottom:8px">${key==='capetown' ? `${fmtDate(dayDate(0))} ← ${fmtDate(dayDate(totalNights()))}` : `${fmtDate(ci)} ← ${fmtDate(co)}`}${lastNightNote}</div>
       <div class="hotel-row">
         <div class="hotel-img">${sel.img ? `<img src="${escapeAttr(sel.img)}" alt="${escapeAttr(sel.name)}" onerror="this.parentElement.textContent='🏨'">` : '🏨'}</div>
         <div class="hotel-main">
