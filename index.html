@@ -357,6 +357,65 @@ table.budget tr.total td.zar{color:var(--teal);font-size:1rem;font-weight:700}
   border-radius:8px;padding:10px 14px;font-size:.88rem;margin-top:12px;color:var(--orange-soft);
 }
 
+.activity-option {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  background: rgba(255,255,255,0.02);
+  border: 1px solid var(--bg3);
+  padding: 8px 12px;
+  border-radius: 10px;
+  transition: background 0.2s, border-color 0.2s;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-top: 6px;
+}
+.activity-option:hover {
+  background: rgba(255,255,255,0.05);
+  border-color: var(--teal);
+}
+.activity-option.selected {
+  border-color: var(--orange);
+  background: rgba(255,87,34,0.04);
+}
+.activity-label {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  cursor: pointer;
+  font-size: 0.9rem;
+  flex: 1;
+  min-width: 200px;
+}
+.activity-label input[type=checkbox] {
+  width: 16px;
+  height: 16px;
+  accent-color: var(--orange);
+  cursor: pointer;
+}
+.activity-meta {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  font-size: 0.85rem;
+}
+.activity-price {
+  color: var(--teal-soft);
+  font-weight: 700;
+  direction: ltr;
+}
+.activity-link {
+  color: var(--orange-soft);
+  text-decoration: none;
+  font-weight: 500;
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+}
+.activity-link:hover {
+  text-decoration: underline;
+}
+
 footer{
   margin-top:50px;padding:26px 0;border-top:1px solid var(--bg3);
   text-align:center;color:var(--muted);font-size:.85rem;
@@ -373,7 +432,9 @@ footer{
   :root{--bg:#fff;--bg2:#fff;--bg3:#ccc;--text:#111;--muted:#444;--teal:#0a6b6e;--orange:#c53d12;--shadow:none}
   body{background:#fff;color:#111;font-size:11pt}
   .toolbar,.no-print,#backToMap,.edit-hint,.hotel-edit,.day-edit,.add-day-wrap,.converter,
-  .stepper button,.map-card,.sec-desc,.links-row,.nights-ctl button,#simCaption,#pickBanner,.itin-controls{display:none !important}
+  .stepper button,.map-card,.sec-desc,.links-row,.nights-ctl button,#simCaption,#pickBanner,.itin-controls,
+  .activity-link, .activity-label input, .activity-option:not(.selected){display:none !important}
+  .activity-option.selected{border:1px solid #bbb;background:#fff;padding:4px 8px;margin-top:4px}
   header{background:#fff;border-bottom:2px solid #c53d12;padding:10px 0}
   header h1{color:#111;font-size:1.5rem}
   header .sub{color:#0a6b6e}
@@ -523,8 +584,11 @@ footer{
           </div>
         </div>
         <div class="field">
-          <label>الأنشطة والجولات (تلفريك، رحلات بحرية، كهوف...) — إجمالي</label>
+          <label>🎟️ مبلغ إضافي للأنشطة الطارئة أو التسوق (ريال سعودي)</label>
           <input type="number" id="activitiesPrice" min="0" step="50">
+          <span style="font-size:0.8rem; color:var(--muted); margin-top:4px; display:block;">
+            * الأنشطة المحددة في الجدول اليومي تُحسب تلقائياً بالكامل وتُضاف للإجمالي.
+          </span>
         </div>
         <div class="field">
           <label>الطعام والمطاعم — إجمالي تقديري للرحلة</label>
@@ -690,8 +754,8 @@ footer{
 <script>
 'use strict';
 /* ================= Constants ================= */
-const STORAGE_KEY = 'capetown-trip-2026-v2';
-const START_DATE = new Date(2026, 6, 10); // 10 July 2026
+const STORAGE_KEY = 'capetown-trip-2026-v3';
+const START_DATE = new Date(2026, 6, 21); // 21 July 2026
 const WEEKDAYS = ['الأحد','الاثنين','الثلاثاء','الأربعاء','الخميس','الجمعة','السبت'];
 const MONTHS = ['يناير','فبراير','مارس','أبريل','مايو','يونيو','يوليو','أغسطس','سبتمبر','أكتوبر','نوفمبر','ديسمبر'];
 
@@ -711,82 +775,200 @@ const PLACES = {
 /* ================= Default itinerary =================
    المبيت في كيب تاون ونيسنا فقط — هيرمانوس محطة على المسار بدون نوم */
 const DEFAULT_DAYS = [
-  {place:'capetown', title:'الوصول إلى كيب تاون والواجهة البحرية',
-   acts:['الوصول إلى مطار كيب تاون الدولي (CPT) واستلام السيارة المستأجرة.','تسجيل الدخول في الفندق والراحة من السفر.','جولة مسائية في V&A Waterfront: المطاعم، الأسواق، وعجلة كيب الدوارة.','عشاء على الواجهة البحرية مع إطلالة على جبل الطاولة.'],
-   links:[['موقع V&A Waterfront','https://www.waterfront.co.za'],['مطار كيب تاون','https://www.airports.co.za/airports/cape-town-international-airport']],
-   imgs:['Victoria & Alfred Waterfront','Cape Town'],
-   tip:'فعّل شريحة بيانات محلية (Vodacom أو MTN) من المطار مباشرة، واطلب سيارة مريحة لطرق الجاردن روت.'},
-
-  {place:'capetown', title:'جبل الطاولة وحي بوكاب الملوّن',
-   acts:['صعود جبل الطاولة بالتلفريك الدوّار صباحاً (الأجواء أصفى قبل الظهر).','جولة تصوير في حي بوكاب (Bo-Kaap) بمنازله الملوّنة وتاريخ مسلمي الكيب.','زيارة حديقة الشركة (Company\'s Garden) ووسط المدينة التاريخي.','غداء في سوق Greenmarket Square وتسوّق الهدايا التذكارية.'],
-   links:[['حجز تلفريك جبل الطاولة','https://www.tablemountain.net'],['متحف بوكاب','https://www.iziko.org.za/museums/bo-kaap-museum']],
-   imgs:['Table Mountain','Bo-Kaap'],
-   tip:'تحقق من حالة التلفريك على موقعه قبل الذهاب — يتوقف عند الرياح القوية. في يوليو خذ سترة؛ القمة أبرد بـ 5–8 درجات.'},
-
-  {place:'capetown', title:'شبه جزيرة الكيب وبطاريق بولدرز',
-   acts:['قيادة عبر طريق تشابمانز بيك (Chapman\'s Peak) — من أجمل الطرق الساحلية في العالم.','زيارة رأس الرجاء الصالح وكيب بوينت (Cape Point) وركوب القطار الجبلي.','مشاهدة مستعمرة البطاريق الأفريقية في شاطئ بولدرز (Boulders Beach).','جولة قصيرة في بلدة سايمونز تاون البحرية ثم العودة عبر ميزنبيرغ.'],
-   links:[['كيب بوينت','https://capepoint.co.za'],['طريق تشابمانز بيك','https://www.chapmanspeakdrive.co.za'],['شاطئ بولدرز (SANParks)','https://www.sanparks.org/parks/table_mountain/tourism/attractions.php']],
-   imgs:['Cape Point','Boulders Beach','Chapman\'s Peak'],
-   tip:'لا تترك أي أغراض ظاهرة في السيارة عند المواقف، وانتبه من قرود البابون عند كيب بوينت — لا تُطعمها أبداً.'},
-
-  {place:'stellenbosch', title:'ستيلينبوش وفرانشهوك (الواينلاندز)',
-   acts:['رحلة يومية إلى ستيلينبوش: البلدة الجامعية التاريخية بطرازها الهولندي.','عبور ممر هيلشوغته الجبلي إلى فرانشهوك ومناظرها البانورامية.','غداء ريفي في إحدى المزارع التاريخية وتجربة الأجبان المحلية.','زيارة حديقة بابيلونستورن (Babylonstoren) النباتية الشهيرة، ثم العودة لكيب تاون.'],
-   links:[['بابيلونستورن (احجز مسبقاً)','https://babylonstoren.com'],['دليل ستيلينبوش','https://visitstellenbosch.org']],
-   imgs:['Stellenbosch','Franschhoek'],
-   tip:'احجز مدخل بابيلونستورن مسبقاً عبر الإنترنت؛ التذاكر محدودة وتنفد في نهايات الأسبوع.'},
-
-  {place:'capetown', title:'حدائق كيرستنبوش وكامبس باي',
-   acts:['صباحاً: حدائق كيرستنبوش النباتية الوطنية وممشى الجسر المعلّق (Boomslang).','زيارة أكواريوم المحيطين في الواترفرونت (مناسب لو كان الطقس ماطراً).','قهوة الغروب على شاطئ كامبس باي وقمم الرسل الاثني عشر خلفك.','عشاء وداع كيب تاون في حي سي بوينت على الكورنيش.'],
-   links:[['حدائق كيرستنبوش','https://www.sanbi.org/gardens/kirstenbosch'],['أكواريوم المحيطين','https://www.aquarium.co.za']],
-   imgs:['Kirstenbosch National Botanical Garden','Camps Bay'],
-   tip:'رتّب حقائبك الليلة — غداً تبدأ جولة الجاردن روت. عبّئ وقود السيارة مساءً.'},
-
-  {place:'hermanus', title:'إلى الجاردن روت عبر هيرمانوس 🐋 (بدون مبيت)',
-   acts:['انطلاقة مبكرة (7 صباحاً) عبر الطريق الساحلي R44 (Clarence Drive) المذهل.','توقّف 3–4 ساعات في هيرمانوس: مشاهدة الحيتان الجنوبية من المنحدرات وممشى الجرف.','غداء سريع في هيرمانوس ثم مواصلة الطريق N2 شرقاً.','استراحة قهوة في سويلندام أو موسيل باي، والوصول إلى نيسنا مساءً (إجمالي ~500 كم).'],
-   links:[['رحلات الحيتان البحرية','https://southernrightcharters.co.za'],['دليل هيرمانوس','https://hermanus.co.za']],
-   imgs:['Hermanus','Walker Bay'],
-   tip:'أنصت لـ"منادي الحيتان" (Whale Crier) في وسط البلدة — ينفخ بوقاً عند رصد الحيتان. لا تتأخروا بعد الساعة 2 ظهراً لتجنب القيادة ليلاً.'},
-
-  {place:'knysna', title:'نيسنا: البحيرة والرأسان الصخريان',
-   acts:['صباح هادئ وفطور على بحيرة نيسنا.','رحلة بحرية في البحيرة حتى رأسَي نيسنا (Knysna Heads).','إطلالة بانورامية من نقطة المشاهدة الشرقية (East Head Viewpoint).','جولة في الواجهة البحرية (Knysna Waterfront) وجزيرة ثيسن.'],
-   links:[['دليل نيسنا الرسمي','https://www.visitknysna.co.za'],['رحلات فيذربيد البحرية','https://www.featherbed.co.za']],
-   imgs:['Knysna','Knysna River'],
-   tip:'احجز رحلة الغروب البحرية مسبقاً — الأماكن محدودة في يوليو وقت مهرجان المحار.'},
-
-  {place:'plettenberg', title:'بليتنبيرغ باي وحديقة تسيتسيكاما',
-   acts:['صباحاً: محمية روبرغ الطبيعية في بليتنبيرغ باي ومسار المشي الساحلي.','زيارة Monkeyland وBirds of Eden — أكبر قفص طيور حر في العالم.','حديقة تسيتسيكاما الوطنية: الجسور المعلقة فوق مصب نهر ستورمز.','اختياري للمغامرين: أعلى قفزة بنجي من جسر في العالم (بلوكرانس، 216م). العودة للمبيت في نيسنا.'],
-   links:[['حديقة تسيتسيكاما (SANParks)','https://www.sanparks.org/parks/garden_route'],['Monkeyland','https://www.monkeyland.co.za'],['قفزة بلوكرانس بنجي','https://faceadrenalin.com']],
-   imgs:['Tsitsikamma National Park','Plettenberg Bay'],
-   tip:'البس حذاء مشي مريحاً وخذ معطفاً مقاوماً للمطر — مسار الجسور المعلقة يستغرق ساعة تقريباً.'},
-
-  {place:'oudtshoorn', title:'رحلة يومية: كهوف كانغو ومزارع النعام',
-   acts:['انطلاق صباحي من نيسنا عبر ممر أوتينيكوا الجبلي إلى الكارو الصغرى (~ساعة ونصف).','جولة في كهوف كانغو (Cango Caves) — تشكيلات كلسية عمرها ملايين السنين.','زيارة مزرعة نعام تفاعلية وتجربة إطعام النعام.','غداء كارو محلي ثم العودة مساءً للمبيت في نيسنا.'],
-   links:[['كهوف كانغو (احجز الجولة)','https://www.cangocaves.co.za'],['مزرعة سفاري للنعام','https://www.safariostrich.co.za']],
-   imgs:['Cango Caves','Oudtshoorn'],
-   tip:'احجز جولة الكهوف القياسية (Heritage Tour) وليست المغامرة إن كنتم لا تحبون الممرات الضيقة.'},
-
-  {place:'wilderness', title:'يوم حر: ويلدرنيس وشواطئ الجاردن روت',
-   acts:['صباح حر: شاطئ ويلدرنيس الممتد ونقطة Map of Africa البانورامية.','اختياري: تجديف كانو في نهر Touw أو ركوب دراجات على مسار السكة القديمة.','جولة تسوق وقهوة في بلدة جورج أو سيدجفيلد.','أمسية أخيرة هادئة في نيسنا وعشاء وداع الجاردن روت.'],
-   links:[['محمية ويلدرنيس (SANParks)','https://www.sanparks.org/parks/garden_route/camps/wilderness'],['دليل الجاردن روت','https://www.gardenroute.co.za']],
-   imgs:['Wilderness, Western Cape','Garden Route'],
-   tip:'يوم مرن — لو فاتكم نشاط سابق بسبب المطر فهذا اليوم فرصة تعويضه.'},
-
-  {place:'capetown', title:'العودة إلى كيب تاون والمغادرة',
-   acts:['انطلاقة مبكرة على الطريق N2 غرباً نحو كيب تاون (~500 كم، 5–6 ساعات).','توقّف للغداء في سويلندام — أقدم ثالث بلدة في جنوب أفريقيا.','تعبئة الوقود وتسليم السيارة في مطار كيب تاون.','المغادرة مساءً — في حفظ الله.'],
-   links:[['مطار كيب تاون','https://www.airports.co.za/airports/cape-town-international-airport']],
-   imgs:['Cape Town International Airport','N2 (South Africa)'],
-   tip:'اتركوا هامش 4 ساعات قبل الإقلاع — الطريق طويل وتسليم السيارة وإجراءات المطار تحتاج وقتاً.'}
+  {
+    place: 'capetown',
+    title: 'الوصول إلى كيب تاون والواجهة البحرية',
+    acts: [
+      'الوصول إلى مطار كيب تاون الدولي (CPT) واستلام السيارة المستأجرة.',
+      'تسجيل الدخول في الفندق والراحة من السفر.',
+      'جولة مسائية في V&A Waterfront: المطاعم، الأسواق، وعجلة كيب الدوارة.',
+      'عشاء على الواجهة البحرية مع إطلالة على جبل الطاولة.'
+    ],
+    links: [
+      ['موقع V&A Waterfront', 'https://www.waterfront.co.za'],
+      ['مطار كيب تاون', 'https://www.airports.co.za/airports/cape-town-international-airport']
+    ],
+    imgs: ['Victoria & Alfred Waterfront', 'Cape Town'],
+    tip: 'فعّل شريحة بيانات محلية (Vodacom أو MTN) من المطار مباشرة، واطلب سيارة مريحة لطرق الجاردن روت.',
+    paidActivities: [
+      { name: '🚢 رحلة بحرية في ميناء كيب تاون (Harbour Cruise)', priceZar: 150, perPerson: true, link: 'https://www.waterfront.co.za', selected: true },
+      { name: '🎡 تذكرة عجلة كيب الدوارة (The Cape Wheel)', priceZar: 250, perPerson: true, link: 'https://capewheel.co.za', selected: false },
+      { name: '🚁 جولة هليكوبتر فوق كيب تاون (12 دقيقة)', priceZar: 2200, perPerson: true, link: 'https://www.nachelicopters.com', selected: false }
+    ]
+  },
+  {
+    place: 'capetown',
+    title: 'جبل الطاولة وحدائق كيرستنبوش وحي بوكاب',
+    acts: [
+      'صعود جبل الطاولة بالتلفريك الدوّار صباحاً (الأجواء أصفى قبل الظهر).',
+      'جولة تصوير في حي بوكاب (Bo-Kaap) بمنازله الملوّنة وتاريخ مسلمي الكيب.',
+      'زيارة حدائق كيرستنبوش النباتية الوطنية وممشى الجسر المعلّق (Boomslang).',
+      'قهوة الغروب على شاطئ كامبس باي مع إطلالة على قمم الرسل الاثني عشر.'
+    ],
+    links: [
+      ['حجز تلفريك جبل الطاولة', 'https://www.tablemountain.net'],
+      ['حدائق كيرستنبوش', 'https://www.sanbi.org/gardens/kirstenbosch']
+    ],
+    imgs: ['Table Mountain', 'Bo-Kaap', 'Kirstenbosch National Botanical Garden'],
+    tip: 'تحقق من حالة التلفريك على موقعه قبل الذهاب — يتوقف عند الرياح القوية. في يوليو خذ سترة دافئة؛ القمة أبرد بـ 5–8 درجات.',
+    paidActivities: [
+      { name: '🚡 تذكرة تلفريك جبل الطاولة (اتجاهين)', priceZar: 420, perPerson: true, link: 'https://www.tablemountain.net', selected: true },
+      { name: '🌿 دخول حدائق كيرستنبوش الوطنية', priceZar: 220, perPerson: true, link: 'https://www.sanbi.org/gardens/kirstenbosch', selected: true },
+      { name: '🪂 القفز بالمظلات من سيغنال هيل (Paragliding)', priceZar: 1500, perPerson: true, link: 'https://www.paraglide.co.za', selected: false },
+      { name: '🐠 دخول أكواريوم المحيطين (Two Oceans)', priceZar: 250, perPerson: true, link: 'https://www.aquarium.co.za', selected: false }
+    ]
+  },
+  {
+    place: 'capetown',
+    title: 'شبه جزيرة الكيب وبطاريق بولدرز',
+    acts: [
+      'قيادة عبر طريق تشابمانز بيك (Chapman\'s Peak) — من أجمل الطرق الساحلية في العالم.',
+      'زيارة رأس الرجاء الصالح وكيب بوينت (Cape Point) وركوب القطار الجبلي.',
+      'مشاهدة مستعمرة البطاريق الأفريقية في شاطئ بولدرز (Boulders Beach).',
+      'جولة قصيرة في بلدة سايمونز تاون البحرية ثم العودة عبر ميزنبيرغ.'
+    ],
+    links: [
+      ['كيب بوينت', 'https://capepoint.co.za'],
+      ['طريق تشابمانز بيك', 'https://www.chapmanspeakdrive.co.za'],
+      ['شاطئ بولدرز (SANParks)', 'https://www.sanparks.org/parks/table_mountain/tourism/attractions.php']
+    ],
+    imgs: ['Cape Point', 'Boulders Beach', 'Chapman\'s Peak'],
+    tip: 'لا تترك أي أغراض ظاهرة في السيارة عند المواقف، وانتبه من قرود البابون عند كيب بوينت — لا تُطعمها أبداً.',
+    paidActivities: [
+      { name: '🛣️ رسوم طريق تشابمانز بيك (سيارة واحدة)', priceZar: 60, perPerson: false, link: 'https://www.chapmanspeakdrive.co.za', selected: true },
+      { name: '🐧 دخول شاطئ بطاريق بولدرز (Boulders Beach)', priceZar: 190, perPerson: true, link: 'https://www.sanparks.org', selected: true },
+      { name: '🗺️ دخول كيب بوينت + القطار الجبلي (Funicular)', priceZar: 500, perPerson: true, link: 'https://capepoint.co.za', selected: true },
+      { name: '🦭 رحلة قارب جزيرة الفقمات من هوت باي (Seal Island)', priceZar: 130, perPerson: true, link: 'https://www.drumbeatcharters.co.za', selected: false }
+    ]
+  },
+  {
+    place: 'stellenbosch',
+    title: 'ستيلينبوش وفرانشهوك (الواينلاندز)',
+    acts: [
+      'رحلة يومية إلى ستيلينبوش: البلدة الجامعية التاريخية بطرازها الهولندي.',
+      'عبور ممر هيلشوغته الجبلي إلى فرانشهوك ومناظرها البانورامية.',
+      'غداء ريفي في إحدى المزارع التاريخية وتجربة الأجبان المحلية.',
+      'زيارة حديقة بابيلونستورن (Babylonstoren) النباتية الشهيرة، ثم العودة لكيب تاون.'
+    ],
+    links: [
+      ['بابيلونستورن (احجز مسبقاً)', 'https://babylonstoren.com'],
+      ['دليل ستيلينبوش', 'https://visitstellenbosch.org']
+    ],
+    imgs: ['Stellenbosch', 'Franschhoek'],
+    tip: 'احجز مدخل حدائق بابيلونستورن مسبقاً عبر الإنترنت؛ التذاكر محدودة وتنفد في نهايات الأسبوع.',
+    paidActivities: [
+      { name: '🌳 دخول حدائق بابيلونستورن الشهيرة', priceZar: 100, perPerson: true, link: 'https://babylonstoren.com', selected: true },
+      { name: '🚃 جولة ترام فرانشهوك المكشوف (Wine Tram)', priceZar: 300, perPerson: true, link: 'https://winetram.co.za', selected: false }
+    ]
+  },
+  {
+    place: 'hermanus',
+    title: 'إلى الجاردن روت عبر هيرمانوس 🐋 (بدون مبيت)',
+    acts: [
+      'انطلاقة مبكرة (7 صباحاً) عبر الطريق الساحلي R44 (Clarence Drive) المذهل.',
+      'توقّف 3–4 ساعات في هيرمانوس: مشاهدة الحيتان الجنوبية من المنحدرات وممشى الجرف.',
+      'غداء سريع في هيرمانوس ثم مواصلة N2 شرقاً والوصول لنيسنا مساءً.'
+    ],
+    links: [
+      ['رحلات الحيتان البحرية', 'https://southernrightcharters.co.za'],
+      ['دليل هيرمانوس', 'https://hermanus.co.za']
+    ],
+    imgs: ['Hermanus', 'Walker Bay'],
+    tip: 'أنصت لـ"منادي الحيتان" (Whale Crier) في وسط البلدة — ينفخ بوقاً عند رصد الحيتان. لا تتأخروا بعد الساعة 2 ظهراً لتجنب القيادة ليلاً.',
+    paidActivities: [
+      { name: '🐋 رحلة قارب لمشاهدة الحيتان عن قرب (Whale Watching Boat)', priceZar: 1200, perPerson: true, link: 'https://southernrightcharters.co.za', selected: true },
+      { name: '🐧 دخول مستعمرة بطاريق ستوني بوينت (بديل شاطئ بولدرز)', priceZar: 30, perPerson: true, link: 'https://www.capenature.co.za', selected: false }
+    ]
+  },
+  {
+    place: 'knysna',
+    title: 'نيسنا: البحيرة والرأسان الصخريان والأنشطة المائية',
+    acts: [
+      'صباح هادئ وفطور على بحيرة نيسنا.',
+      'رحلة بحرية في البحيرة حتى رأسَي نيسنا (Knysna Heads).',
+      'إطلالة بانورامية من نقطة المشاهدة الشرقية (East Head Viewpoint).',
+      'جولة في الواجهة البحرية (Knysna Waterfront) وجزيرة ثيسن.'
+    ],
+    links: [
+      ['دليل نيسنا الرسمي', 'https://www.visitknysna.co.za'],
+      ['رحلات فيذربيد البحرية', 'https://www.featherbed.co.za']
+    ],
+    imgs: ['Knysna', 'Knysna River'],
+    tip: 'احجز رحلة الغروب البحرية مسبقاً — الأماكن محدودة في يوليو وقت مهرجان المحار.',
+    paidActivities: [
+      { name: '⛵ رحلة بحرية في بحيرة نيسنا (John Benn Cruise)', priceZar: 350, perPerson: true, link: 'https://www.featherbed.co.za', selected: true },
+      { name: '🐘 زيارة حديقة فيلة نيسنا وإطعامها (Knysna Elephant Park)', priceZar: 475, perPerson: true, link: 'https://knysnaelephantpark.co.za', selected: false },
+      { name: '🛶 جولة تجديف كاياك في بحيرة نيسنا (Knysna Kayak)', priceZar: 450, perPerson: true, link: 'https://www.knysnabykayak.co.za', selected: false }
+    ]
+  },
+  {
+    place: 'plettenberg',
+    title: 'بليتنبيرغ باي وحديقة تسيتسيكاما',
+    acts: [
+      'صباحاً: محمية روبرغ الطبيعية في بليتنبيرغ باي ومسار المشي الساحلي.',
+      'زيارة Monkeyland وBirds of Eden — أكبر قفص طيور حر في العالم.',
+      'حديقة تسيتسيكاما الوطنية: الجسور المعلقة فوق مصب نهر ستورمز. العودة للمبيت في نيسنا.'
+    ],
+    links: [
+      ['حديقة تسيتسيكاما (SANParks)', 'https://www.sanparks.org/parks/garden_route'],
+      ['Monkeyland', 'https://www.monkeyland.co.za'],
+      ['قفزة بلوكرانس بنجي', 'https://faceadrenalin.com']
+    ],
+    imgs: ['Tsitsikamma National Park', 'Plettenberg Bay'],
+    tip: 'البس حذاء مشي مريحاً وخذ معطفاً مقاوماً للمطر — مسار الجسور المعلقة يستغرق ساعة تقريباً.',
+    paidActivities: [
+      { name: '🌲 دخول حديقة تسيتسيكاما الوطنية (SANParks)', priceZar: 280, perPerson: true, link: 'https://www.sanparks.org/parks/garden_route', selected: true },
+      { name: '🐒 تذكرة Monkeyland & Birds of Eden المشتركة', priceZar: 480, perPerson: true, link: 'https://www.monkeyland.co.za', selected: false },
+      { name: '🪢 أعلى قفزة بنجي في العالم من فوق جسر بلوكرانس (Bloukrans Bungy)', priceZar: 1500, perPerson: true, link: 'https://faceadrenalin.com', selected: false }
+    ]
+  },
+  {
+    place: 'oudtshoorn',
+    title: 'رحلة يومية: كهوف كانغو ومزارع النعام',
+    acts: [
+      'انطلاق صباحي من نيسنا عبر ممر أوتينيكوا الجبلي إلى الكارو الصغرى (~ساعة ونصف).',
+      'جولة في كهوف كانغو (Cango Caves) — تشكيلات كلسية عمرها ملايين السنين.',
+      'زيارة مزرعة نعام تفاعلية وتجربة إطعام النعام. العودة للمبيت في نيسنا.'
+    ],
+    links: [
+      ['كهوف كانغو (احجز الجولة)', 'https://www.cangocaves.co.za'],
+      ['مزرعة سفاري للنعام', 'https://www.safariostrich.co.za']
+    ],
+    imgs: ['Cango Caves', 'Oudtshoorn'],
+    tip: 'احجز جولة الكهوف القياسية (Heritage Tour) وليست المغامرة إن كنتم لا تحبون الممرات الضيقة.',
+    paidActivities: [
+      { name: '🦇 جولة كهوف كانغو القياسية (Cango Caves Heritage)', priceZar: 220, perPerson: true, link: 'https://www.cangocaves.co.za', selected: true },
+      { name: '🪶 جولة تفاعلية في مزرعة سفاري النعام (Safari Ostrich)', priceZar: 180, perPerson: true, link: 'https://www.safariostrich.co.za', selected: true },
+      { name: '🐆 زيارة مزرعة الحيوانات البرية (Cango Wildlife Ranch)', priceZar: 260, perPerson: true, link: 'https://www.cangowildlife.com', selected: false }
+    ]
+  },
+  {
+    place: 'capetown',
+    title: 'العودة إلى كيب تاون والمغادرة',
+    acts: [
+      'انطلاقة مبكرة على الطريق N2 غرباً نحو كيب تاون (~500 كم، 5–6 ساعات).',
+      'توقّف للغداء في سويلندام — أقدم ثالث بلدة في جنوب أفريقيا.',
+      'تعبئة الوقود وتسليم السيارة في مطار كيب تاون.',
+      'المغادرة مساءً — في حفظ الله.'
+    ],
+    links: [
+      ['مطار كيب تاون', 'https://www.airports.co.za/airports/cape-town-international-airport']
+    ],
+    imgs: ['Cape Town International Airport', 'N2 (South Africa)'],
+    tip: 'اتركوا هامش 4 ساعات قبل الإقلاع — الطريق طويل وتسليم السيارة وإجراءات المطار تحتاج وقتاً.',
+    paidActivities: []
+  }
 ];
 
 const DEFAULT_STATE = {
   travelers: 2,
   flightPrice: 4200,
   transportPrice: 2800,
-  activitiesPrice: 2600,
+  activitiesPrice: 500,
   foodPrice: 3300,
   payment: 'cash',
   rate: 4.75,
-  ctNights: 5,
+  ctNights: 4,
   driver: {
     capetown: {on:false, price:450},
     transfer: {on:false, price:800},
@@ -1099,6 +1281,33 @@ function renderItinerary(){
         <ul>${(d.acts||[]).map(a=>`<li>${escapeHtml(a)}</li>`).join('')}</ul>
         ${linksHtml ? `<div class="links-row">${linksHtml}</div>` : ''}
         ${d.tip ? `<div class="tip">💡 نصيحة: ${escapeHtml(d.tip)}</div>` : ''}
+        
+        ${d.paidActivities && d.paidActivities.length > 0 ? `
+        <div class="day-activities" style="margin-top: 14px; border-top: 1px dashed rgba(170,178,189,.2); padding-top: 12px;">
+          <h4 style="color:var(--teal); font-size: 0.92rem; margin-bottom: 8px; font-weight:700;">🎯 خيارات الفعاليات والأنشطة لهذا اليوم:</h4>
+          <div style="display:flex; flex-direction:column; gap:8px;">
+            ${d.paidActivities.map((act, actIdx) => {
+              const actPriceSar = act.priceZar / state.rate;
+              const unit = act.perPerson ? 'للشخص' : 'للسيارة';
+              const isSelected = act.selected ? 'checked' : '';
+              const selectedClass = act.selected ? 'activity-option selected' : 'activity-option';
+              const linkHtml = act.link ? `<a class="activity-link" href="${escapeAttr(act.link)}" target="_blank" rel="noopener">🔗 تفاصيل</a>` : '';
+              return `
+                <div class="${selectedClass}">
+                  <label class="activity-label">
+                    <input type="checkbox" data-day-idx="${i}" data-act-idx="${actIdx}" ${isSelected}>
+                    <span>${escapeHtml(act.name)}</span>
+                  </label>
+                  <div class="activity-meta">
+                    <span class="activity-price">${fmt(act.priceZar)} ZAR <span style="font-size:0.75rem;color:var(--muted)">(${sar(actPriceSar)} ${unit})</span></span>
+                    ${linkHtml}
+                  </div>
+                </div>
+              `;
+            }).join('')}
+          </div>
+        </div>
+        ` : ''}
       </div>
       <div class="day-edit">
         <div class="full"><label>عنوان اليوم</label><input type="text" data-i="${i}" data-f="title" value="${escapeAttr(d.title)}"></div>
@@ -1113,6 +1322,18 @@ function renderItinerary(){
         </div>
       </div>`;
     cont.appendChild(card);
+  });
+
+  /* activity checkboxes wiring */
+  cont.querySelectorAll('.activity-option input[type=checkbox]').forEach(cb=>{
+    cb.addEventListener('change', e=>{
+      const dayIdx = +e.target.dataset.dayIdx;
+      const actIdx = +e.target.dataset.actIdx;
+      state.days[dayIdx].paidActivities[actIdx].selected = e.target.checked;
+      saveState();
+      renderItinerary();
+      renderBudget();
+    });
   });
 
   /* edit wiring (change = on blur, keeps typing smooth) */
@@ -1158,7 +1379,8 @@ function addDayAt(idx){
     place:'knysna',
     title:'يوم حر — استرخاء واستكشاف',
     acts:['وقت حر للتسوق أو الشواطئ أو تعويض الأنشطة المؤجلة.'],
-    links:[], imgs:['Garden Route'], tip:''
+    links:[], imgs:['Garden Route'], tip:'',
+    paidActivities: []
   });
   saveState(); renderAll();
   setTimeout(()=>document.getElementById('day-'+(idx+1))?.scrollIntoView({behavior:'smooth'}), 100);
@@ -1331,11 +1553,29 @@ function hotelsTotal(){
 function calc(){
   const flights = state.flightPrice * state.travelers;
   const hotels = hotelsTotal();
-  const rest = state.transportPrice + driverTotal() + state.activitiesPrice + state.foodPrice;
+  
+  // Calculate total price of selected activities across all days
+  let actsTotalZar = 0;
+  state.days.forEach(d => {
+    if (d.paidActivities) {
+      d.paidActivities.forEach(act => {
+        if (act.selected) {
+          const price = act.priceZar;
+          const count = act.perPerson ? state.travelers : 1;
+          actsTotalZar += price * count;
+        }
+      });
+    }
+  });
+  
+  const actsCalculatedSar = actsTotalZar / state.rate;
+  const activitiesTotalSar = actsCalculatedSar + (state.activitiesPrice || 0);
+
+  const rest = state.transportPrice + driverTotal() + activitiesTotalSar + state.foodPrice;
   const discount = state.payment === 'cash' ? (flights + hotels) * 0.05 : 0;
   const instBase = flights + hotels;            // installments cover flights+hotels only
   const total = flights + hotels + rest - discount;
-  return {flights, hotels, rest, discount, total, instBase};
+  return {flights, hotels, rest, discount, total, instBase, activitiesTotalSar, actsCalculatedSar};
 }
 function renderBudget(){
   const c = calc();
@@ -1344,7 +1584,7 @@ function renderBudget(){
     ['🏨 الفنادق (' + totalNights() + ' ليالٍ × ' + roomsCount() + ' ' + (roomsCount()===1?'غرفة':'غرف') + ')', c.hotels],
     ['🚗 المواصلات (سيارة + وقود)', state.transportPrice],
     ...(driverTotal() > 0 ? [['🚘 سائق خاص (' + driverSegments().filter(s=>state.driver[s.key].on).reduce((n,s)=>n+s.days,0) + ' أيام)', driverTotal()]] : []),
-    ['🎟️ الأنشطة والجولات', state.activitiesPrice],
+    ['🎟️ الأنشطة والفعاليات (المحددة والإضافية)', c.activitiesTotalSar],
     ['🍽️ الطعام والمطاعم', state.foodPrice],
   ];
   let html = rows.map(([label, v]) =>
