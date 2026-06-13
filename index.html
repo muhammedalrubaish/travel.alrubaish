@@ -1678,12 +1678,14 @@ function initAddActBtn(){
 /* ================= Private driver ================= */
 function driverSegments(){
   const ct = ctNights();
-  const garden = Math.max(0, state.days.length - ct - 1);
+  const remaining = Math.max(0, state.days.length - ct - 1); // الأيام بعد كيب تاون ويوم الانتقال
+  const ret = Math.min(2, remaining); // يومَا العودة (Game Lodge + العودة لكيب تاون)
+  const garden = remaining - ret;
   return [
     {key:'capetown', label:'كيب تاون (جولات المدينة وشبه الجزيرة)', days: ct},
     {key:'transfer', label:'يوم الانتقال: كيب تاون ← نيسنا عبر هيرمانوس', days: 1},
     {key:'garden',   label:'الجاردن روت (نيسنا وما حولها + كهوف كانغو)', days: garden},
-    {key:'return',   label:'يوم العودة: Game Lodge → سفاري → كيب تاون', days: 2}
+    {key:'return',   label:'يوم العودة: Game Lodge → سفاري → كيب تاون', days: ret}
   ];
 }
 function driverTotal(){
