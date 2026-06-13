@@ -750,6 +750,7 @@ const PLACES = {
   hermanus:    {name:'هيرمانوس',        x:235, y:330, emoji:'🐋'},
   mosselbay:   {name:'موسيل باي',       x:520, y:310, emoji:'⚓'},
   wilderness:  {name:'ويلدرنيس',        x:598, y:298, emoji:'🏖️'},
+  gamelodge:   {name:'Game Lodge',       x:440, y:318, emoji:'🦁'},
   oudtshoorn:  {name:'أودتشورن',        x:590, y:200, emoji:'🦩'},
   knysna:      {name:'نيسنا',           x:700, y:290, emoji:'🌉', stay:true},
   plettenberg: {name:'بليتنبيرغ باي',   x:790, y:270, emoji:'🏝️'},
@@ -801,11 +802,17 @@ const DEFAULT_DAYS = [
    imgs:['Tsitsikamma National Park','Plettenberg Bay'],
    tip:'البس حذاء مشي مريحاً وخذ معطفاً مقاوماً للمطر — مسار الجسور المعلقة يستغرق ساعة تقريباً.'},
 
-  {place:'capetown', title:'كهوف كانغو + طريق 62 + المبيت الأخير في كيب تاون',
-   acts:['انطلاقة مبكرة (7 صباحاً) من نيسنا عبر ممر أوتينيكوا الجبلي إلى أودتشورن (~ساعة ونصف).','جولة في كهوف كانغو (Heritage Tour) وزيارة مزرعة نعام تفاعلية.','الغداء في أودتشورن ثم الانطلاق عبر الطريق الأسطوري Route 62 نحو كيب تاون (~4 ساعات).','توقّف للقهوة في مونتاغو أو روبرتسون، والوصول لكيب تاون مساءً للمبيت الأخير.'],
-   links:[['كهوف كانغو (احجز الجولة)','https://www.cangocaves.co.za'],['مزرعة سفاري النعام','https://www.safariostrich.co.za'],['دليل طريق 62','https://www.route62.co.za']],
-   imgs:['Cango Caves','Oudtshoorn','Route 62'],
-   tip:'احجز جولة الكهوف التراثية مبكراً الساعة 9 صباحاً لتغادر أودتشورن قبل الظهر وتصل كيب تاون قبل المغيب. طريق 62 أجمل من الطريق N2.'},
+  {place:'gamelodge', title:'كهوف كانغو + طريق 62 → Garden Route Game Lodge 🦁',
+   acts:['انطلاقة مبكرة (7 صباحاً) من نيسنا عبر ممر أوتينيكوا الجبلي إلى أودتشورن (~ساعة ونصف).','جولة في كهوف كانغو (Heritage Tour) وزيارة مزرعة نعام تفاعلية.','الغداء في أودتشورن ثم الانطلاق غرباً عبر طريق N2 إلى Garden Route Game Lodge قرب ألبرتينيا (~ساعتين).','تسجيل الدخول في المحمية وجولة سفاري مسائية مع الخمسة الكبار (أسد، فيل، جاموس، فهد، كركدن).'],
+   links:[['Garden Route Game Lodge (احجز مباشرة)','https://www.gardenroutegamelodge.co.za'],['كهوف كانغو','https://www.cangocaves.co.za'],['مزرعة سفاري النعام','https://www.safariostrich.co.za']],
+   imgs:['Garden Route Game Lodge','Cango Caves','Oudtshoorn'],
+   tip:'الجولة المسائية (Sundowner Safari) في المحمية من أجمل التجارب. احجز مسبقاً لأن أماكن اليوليو تمتلئ. المحمية خالية من الملاريا 🙌'},
+
+  {place:'capetown', title:'سفاري الفجر والعودة الأخيرة إلى كيب تاون 🏙️',
+   acts:['صفاري الفجر (6 صباحاً) في Garden Route Game Lodge — أفضل وقت لرؤية الحيوانات المفترسة.','فطور في المحمية ثم الانطلاق على طريق N2 / Route 62 غرباً نحو كيب تاون (~3 ساعات).','توقّف للقهوة في سويلندام أو مونتاغو — أقدم ثالث بلدة في جنوب أفريقيا.','الوصول لكيب تاون مساءً وتسجيل الدخول في الليلة الوداعية.'],
+   links:[['Garden Route Game Lodge','https://www.gardenroutegamelodge.co.za'],['Booking.com — كيب تاون','https://www.booking.com/searchresults.ar.html?ss=Cape+Town']],
+   imgs:['Garden Route Game Lodge','Swellendam','Cape Town'],
+   tip:'اطلب Sundowner Package (سفاري + عشاء + فطور) عند الحجز — يستحق. احرص على مغادرة المحمية قبل الساعة 10 لتصل كيب تاون قبل المساء.'},
 
   {place:'capetown', title:'العودة إلى كيب تاون والمغادرة',
    acts:['انطلاقة مبكرة على الطريق N2 غرباً نحو كيب تاون (~500 كم، 5–6 ساعات).','توقّف للغداء في سويلندام — أقدم ثالث بلدة في جنوب أفريقيا.','تعبئة الوقود وتسليم السيارة في مطار كيب تاون.','المغادرة مساءً — في حفظ الله.'],
@@ -854,7 +861,8 @@ const DEFAULT_STATE = {
   driver: {
     capetown: {on:false, price:450},
     transfer: {on:false, price:800},
-    garden:   {on:false, price:500}
+    garden:   {on:false, price:500},
+    return:   {on:false, price:900}
   },
   days: DEFAULT_DAYS,
   customPlaces: {},
@@ -873,6 +881,14 @@ const DEFAULT_STATE = {
         {name:'The Turbine Boutique Hotel', price: 850, img:''},
         {name:'Premier Resort The Moorings', price: 700, img:''},
         {name:'Knysna Log-Inn Hotel', price: 550, img:''}
+      ]
+    },
+    gamelodge: {
+      label: 'Garden Route Game Lodge 🦁', selected: 0,
+      options: [
+        {name:'Garden Route Game Lodge — Standard Chalet', price: 1800, img:'https://dynamic-media-cdn.tripadvisor.com/media/photo-o/29/5e/17/8a/exterior.jpg?w=1200&h=-1&s=1'},
+        {name:'Garden Route Game Lodge — Luxury Chalet', price: 2600, img:''},
+        {name:'Garden Route Game Lodge — Family Chalet', price: 2200, img:''}
       ]
     }
   }
@@ -934,7 +950,8 @@ function fmtDate(d){ return `${WEEKDAYS[d.getDay()]} ${d.getDate()} ${MONTHS[d.g
 function isoDate(d){ return d.toISOString().slice(0,10); }
 function totalNights(){ return Math.max(1, state.days.length - 1); }
 function ctNights(){ return Math.min(Math.max(1, state.ctNights), totalNights()); }
-function knNights(){ return Math.max(0, totalNights() - ctNights()); }
+const LODGE_NIGHTS = 1; // Garden Route Game Lodge — fixed 1 night on return
+function knNights(){ return Math.max(0, totalNights() - ctNights() - LODGE_NIGHTS); }
 function roomsCount(){ return Math.max(1, Math.ceil(state.travelers / 2)); }
 
 /* ================= Wikipedia images (free, CORS-enabled) ================= */
@@ -1249,28 +1266,33 @@ document.getElementById('daysMinus').addEventListener('click', ()=>{
 function cityDates(key){
   const n = totalNights();
   const kn = knNights();
-  // Cape Town = first block (ctNights-1) + last night; Knysna = middle block
-  if(key === 'capetown'){
-    const firstBlock = ctNights() - 1; // nights before Knysna
-    const hasLastNight = ctNights() > firstBlock;
-    return [dayDate(0), dayDate(n), firstBlock, hasLastNight];
-  }
-  return [dayDate(ctNights()-1), dayDate(ctNights()-1 + kn)];
+  const firstCT = ctNights() - 1;          // nights 1…firstCT in Cape Town
+  const knStart = firstCT;                  // Knysna starts night firstCT+1
+  const lodgeStart = knStart + kn;          // Lodge night: after Knysna
+  if(key === 'capetown')  return [dayDate(0), dayDate(n)];      // full window for booking link
+  if(key === 'knysna')    return [dayDate(knStart), dayDate(knStart + kn)];
+  if(key === 'gamelodge') return [dayDate(lodgeStart), dayDate(lodgeStart + LODGE_NIGHTS)];
+  return [dayDate(0), dayDate(n)];
 }
 function bookingLinks(key){
+  if(key === 'gamelodge'){
+    const [ci, co] = cityDates('gamelodge').map(isoDate);
+    return [
+      ['موقع المحمية الرسمي', 'https://www.gardenroutegamelodge.co.za'],
+      ['Booking.com', `https://www.booking.com/searchresults.ar.html?ss=Garden+Route+Game+Lodge&checkin=${ci}&checkout=${co}&group_adults=${state.travelers}&no_rooms=${roomsCount()}`],
+    ];
+  }
   const cityEn = key === 'capetown' ? 'Cape Town, South Africa' : 'Knysna, South Africa';
   const slug = key === 'capetown' ? 'Cape-Town--South-Africa' : 'Knysna--South-Africa';
   const t = state.travelers, rooms = roomsCount();
-  const nights = key === 'capetown' ? ctNights() : knNights();
-  // For Cape Town use full trip dates (first check-in to last check-out)
-  const ci = isoDate(dayDate(0));
-  const co = key === 'capetown' ? isoDate(dayDate(totalNights())) : isoDate(cityDates(key)[1]);
-  const ci2 = key === 'capetown' ? ci : isoDate(cityDates(key)[0]);
+  const nights = hotelNights(key);
+  const [ciD, coD] = cityDates(key);
+  const ci = isoDate(ciD), co = isoDate(coD);
   return [
-    ['Booking.com', `https://www.booking.com/searchresults.ar.html?ss=${encodeURIComponent(cityEn)}&checkin=${ci2}&checkout=${co}&group_adults=${t}&no_rooms=${rooms}`],
-    ['Airbnb', `https://www.airbnb.com/s/${slug}/homes?checkin=${ci2}&checkout=${co}&adults=${t}`],
-    ['Agoda', `https://www.agoda.com/ar-sa/search?textToSearch=${encodeURIComponent(cityEn)}&checkIn=${ci2}&los=${Math.max(1,nights)}&adults=${t}&rooms=${rooms}`],
-    ['Expedia', `https://www.expedia.com/Hotel-Search?destination=${encodeURIComponent(cityEn)}&startDate=${ci2}&endDate=${co}&adults=${t}`]
+    ['Booking.com', `https://www.booking.com/searchresults.ar.html?ss=${encodeURIComponent(cityEn)}&checkin=${ci}&checkout=${co}&group_adults=${t}&no_rooms=${rooms}`],
+    ['Airbnb', `https://www.airbnb.com/s/${slug}/homes?checkin=${ci}&checkout=${co}&adults=${t}`],
+    ['Agoda', `https://www.agoda.com/ar-sa/search?textToSearch=${encodeURIComponent(cityEn)}&checkIn=${ci}&los=${Math.max(1,nights)}&adults=${t}&rooms=${rooms}`],
+    ['Expedia', `https://www.expedia.com/Hotel-Search?destination=${encodeURIComponent(cityEn)}&startDate=${ci}&endDate=${co}&adults=${t}`]
   ];
 }
 function flightLinksHtml(){
@@ -1286,23 +1308,27 @@ function renderHotels(){
   const cont = document.getElementById('hotelsContainer');
   cont.innerHTML = '';
   for(const [key, city] of Object.entries(state.hotels)){
-    const nights = key === 'capetown' ? ctNights() : knNights();
+    const nights = hotelNights(key);
     const sel = city.options[city.selected] || city.options[0];
     const total = sel.price * nights * roomsCount();
-    const datesArr = cityDates(key);
-    const [ci, co] = datesArr;
+    const [ci, co] = cityDates(key);
     const firstBlockNights = key === 'capetown' ? (ctNights()-1) : null;
     const lastNightNote = key === 'capetown'
       ? `<span style="color:var(--orange);font-size:.78rem;margin-inline-start:8px">🛏️ ${firstBlockNights} ليالٍ أول الرحلة + ليلة وداعية (${fmtDate(dayDate(totalNights()-1))})</span>`
       : '';
+    const lodgeNote = key === 'gamelodge'
+      ? `<span style="color:var(--teal);font-size:.78rem;margin-inline-start:8px">🦁 ليلة واحدة في الطريق (${fmtDate(ci)} ← ${fmtDate(co)})</span>`
+      : '';
     const nightsCtl = key === 'capetown'
       ? `<span class="nights-ctl no-print"><button type="button" data-n="-1" aria-label="إنقاص الليالي">−</button><b style="color:var(--orange)">${nights}</b><button type="button" data-n="1" aria-label="زيادة الليالي">+</button> ليالٍ</span>`
-      : `<span class="nights-tag">${nights} ${nights===1?'ليلة':'ليالٍ'} (الباقي تلقائياً)</span>`;
+      : key === 'gamelodge'
+        ? `<span class="nights-tag">ليلة واحدة ثابتة</span>`
+        : `<span class="nights-tag">${nights} ${nights===1?'ليلة':'ليالٍ'} (تلقائياً)</span>`;
     const block = document.createElement('div');
     block.className = 'hotel-block';
     block.innerHTML = `
       <h4>📍 ${escapeHtml(city.label)} ${nightsCtl}</h4>
-      <div style="color:var(--muted);font-size:.8rem;margin-bottom:8px">${key==='capetown' ? `${fmtDate(dayDate(0))} ← ${fmtDate(dayDate(totalNights()))}` : `${fmtDate(ci)} ← ${fmtDate(co)}`}${lastNightNote}</div>
+      <div style="color:var(--muted);font-size:.8rem;margin-bottom:8px">${key==='capetown' ? `${fmtDate(dayDate(0))} ← ${fmtDate(dayDate(totalNights()))}` : `${fmtDate(ci)} ← ${fmtDate(co)}`}${lastNightNote}${lodgeNote}</div>
       <div class="hotel-row">
         <div class="hotel-img">${sel.img ? `<img src="${escapeAttr(sel.img)}" alt="${escapeAttr(sel.name)}" onerror="this.parentElement.textContent='🏨'">` : '🏨'}</div>
         <div class="hotel-main">
@@ -1425,7 +1451,8 @@ function driverSegments(){
   return [
     {key:'capetown', label:'كيب تاون (جولات المدينة وشبه الجزيرة)', days: ct},
     {key:'transfer', label:'يوم الانتقال: كيب تاون ← نيسنا عبر هيرمانوس', days: 1},
-    {key:'garden',   label:'الجاردن روت (نيسنا وما حولها + العودة)', days: garden}
+    {key:'garden',   label:'الجاردن روت (نيسنا وما حولها + كهوف كانغو)', days: garden},
+    {key:'return',   label:'يوم العودة: Game Lodge → سفاري → كيب تاون', days: 2}
   ];
 }
 function driverTotal(){
@@ -1474,12 +1501,17 @@ function renderDriver(){
 }
 
 /* ================= Budget ================= */
+function hotelNights(key){
+  if(key === 'capetown')  return ctNights();
+  if(key === 'knysna')    return knNights();
+  if(key === 'gamelodge') return LODGE_NIGHTS;
+  return 0;
+}
 function hotelsTotal(){
   let t = 0;
   for(const [key, city] of Object.entries(state.hotels)){
-    const nights = key === 'capetown' ? ctNights() : knNights();
     const sel = city.options[city.selected] || city.options[0];
-    t += sel.price * nights * roomsCount();
+    t += sel.price * hotelNights(key) * roomsCount();
   }
   return t;
 }
@@ -1533,7 +1565,7 @@ function renderBudget(){
   document.getElementById('travCount').textContent = state.travelers;
   document.getElementById('roomsNote').textContent = `(${roomsCount()} ${roomsCount()===1?'غرفة':'غرف'} مزدوجة)`;
   document.getElementById('daysBadge').textContent = state.days.length;
-  document.getElementById('nightsBadge').textContent = `${ctNights()} ليالٍ كيب تاون + ${knNights()} الجاردن روت`;
+  document.getElementById('nightsBadge').textContent = `${ctNights()} كيب تاون + ${knNights()} نيسنا + ${LODGE_NIGHTS} Game Lodge`;
   const end = dayDate(state.days.length - 1);
   document.getElementById('headerDates').textContent =
     `جنوب أفريقيا · ${START_DATE.getDate()} ${MONTHS[START_DATE.getMonth()]} – ${end.getDate()} ${MONTHS[end.getMonth()]} ${end.getFullYear()} · ${state.days.length} يوماً / ${totalNights()} ليالٍ`;
