@@ -356,6 +356,68 @@ table.budget tr.total td.zar{color:var(--teal);font-size:1rem;font-weight:700}
 }
 .inst-note b{color:var(--teal)}
 
+/* ===== Financial Analyzer ===== */
+.fin-analyzer{
+  display:none;margin-top:22px;
+  background:var(--bg);border:1px solid var(--teal);border-radius:var(--radius);
+  overflow:hidden;
+}
+.fin-analyzer.show{display:block}
+.fin-header{
+  background:linear-gradient(90deg,rgba(118,171,174,.18),rgba(118,171,174,.05));
+  padding:14px 20px;border-bottom:1px solid var(--bg3);
+  display:flex;align-items:center;gap:10px;flex-wrap:wrap;
+}
+.fin-header h3{font-size:1.08rem;font-weight:800;color:var(--teal)}
+.fin-header .brand{background:var(--bg3);border-radius:999px;padding:3px 13px;font-size:.82rem}
+.fin-body{padding:18px 20px;display:grid;grid-template-columns:1fr 1fr;gap:18px}
+@media(max-width:700px){.fin-body{grid-template-columns:1fr}}
+/* payment timeline */
+.fin-timeline{grid-column:1/-1}
+.fin-timeline h4{font-size:.92rem;color:var(--teal);margin-bottom:10px;font-weight:700}
+.timeline-wrap{display:grid;grid-template-columns:repeat(4,1fr);gap:10px}
+@media(max-width:600px){.timeline-wrap{grid-template-columns:repeat(2,1fr)}}
+.t-step{
+  background:var(--bg2);border:1px solid var(--bg3);border-radius:12px;
+  padding:12px;text-align:center;position:relative;
+}
+.t-step:not(:last-child)::after{
+  content:'←';position:absolute;top:50%;left:-12px;transform:translateY(-50%);
+  color:var(--teal);font-size:.9rem;
+}
+.t-step.t-now{border-color:var(--orange);background:rgba(255,87,34,.07)}
+.t-step .t-n{font-size:.72rem;color:var(--muted);margin-bottom:3px}
+.t-step .t-date{font-size:.78rem;color:var(--teal);margin-top:3px}
+.t-step .t-amt{font-weight:800;font-size:1rem;direction:ltr}
+.t-step.t-now .t-amt{color:var(--orange)}
+/* comparison */
+.fin-compare h4{font-size:.92rem;color:var(--teal);margin-bottom:10px;font-weight:700}
+.cmp-row{
+  display:flex;justify-content:space-between;align-items:center;
+  padding:8px 0;border-bottom:1px dashed rgba(170,178,189,.15);font-size:.9rem;
+}
+.cmp-row:last-child{border-bottom:none}
+.cmp-row .lbl{color:var(--muted)}
+.cmp-row .val{font-weight:700;direction:ltr}
+.cmp-row .val.plus{color:var(--orange)}
+.cmp-row .val.save{color:var(--teal)}
+/* split bar */
+.fin-split h4{font-size:.92rem;color:var(--teal);margin-bottom:10px;font-weight:700}
+.split-bar-wrap{border-radius:8px;overflow:hidden;height:28px;display:flex;margin-bottom:8px}
+.split-seg{display:flex;align-items:center;justify-content:center;font-size:.72rem;font-weight:700;transition:width .4s}
+.split-seg.inst{background:var(--orange)}
+.split-seg.dir{background:var(--teal);color:#1b2027}
+.split-labels{display:flex;justify-content:space-between;font-size:.78rem;color:var(--muted);margin-top:4px}
+/* recommendation */
+.fin-rec{
+  grid-column:1/-1;border-radius:10px;padding:12px 16px;font-size:.9rem;
+  display:flex;align-items:flex-start;gap:10px;
+}
+.fin-rec.rec-save{background:rgba(118,171,174,.1);border:1px solid var(--teal);color:var(--teal-soft)}
+.fin-rec.rec-inst{background:rgba(255,87,34,.08);border:1px solid var(--orange);color:var(--orange-soft)}
+.fin-rec .icon{font-size:1.5rem;flex-shrink:0}
+@media print{.fin-analyzer{display:none!important}}
+
 /* converter */
 .converter{
   background:var(--bg);border:1px solid var(--bg3);border-radius:12px;
@@ -618,6 +680,32 @@ footer{
           <div class="warn" style="margin-top:10px">ملاحظة: الأقساط حسب توفر الخدمة لدى جهة الحجز، وقد تتطلب تابي/تمارا موافقة ائتمانية. خصم الكاش لا يُطبَّق مع التقسيط.</div>
         </div>
 
+        <!-- Financial Analyzer -->
+        <div class="fin-analyzer" id="finAnalyzer">
+          <div class="fin-header">
+            <h3>📊 المحلل المالي</h3>
+            <span class="brand" id="finBrand"></span>
+            <span style="color:var(--muted);font-size:.82rem">مقارنة كاش مقابل التقسيط</span>
+          </div>
+          <div class="fin-body">
+            <div class="fin-timeline">
+              <h4>📅 جدول السداد — 4 دفعات</h4>
+              <div class="timeline-wrap" id="finTimeline"></div>
+            </div>
+            <div class="fin-compare">
+              <h4>⚖️ مقارنة طرق الدفع</h4>
+              <div id="finCompare"></div>
+            </div>
+            <div class="fin-split">
+              <h4>🥧 توزيع مصاريف الرحلة</h4>
+              <div class="split-bar-wrap" id="finSplitBar"></div>
+              <div class="split-labels" id="finSplitLbls"></div>
+              <div id="finSplitDetail" style="font-size:.82rem;color:var(--muted);margin-top:8px"></div>
+            </div>
+            <div class="fin-rec" id="finRec"><span class="icon"></span><span id="finRecText"></span></div>
+          </div>
+        </div>
+
         <h3 style="color:var(--teal);font-size:1.05rem;margin:22px 0 10px" class="no-print">🔁 محوّل العملات الفوري</h3>
         <div class="converter no-print">
           <div class="field">
@@ -833,7 +921,8 @@ const DEFAULT_ACTIVITIES = [
   {id:'boulders',  group:'كيب تاون', name:'شاطئ بولدرز — مستعمرة البطاريق', price:45,  on:true,  url:'https://www.sanparks.org/parks/table_mountain'},
   {id:'kirsten',   group:'كيب تاون', name:'حدائق كيرستنبوش النباتية', price:50,  on:true,  url:'https://www.sanbi.org/gardens/kirstenbosch'},
   {id:'babylon',   group:'كيب تاون', name:'حديقة بابيلونستورن (الواينلاندز)', price:25,  on:false, url:'https://babylonstoren.com'},
-  {id:'heli',      group:'كيب تاون', name:'جولة هيليكوبتر فوق كيب تاون (فاخر)', price:610, on:false, url:'https://capetownhelicopters.com'},
+  {id:'horseride',  group:'كيب تاون', name:'ركوب الخيل على شواطئ شبه الجزيرة (قرب بولدرز ونوردهوك)', price:140, on:false, url:'https://www.sleepyhollowhorseriding.co.za'},
+  {id:'heli',       group:'كيب تاون', name:'جولة هيليكوبتر فوق كيب تاون (فاخر)', price:610, on:false, url:'https://capetownhelicopters.com'},
   // هيرمانوس — بديلان: رحلة بحرية أو مشاهدة مجانية
   {id:'whaleboat', group:'هيرمانوس (على المسار)', name:'رحلة بحرية لمشاهدة الحيتان عن قرب', price:230, on:true,  url:'https://southernrightcharters.co.za', alt:'whale'},
   {id:'whalecliff',group:'هيرمانوس (على المسار)', name:'مشاهدة الحيتان من المنحدرات (مجاناً)', price:0,   on:false, url:'https://hermanus.co.za', alt:'whale'},
@@ -1561,6 +1650,7 @@ function renderBudget(){
     instBox.classList.remove('show');
   }
 
+  renderFinAnalyzer(c);
   document.getElementById('travelersBadge').textContent = state.travelers;
   document.getElementById('travCount').textContent = state.travelers;
   document.getElementById('roomsNote').textContent = `(${roomsCount()} ${roomsCount()===1?'غرفة':'غرف'} مزدوجة)`;
@@ -1569,6 +1659,85 @@ function renderBudget(){
   const end = dayDate(state.days.length - 1);
   document.getElementById('headerDates').textContent =
     `جنوب أفريقيا · ${START_DATE.getDate()} ${MONTHS[START_DATE.getMonth()]} – ${end.getDate()} ${MONTHS[end.getMonth()]} ${end.getFullYear()} · ${state.days.length} يوماً / ${totalNights()} ليالٍ`;
+}
+
+/* ================= Financial Analyzer ================= */
+function renderFinAnalyzer(c){
+  const box = document.getElementById('finAnalyzer');
+  const isInst = state.payment === 'tabby' || state.payment === 'tamara';
+  box.classList.toggle('show', isInst);
+  if(!isInst) return;
+
+  const brand = state.payment === 'tabby' ? 'تابي Tabby' : 'تمارا Tamara';
+  document.getElementById('finBrand').textContent = brand;
+
+  // ── Payment timeline ──
+  const part = c.instBase / 4;
+  const partSar = sar(part);
+  const partZar = zar(part);
+  const bookDate = START_DATE;
+  const labels = ['عند الحجز', 'شهر بعده', 'شهرين', '3 أشهر'];
+  const dates = [0,1,2,3].map(i => {
+    const d = new Date(bookDate); d.setMonth(d.getMonth() + i);
+    return fmtDate(d);
+  });
+  document.getElementById('finTimeline').innerHTML = labels.map((l,i) =>
+    `<div class="t-step ${i===0?'t-now':''}">
+      <div class="t-n">القسط ${i+1} · ${l}</div>
+      <div class="t-amt">${partSar}</div>
+      <div class="t-date">≈ ${partZar}<br><small style="color:var(--muted)">${dates[i]}</small></div>
+    </div>`
+  ).join('');
+
+  // ── Cash discount ──
+  const cashDisc = (c.flights + c.hotels) * 0.05;
+  const costWithCash = c.total - cashDisc; // if they had chosen cash (applying 5% discount)
+  const costInst = c.total;               // installment = no discount
+  const diff = costInst - costWithCash;   // extra cost of installments vs cash
+
+  // per person per month equivalent
+  const months = 3;
+  const perPersonPerMonth = (part / state.travelers);
+
+  document.getElementById('finCompare').innerHTML = [
+    ['💵 لو دفعتم كاش (شامل خصم 5%)', sar(costWithCash), 'save'],
+    ['🟣 التقسيط مع ' + brand + ' (بدون خصم)', sar(costInst), ''],
+    ['📈 فرق التقسيط عن الكاش', sar(diff), 'plus'],
+    ['👤 نصيب الفرد من التقسيط/شهر', sar(perPersonPerMonth), ''],
+    ['🔁 المبلغ المقسَّط (طيران + فنادق)', sar(c.instBase), ''],
+    ['💳 يُدفع مباشرة (باقي المصاريف)', sar(c.rest), ''],
+  ].map(([l,v,cls]) =>
+    `<div class="cmp-row"><span class="lbl">${l}</span><span class="val ${cls}">${v}</span></div>`
+  ).join('');
+
+  // ── Split bar ──
+  const totalAll = c.total;
+  const instPct  = Math.round(c.instBase / totalAll * 100);
+  const dirPct   = 100 - instPct;
+  document.getElementById('finSplitBar').innerHTML =
+    `<div class="split-seg inst" style="width:${instPct}%">${instPct}%</div>
+     <div class="split-seg dir"  style="width:${dirPct}%">${dirPct}%</div>`;
+  document.getElementById('finSplitLbls').innerHTML =
+    `<span>🟠 طيران+فنادق (مقسَّط)</span><span>🩵 باقي المصاريف (مباشر)</span>`;
+  document.getElementById('finSplitDetail').innerHTML =
+    `المقسَّط: ${sar(c.instBase)} · المباشر: ${sar(c.rest)} · الإجمالي: ${sar(totalAll)}`;
+
+  // ── Recommendation ──
+  const rec = document.getElementById('finRec');
+  const recTxt = document.getElementById('finRecText');
+  if(diff < 200){
+    rec.className = 'fin-rec rec-inst';
+    rec.querySelector('.icon').textContent = '💡';
+    recTxt.innerHTML = `التقسيط خيار مناسب هنا — الفرق عن الكاش فقط <b>${sar(diff)}</b> وهو ضئيل نسبياً. يوفّر لكم سيولة وتدفعون كل قسط من راتب الشهر.`;
+  } else if(diff < 600){
+    rec.className = 'fin-rec rec-inst';
+    rec.querySelector('.icon').textContent = '⚖️';
+    recTxt.innerHTML = `التقسيط يكلّفكم <b style="color:var(--orange)">${sar(diff)}</b> إضافية مقارنة بالكاش (خسارة خصم 5%). إن كانت السيولة محدودة فالتقسيط منطقي، وإلا فالكاش يوفّر أكثر.`;
+  } else {
+    rec.className = 'fin-rec rec-save';
+    rec.querySelector('.icon').textContent = '✅';
+    recTxt.innerHTML = `الدفع كاشاً يوفّر عليكم <b>${sar(diff)}</b> (خصم 5% على الطيران والفنادق = ${sar(cashDisc)}). إن توفّرت السيولة فالكاش هو الأوفر وضعاً.`;
+  }
 }
 
 /* ================= Wiring ================= */
