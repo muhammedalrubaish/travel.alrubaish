@@ -297,6 +297,28 @@ select{cursor:pointer}
 .act-row.off .act-price{opacity:.4}
 .act-row .act-edit-price{display:none;width:95px;background:var(--bg);border:1px solid var(--bg3);color:var(--text);border-radius:8px;padding:5px 9px;font-family:inherit;font-size:.88rem;outline:none}
 .edit-on .act-row .act-edit-price{display:inline-block}
+/* act edit/delete/add */
+.act-row-btns{display:none;gap:4px;align-items:center;flex-shrink:0}
+.edit-on .act-row-btns{display:flex}
+.act-btn{background:none;border:1px solid var(--bg3);color:var(--muted);border-radius:6px;padding:2px 7px;font-size:.78rem;cursor:pointer;line-height:1.5;transition:border-color .2s,color .2s}
+.act-btn:hover{border-color:var(--orange);color:var(--orange)}
+.act-btn.del:hover{border-color:#e53935;color:#e53935}
+.act-eform{
+  background:var(--bg);border:1px solid var(--orange);border-radius:10px;
+  padding:12px 14px;margin:6px 0;display:flex;flex-wrap:wrap;gap:10px;align-items:flex-end;
+}
+.act-eform>label{font-size:.82rem;color:var(--muted);display:flex;flex-direction:column;gap:4px}
+.act-eform input,.act-eform select{
+  background:var(--bg2);border:1px solid var(--bg3);color:var(--text);
+  border-radius:7px;padding:6px 10px;font-family:inherit;font-size:.88rem;outline:none;
+}
+.act-eform input:focus,.act-eform select:focus{border-color:var(--orange)}
+.act-eform .ef-name{flex:2;min-width:200px}
+.act-eform .ef-price{width:90px}
+.act-eform .ef-url{flex:2;min-width:180px}
+.act-eform .ef-group{flex:1;min-width:150px}
+.act-add-wrap{display:none;margin-top:14px}
+.edit-on .act-add-wrap{display:block}
 .act-summary{
   background:var(--bg2);border:1px solid var(--orange);border-radius:var(--radius);
   padding:14px 20px;display:flex;justify-content:space-between;align-items:center;
@@ -588,8 +610,12 @@ footer{
 <!-- ============ ACTIVITIES ============ -->
 <section id="activities">
   <h2 class="sec-title">الفعاليات والأنشطة — اختر ما يناسبكم</h2>
-  <p class="sec-desc">علّم ✓ على الفعاليات التي تريدونها وستدخل الميزانية تلقائياً (السعر للشخص الواحد). الفعاليات الموسومة بـ"بديل" لا تُختار معاً — اختيار إحداها يلغي الأخرى. الأسعار تقديرية وقابلة للتعديل من وضع التعديل.</p>
+  <p class="sec-desc">علّم ✓ على الفعاليات التي تريدونها وستدخل الميزانية تلقائياً (السعر للشخص الواحد). الفعاليات الموسومة بـ"بديل" لا تُختار معاً. الأسعار تقديرية — فعّل وضع التعديل لتعديل الأسعار وتعديل الفعاليات وإضافة فعاليات مخصصة أو حذفها.</p>
   <div id="activitiesContainer"></div>
+  <div class="act-add-wrap">
+    <button class="btn btn-orange" id="addActBtn" style="font-size:.9rem;padding:8px 20px">➕ إضافة فعالية مخصصة</button>
+    <div id="addActForm" style="display:none;margin-top:10px"></div>
+  </div>
   <div class="act-summary">
     <span id="actCount"></span>
     <span><b id="actTotalSar"></b> <span class="z" id="actTotalZar"></span></span>
@@ -913,28 +939,44 @@ const DEFAULT_DAYS = [
    price = ر.س للشخص الواحد · alt = بدائل لا تُختار معاً */
 const DEFAULT_ACTIVITIES = [
   // كيب تاون
-  {id:'cablecar',  group:'كيب تاون', name:'تلفريك جبل الطاولة (ذهاب وعودة)', price:95,  on:true,  url:'https://www.tablemountain.net'},
-  {id:'robben',    group:'كيب تاون', name:'جزيرة روبن — متحف مانديلا (عبّارة + جولة)', price:130, on:false, url:'https://www.robben-island.org.za'},
-  {id:'wheel',     group:'كيب تاون', name:'عجلة كيب الدوارة في الواترفرونت', price:50,  on:false, url:'https://capewheel.co.za'},
-  {id:'aquarium',  group:'كيب تاون', name:'أكواريوم المحيطين', price:55,  on:false, url:'https://www.aquarium.co.za'},
-  {id:'capepoint', group:'كيب تاون', name:'كيب بوينت: الدخول + القطار الجبلي', price:110, on:true,  url:'https://capepoint.co.za'},
-  {id:'boulders',  group:'كيب تاون', name:'شاطئ بولدرز — مستعمرة البطاريق', price:45,  on:true,  url:'https://www.sanparks.org/parks/table_mountain'},
-  {id:'kirsten',   group:'كيب تاون', name:'حدائق كيرستنبوش النباتية', price:50,  on:true,  url:'https://www.sanbi.org/gardens/kirstenbosch'},
-  {id:'babylon',   group:'كيب تاون', name:'حديقة بابيلونستورن (الواينلاندز)', price:25,  on:false, url:'https://babylonstoren.com'},
-  {id:'horseride',  group:'كيب تاون', name:'ركوب الخيل على شواطئ شبه الجزيرة (قرب بولدرز ونوردهوك)', price:140, on:false, url:'https://www.sleepyhollowhorseriding.co.za'},
-  {id:'heli',       group:'كيب تاون', name:'جولة هيليكوبتر فوق كيب تاون (فاخر)', price:610, on:false, url:'https://capetownhelicopters.com'},
-  // هيرمانوس — بديلان: رحلة بحرية أو مشاهدة مجانية
-  {id:'whaleboat', group:'هيرمانوس (على المسار)', name:'رحلة بحرية لمشاهدة الحيتان عن قرب', price:230, on:true,  url:'https://southernrightcharters.co.za', alt:'whale'},
-  {id:'whalecliff',group:'هيرمانوس (على المسار)', name:'مشاهدة الحيتان من المنحدرات (مجاناً)', price:0,   on:false, url:'https://hermanus.co.za', alt:'whale'},
+  {id:'cablecar',    group:'كيب تاون', name:'تلفريك جبل الطاولة (ذهاب وعودة)', price:99,  on:true,  url:'https://www.tablemountain.net'},
+  {id:'kirsten',     group:'كيب تاون', name:'حدائق كيرستنبوش النباتية + الممشى المعلق بجانب جبل الطاولة', price:53, on:true, url:'https://www.sanbi.org/gardens/kirstenbosch'},
+  {id:'campsbay',    group:'كيب تاون', name:'شاطئ كامبس باي (خلف جبل الطاولة)', price:0,   on:true,  url:'https://www.capetown.travel/camps-bay/'},
+  {id:'bokaap',      group:'كيب تاون', name:'الحي الملون — Bo-Kaap (جولة مشي حرة)', price:0,  on:true,  url:'https://www.capetown.travel/bo-kaap/'},
+  {id:'vawaterfront',group:'كيب تاون', name:'واجهة V&A Waterfront البحرية (تسوق وعشاء)', price:0, on:true, url:'https://www.waterfront.co.za'},
+  {id:'wheel',       group:'كيب تاون', name:'عجلة كيب الدوارة (Cape Wheel) في الواترفرونت', price:58, on:false, url:'https://capewheel.co.za'},
+  {id:'aquarium',    group:'كيب تاون', name:'أكواريوم المحيطين (Two Oceans Aquarium)', price:58, on:false, url:'https://www.aquarium.co.za'},
+  {id:'lionspark',   group:'كيب تاون', name:'حديقة الأسود', price:35,  on:false, url:'https://www.capetown.travel/things-to-do/'},
+  {id:'capepoint',   group:'كيب تاون', name:'محمية رأس الرجاء الصالح (Cape of Good Hope)', price:100, on:true, url:'https://capepoint.co.za'},
+  {id:'boulders',    group:'كيب تاون', name:'شاطئ بولدرز — مستعمرة البطاريق الأفريقية', price:45, on:true, url:'https://www.sanparks.org/parks/table_mountain'},
+  {id:'sealboat',    group:'كيب تاون', name:'جزيرة الفقمات (Seal Island — رحلة بالقارب من هاوت باي)', price:130, on:false, url:'https://www.circlecruises.co.za'},
+  {id:'toboggan',    group:'كيب تاون', name:'زحليقة توبغان (Toboggan) على الشاطئ', price:21, on:false, url:'https://www.capetown.travel/things-to-do/'},
+  {id:'robben',      group:'كيب تاون', name:'جزيرة روبن — متحف مانديلا (عبّارة + جولة)', price:130, on:false, url:'https://www.robben-island.org.za'},
+  {id:'horseride',   group:'كيب تاون', name:'ركوب الخيل على الشاطئ قرب البطاريق ونوردهوك (ساعة)', price:190, on:false, url:'https://www.sleepyhollowhorseriding.co.za'},
+  {id:'heli',        group:'كيب تاون', name:'جولة هيليكوبتر فوق كيب تاون (فاخر)', price:610, on:false, url:'https://capetownhelicopters.com'},
+  // ستيلينبوش وفرانشهوك (44 دقيقة من كيب تاون)
+  {id:'stellenbosch',group:'ستيلينبوش وفرانشهوك', name:'قرية ستيلينبوش — مزارع الكروم والفراولة', price:25, on:false, url:'https://www.stellenbosch.travel'},
+  {id:'franschhoek', group:'ستيلينبوش وفرانشهوك', name:'مدينة فرانشهوك — الطابع الفرنسي الساحر', price:0,  on:false, url:'https://www.franschhoek.org.za'},
+  {id:'babylon',     group:'ستيلينبوش وفرانشهوك', name:'حديقة بابيلونستورن (كروم + مطعم ريفي)', price:25, on:false, url:'https://babylonstoren.com'},
+  // هيرمانوس — بديلان + منطاد
+  {id:'whaleboat',  group:'هيرمانوس (على المسار)', name:'رحلة بحرية لمشاهدة الحيتان عن قرب', price:230, on:true, url:'https://southernrightcharters.co.za', alt:'whale'},
+  {id:'whalecliff', group:'هيرمانوس (على المسار)', name:'مشاهدة الحيتان من المنحدرات (مجاناً)', price:0,   on:false, url:'https://hermanus.co.za', alt:'whale'},
+  {id:'balloon',    group:'هيرمانوس (على المسار)', name:'رحلة بالمنطاد فوق هيرمانوس', price:350, on:false, url:'https://www.capewinelands.com/balloon/'},
   // الجاردن روت
-  {id:'featherbed',group:'الجاردن روت', name:'رحلة فيذربيد البيئية في بحيرة نيسنا', price:190, on:true,  url:'https://www.featherbed.co.za', alt:'kboat'},
-  {id:'sunsetboat',group:'الجاردن روت', name:'قارب الغروب في نيسنا (أخف وأرخص)', price:95,  on:false, url:'https://www.visitknysna.co.za', alt:'kboat'},
-  {id:'cangoher',  group:'الجاردن روت', name:'كهوف كانغو — الجولة التراثية (سهلة)', price:55,  on:true,  url:'https://www.cangocaves.co.za', alt:'cango'},
-  {id:'cangoadv',  group:'الجاردن روت', name:'كهوف كانغو — جولة المغامرة (ممرات ضيقة)', price:70,  on:false, url:'https://www.cangocaves.co.za', alt:'cango'},
-  {id:'ostrich',   group:'الجاردن روت', name:'مزرعة سفاري للنعام — جولة تفاعلية', price:50,  on:true,  url:'https://www.safariostrich.co.za'},
-  {id:'monkey',    group:'الجاردن روت', name:'Monkeyland + Birds of Eden (تذكرة مشتركة)', price:120, on:true,  url:'https://www.monkeyland.co.za'},
-  {id:'tsitsi',    group:'الجاردن روت', name:'حديقة تسيتسيكاما — الجسور المعلقة', price:55,  on:true,  url:'https://www.sanparks.org/parks/garden_route'},
-  {id:'bungee',    group:'الجاردن روت', name:'قفزة بنجي بلوكرانس 216م (للمغامرين)', price:380, on:false, url:'https://faceadrenalin.com'}
+  {id:'featherbed', group:'الجاردن روت', name:'رحلة فيذربيد البيئية في بحيرة نيسنا', price:190, on:true,  url:'https://www.featherbed.co.za', alt:'kboat'},
+  {id:'sunsetboat', group:'الجاردن روت', name:'قارب الغروب في نيسنا (أخف وأرخص)', price:95,  on:false, url:'https://www.visitknysna.co.za', alt:'kboat'},
+  {id:'zipline',    group:'الجاردن روت', name:'زبلاين (Zip Line) فوق المحيط', price:168, on:false, url:'https://www.canopytours.co.za'},
+  {id:'birdseden',  group:'الجاردن روت', name:'حديقة طيور الجنة — Birds of Eden', price:87, on:true, url:'https://www.birdsofeden.co.za'},
+  {id:'monkey',     group:'الجاردن روت', name:'Monkeyland — محمية الرئيسيات في الطبيعة', price:85, on:false, url:'https://www.monkeyland.co.za'},
+  {id:'elephant',   group:'الجاردن روت', name:'محمية الفيلة (بليتنبيرغ باي)', price:100, on:false, url:'https://www.knysnaelephantpark.co.za'},
+  {id:'strawgarden',group:'الجاردن روت', name:'مزرعة الفراولة في الجاردن روت', price:25, on:false, url:'https://www.gardenrouteinfo.co.za'},
+  {id:'congocaves', group:'الجاردن روت', name:'كهوف الكونغو (وايلدرنيس) + حديقة الحيوانات', price:80, on:false, url:'https://www.wilderness-info.com'},
+  {id:'cangoher',   group:'الجاردن روت', name:'كهوف كانغو — الجولة التراثية (سهلة)', price:55, on:true, url:'https://www.cangocaves.co.za', alt:'cango'},
+  {id:'cangoadv',   group:'الجاردن روت', name:'كهوف كانغو — جولة المغامرة (ممرات ضيقة)', price:70, on:false, url:'https://www.cangocaves.co.za', alt:'cango'},
+  {id:'ostrich',    group:'الجاردن روت', name:'مزرعة سفاري للنعام — جولة تفاعلية', price:50, on:true, url:'https://www.safariostrich.co.za'},
+  {id:'tsitsi',     group:'الجاردن روت', name:'حديقة تسيتسيكاما — الجسور المعلقة', price:55, on:true, url:'https://www.sanparks.org/parks/garden_route'},
+  {id:'kayak',      group:'الجاردن روت', name:'تجديف / كاياك في تسيتسيكاما', price:160, on:false, url:'https://www.stormsrivertubing.co.za', alt:'tsit_water'},
+  {id:'bungee',     group:'الجاردن روت', name:'قفزة بنجي بلوكرانس 216م (للمغامرين)', price:380, on:false, url:'https://faceadrenalin.com'}
 ];
 
 const DEFAULT_STATE = {
@@ -986,6 +1028,7 @@ const DEFAULT_STATE = {
 /* ================= State ================= */
 let state = loadState();
 let pickingForDay = null; // index of day waiting for a map click
+let _editingActId = null;
 
 function loadState(){
   try{
@@ -1002,6 +1045,9 @@ function loadState(){
       const s = savedActs[a.id];
       return s ? Object.assign(structuredClone(a), {on:!!s.on, price:Math.max(0,+s.price||0)}) : structuredClone(a);
     });
+    // preserve custom activities added by user
+    const defaultIds = new Set(DEFAULT_ACTIVITIES.map(a=>a.id));
+    (saved.activities||[]).filter(a=>a&&a.id&&!defaultIds.has(a.id)).forEach(a=>merged.activities.push(structuredClone(a)));
     merged.driver = {};
     for(const key of Object.keys(DEFAULT_STATE.driver)){
       merged.driver[key] = Object.assign(structuredClone(DEFAULT_STATE.driver[key]), saved.driver?.[key]);
@@ -1471,24 +1517,44 @@ function renderActivities(){
   const cont = document.getElementById('activitiesContainer');
   const groups = {};
   state.activities.forEach(a=>{ if(!groups[a.group]) groups[a.group]=[]; groups[a.group].push(a); });
+  const allGroups = [...new Set(state.activities.map(a=>a.group))];
 
   let html = '';
   for(const [gname, acts] of Object.entries(groups)){
     html += `<div class="act-group"><h3>📍 ${escapeHtml(gname)}</h3>`;
     acts.forEach(a=>{
+      if(a.id === _editingActId){
+        const gopts = allGroups.map(g=>`<option value="${escapeAttr(g)}"${g===a.group?' selected':''}>${escapeHtml(g)}</option>`).join('');
+        html += `<div class="act-eform" data-editid="${escapeAttr(a.id)}">
+          <label class="ef-name">اسم الفعالية<input data-ef="name" value="${escapeAttr(a.name)}" placeholder="اسم الفعالية"></label>
+          <label class="ef-price">السعر (ر.س/شخص)<input type="number" data-ef="price" value="${a.price}" min="0" step="5"></label>
+          <label class="ef-group">المجموعة<select data-ef="group">${gopts}<option value="__new__">➕ جديدة…</option></select></label>
+          <label class="ef-url">الرابط<input data-ef="url" value="${escapeAttr(a.url||'')}" placeholder="https://…"></label>
+          <div style="display:flex;gap:8px;align-self:flex-end;padding-bottom:2px">
+            <button class="btn btn-orange" style="padding:6px 16px;font-size:.85rem" data-esave="${escapeAttr(a.id)}">💾 حفظ</button>
+            <button class="btn btn-ghost" style="padding:6px 12px;font-size:.85rem" data-ecancel>✖ إلغاء</button>
+          </div>
+        </div>`;
+        return;
+      }
       const total = a.price * state.travelers;
       const altBadge = a.alt ? `<span class="alt-badge">🔀 بديل</span>` : '';
+      const custBadge = a._custom ? `<span class="alt-badge" style="background:rgba(255,87,34,.15);color:var(--orange)">✏️ مخصص</span>` : '';
       const priceLabel = a.price === 0
         ? `<span style="color:var(--teal);font-weight:700">مجاني ✓</span>`
         : `${fmt(total)} ر.س <small>(${a.price} ر.س/شخص)</small>`;
       html += `<div class="act-row${a.on?'':' off'}" data-actid="${escapeAttr(a.id)}">
         <label class="act-check">
           <input type="checkbox" data-act="${escapeAttr(a.id)}" ${a.on?'checked':''}>
-          <span class="act-name">${escapeHtml(a.name)}${altBadge}</span>
+          <span class="act-name">${escapeHtml(a.name)}${altBadge}${custBadge}</span>
         </label>
         <input class="act-edit-price" type="number" min="0" step="5" data-actprice="${escapeAttr(a.id)}" value="${a.price}" aria-label="سعر ${escapeAttr(a.name)}">
-        <a class="chip" href="${escapeAttr(a.url)}" target="_blank" rel="noopener" style="font-size:.75rem;padding:3px 10px;flex-shrink:0" title="${escapeAttr(a.name)}">🔗</a>
+        <a class="chip" href="${escapeAttr(a.url||'#')}" target="_blank" rel="noopener" style="font-size:.75rem;padding:3px 10px;flex-shrink:0" title="${escapeAttr(a.name)}">🔗</a>
         <span class="act-price">${priceLabel}</span>
+        <span class="act-row-btns">
+          <button class="act-btn" data-actedit="${escapeAttr(a.id)}" title="تعديل">✏️</button>
+          <button class="act-btn del" data-actdel="${escapeAttr(a.id)}" title="حذف">🗑️</button>
+        </span>
       </div>`;
     });
     const groupTotal = acts.filter(a=>a.on).reduce((t,a)=> t + a.price * state.travelers, 0);
@@ -1497,6 +1563,7 @@ function renderActivities(){
   }
   cont.innerHTML = html;
 
+  // Checkbox
   cont.querySelectorAll('[data-act]').forEach(cb=>{
     cb.addEventListener('change', ()=>{
       const id = cb.dataset.act;
@@ -1509,11 +1576,11 @@ function renderActivities(){
     });
   });
 
+  // Price inline edit
   cont.querySelectorAll('[data-actprice]').forEach(inp=>{
     inp.addEventListener('input', ()=>{
       const act = state.activities.find(a=>a.id===inp.dataset.actprice);
       if(act){ act.price = Math.max(0, +inp.value||0); saveState(); renderBudget();
-        // update price label in-place
         const row = cont.querySelector(`[data-actid="${CSS.escape(act.id)}"]`);
         const lbl = row?.querySelector('.act-price');
         if(lbl){
@@ -1526,11 +1593,86 @@ function renderActivities(){
     });
   });
 
+  // Edit button → open inline form
+  cont.querySelectorAll('[data-actedit]').forEach(btn=>{
+    btn.addEventListener('click', ()=>{ _editingActId = btn.dataset.actedit; renderActivities(); });
+  });
+
+  // Delete button
+  cont.querySelectorAll('[data-actdel]').forEach(btn=>{
+    btn.addEventListener('click', ()=>{
+      const id = btn.dataset.actdel;
+      const act = state.activities.find(a=>a.id===id);
+      if(!act || !confirm(`حذف "${act.name}"؟`)) return;
+      state.activities = state.activities.filter(a=>a.id!==id);
+      _editingActId = null;
+      saveState(); renderActivities(); renderBudget();
+    });
+  });
+
+  // Save inline edit
+  cont.querySelectorAll('[data-esave]').forEach(btn=>{
+    btn.addEventListener('click', ()=>{
+      const id = btn.dataset.esave;
+      const act = state.activities.find(a=>a.id===id);
+      if(!act) return;
+      const form = btn.closest('.act-eform');
+      const name = form.querySelector('[data-ef="name"]').value.trim();
+      const price = Math.max(0, +form.querySelector('[data-ef="price"]').value||0);
+      const url   = form.querySelector('[data-ef="url"]').value.trim();
+      let group   = form.querySelector('[data-ef="group"]').value;
+      if(group==='__new__'){ const ng=prompt('اسم المجموعة الجديدة:'); if(!ng) return; group=ng.trim(); }
+      if(!name){ alert('يرجى إدخال اسم الفعالية'); return; }
+      act.name=name; act.price=price; act.url=url; act.group=group;
+      _editingActId=null; saveState(); renderActivities(); renderBudget();
+    });
+  });
+
+  // Cancel inline edit
+  cont.querySelectorAll('[data-ecancel]').forEach(btn=>{
+    btn.addEventListener('click', ()=>{ _editingActId=null; renderActivities(); });
+  });
+
   const t = actTotal();
   const sel = state.activities.filter(a=>a.on);
   document.getElementById('actCount').textContent = `${sel.length} فعالية محددة`;
   document.getElementById('actTotalSar').textContent = sar(t);
   document.getElementById('actTotalZar').textContent = `≈ ${zar(t)}`;
+}
+
+function initAddActBtn(){
+  const btn = document.getElementById('addActBtn');
+  const form = document.getElementById('addActForm');
+  if(!btn||!form) return;
+  btn.addEventListener('click', ()=>{
+    const allGroups = [...new Set(state.activities.map(a=>a.group))];
+    const gopts = allGroups.map(g=>`<option value="${escapeAttr(g)}">${escapeHtml(g)}</option>`).join('');
+    form.innerHTML = `<div class="act-eform">
+      <label class="ef-name">اسم الفعالية<input id="naName" placeholder="اسم الفعالية الجديدة"></label>
+      <label class="ef-price">السعر (ر.س/شخص)<input type="number" id="naPrice" value="0" min="0" step="5"></label>
+      <label class="ef-group">المجموعة<select id="naGroup">${gopts}<option value="__new__">➕ جديدة…</option></select></label>
+      <label class="ef-url">الرابط<input id="naUrl" placeholder="https://…"></label>
+      <div style="display:flex;gap:8px;align-self:flex-end;padding-bottom:2px">
+        <button class="btn btn-orange" style="padding:6px 16px;font-size:.85rem" id="naSave">➕ إضافة</button>
+        <button class="btn btn-ghost" style="padding:6px 12px;font-size:.85rem" id="naCancel">✖ إلغاء</button>
+      </div>
+    </div>`;
+    form.style.display='block'; btn.style.display='none';
+    document.getElementById('naCancel').addEventListener('click', ()=>{
+      form.style.display='none'; btn.style.display='';
+    });
+    document.getElementById('naSave').addEventListener('click', ()=>{
+      const name = document.getElementById('naName').value.trim();
+      const price = Math.max(0, +document.getElementById('naPrice').value||0);
+      const url   = document.getElementById('naUrl').value.trim();
+      let group   = document.getElementById('naGroup').value;
+      if(group==='__new__'){ const ng=prompt('اسم المجموعة الجديدة:'); if(!ng) return; group=ng.trim(); }
+      if(!name){ alert('يرجى إدخال اسم الفعالية'); return; }
+      state.activities.push({id:'custom_'+Date.now(), group, name, price, on:true, url, _custom:true});
+      form.style.display='none'; btn.style.display='';
+      saveState(); renderActivities(); renderBudget();
+    });
+  });
 }
 
 /* ================= Private driver ================= */
@@ -1822,6 +1964,7 @@ function renderAll(){
   renderMap();
   renderItinerary();
   renderActivities();
+  initAddActBtn();
   renderHotels();
   renderDriver();
   renderBudget();
