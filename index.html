@@ -60,7 +60,7 @@ header .sub{color:var(--teal);font-size:1.1rem;margin-top:8px;font-weight:500}
   border:none;border-radius:10px;padding:9px 18px;cursor:pointer;
   font-family:inherit;font-size:.95rem;font-weight:700;
   transition:transform .15s ease, box-shadow .15s ease, background .2s;
-  display:inline-flex;align-items:center;gap:7px;
+  display:inline-flex;align-items:center;gap:7px;text-decoration:none;
 }
 .btn:hover{transform:translateY(-1px)}
 .btn-orange{background:var(--orange);color:#fff}
@@ -69,6 +69,9 @@ header .sub{color:var(--teal);font-size:1.1rem;margin-top:8px;font-weight:500}
 .btn-teal:hover{background:var(--teal-soft)}
 .btn-ghost{background:transparent;color:var(--muted);border:1px solid var(--bg3)}
 .btn-ghost:hover{color:var(--text);border-color:var(--teal)}
+.btn-sm{padding:5px 12px;font-size:.82rem;border-radius:8px}
+.btn-danger{background:transparent;color:#ff8a70;border:1px solid #ff8a70}
+.btn-danger:hover{background:rgba(255,87,34,.12)}
 .edit-on .btn-edit{background:var(--orange);color:#fff;border-color:var(--orange)}
 .save-indicator{margin-inline-start:auto;color:var(--muted);font-size:.85rem;opacity:0;transition:opacity .4s}
 .save-indicator.show{opacity:1;color:var(--teal)}
@@ -80,7 +83,7 @@ nav.quicknav a:hover{color:var(--orange);background:var(--bg2)}
 section{padding:46px 0 14px}
 h2.sec-title{
   font-size:1.55rem;font-weight:800;margin-bottom:6px;
-  display:flex;align-items:center;gap:10px;
+  display:flex;align-items:center;gap:10px;flex-wrap:wrap;
 }
 h2.sec-title::before{content:"";width:6px;height:28px;border-radius:4px;background:var(--orange)}
 .sec-desc{color:var(--muted);margin-bottom:22px;font-size:.97rem}
@@ -91,9 +94,10 @@ h2.sec-title::before{content:"";width:6px;height:28px;border-radius:4px;backgrou
   box-shadow:var(--shadow);padding:18px;overflow:hidden;
 }
 .map-card svg{width:100%;height:auto;display:block}
+.map-card svg.picking{cursor:crosshair;outline:2px dashed var(--orange);outline-offset:-2px;border-radius:10px}
 .wp{cursor:pointer}
 .wp circle.dot{fill:var(--orange);stroke:#fff;stroke-width:2;transition:r .2s}
-.wp:hover circle.dot{fill:var(--teal)}
+.wp:hover circle.dot,.wp.active circle.dot{fill:var(--teal)}
 .wp circle.pulse{fill:none;stroke:var(--orange);stroke-width:2;opacity:.6;animation:pulse 2.2s infinite}
 .wp text{fill:var(--text);font-family:'Tajawal',sans-serif;font-size:15px;font-weight:700;pointer-events:none}
 .wp text.nights{fill:var(--teal);font-size:12px;font-weight:500}
@@ -103,12 +107,24 @@ h2.sec-title::before{content:"";width:6px;height:28px;border-radius:4px;backgrou
   stroke-dasharray:10 8;animation:dashmove 30s linear infinite;
 }
 @keyframes dashmove{to{stroke-dashoffset:-720}}
-.map-legend{display:flex;gap:18px;flex-wrap:wrap;margin-top:10px;color:var(--muted);font-size:.85rem}
+.map-legend{display:flex;gap:18px;flex-wrap:wrap;margin-top:10px;color:var(--muted);font-size:.85rem;align-items:center}
 .map-legend span{display:flex;align-items:center;gap:6px}
 .lg-dot{width:11px;height:11px;border-radius:50%;background:var(--orange);display:inline-block}
 .lg-line{width:26px;height:0;border-top:3px dashed var(--teal);display:inline-block}
+#simCaption{
+  display:none;margin-top:12px;background:var(--bg);border:1px solid var(--teal);
+  border-radius:10px;padding:10px 16px;font-size:.95rem;color:var(--teal-soft);
+}
+#simCaption.show{display:block}
+#simCaption b{color:var(--orange)}
+#pickBanner{
+  display:none;margin-top:12px;background:rgba(255,87,34,.12);border:1px dashed var(--orange);
+  border-radius:10px;padding:10px 16px;font-size:.9rem;color:var(--orange-soft);
+}
+#pickBanner.show{display:block}
 
 /* ===== Itinerary ===== */
+.itin-controls{display:flex;gap:10px;align-items:center;flex-wrap:wrap;margin-bottom:18px}
 .day-card{
   background:var(--bg2);border:1px solid var(--bg3);border-radius:var(--radius);
   margin-bottom:16px;overflow:hidden;transition:border-color .3s, box-shadow .3s;
@@ -124,7 +140,7 @@ h2.sec-title::before{content:"";width:6px;height:28px;border-radius:4px;backgrou
   background:var(--orange);color:#fff;font-weight:800;border-radius:10px;
   min-width:62px;text-align:center;padding:6px 10px;font-size:.95rem;
 }
-.day-head h3{font-size:1.12rem;font-weight:700;flex:1}
+.day-head h3{font-size:1.12rem;font-weight:700;flex:1;min-width:200px}
 .day-head .date{color:var(--teal);font-size:.9rem;font-weight:500}
 .day-head .city-tag{
   background:var(--bg3);color:var(--teal-soft);border-radius:999px;
@@ -142,6 +158,42 @@ h2.sec-title::before{content:"";width:6px;height:28px;border-radius:4px;backgrou
   margin-top:12px;background:rgba(118,171,174,.08);border-inline-start:3px solid var(--teal);
   border-radius:8px;padding:9px 14px;font-size:.9rem;color:var(--teal-soft);
 }
+.day-imgs{display:flex;gap:10px;flex-wrap:wrap;margin:4px 0 12px}
+.day-imgs figure{width:160px}
+.day-imgs .ph{
+  width:160px;height:105px;border-radius:10px;border:1px solid var(--bg3);
+  background:linear-gradient(135deg,var(--bg3),#2a4a4c);
+  display:flex;align-items:center;justify-content:center;font-size:1.8rem;overflow:hidden;
+}
+.day-imgs img{width:100%;height:100%;object-fit:cover;display:block}
+.day-imgs figcaption{font-size:.75rem;color:var(--muted);text-align:center;margin-top:3px}
+.links-row{display:flex;gap:8px;flex-wrap:wrap;margin-top:12px}
+.chip{
+  background:var(--bg);border:1px solid var(--bg3);color:var(--teal);
+  border-radius:999px;padding:4px 14px;font-size:.82rem;text-decoration:none;
+  display:inline-flex;align-items:center;gap:5px;transition:border-color .2s;
+}
+.chip:hover{border-color:var(--teal)}
+.chip.book{color:var(--orange-soft)}
+.chip.book:hover{border-color:var(--orange)}
+
+/* day edit panel */
+.day-edit{
+  display:none;border-top:1px dashed var(--orange);background:rgba(255,87,34,.04);
+  padding:16px 22px;grid-template-columns:1fr 1fr;gap:12px;
+}
+.edit-on .day-edit{display:grid}
+.day-edit .full{grid-column:1/-1}
+.day-edit label{display:block;font-size:.82rem;color:var(--orange-soft);margin-bottom:4px;font-weight:700}
+.day-edit input,.day-edit select,.day-edit textarea{
+  width:100%;background:var(--bg);border:1px solid var(--bg3);color:var(--text);
+  border-radius:10px;padding:8px 12px;font-family:inherit;font-size:.92rem;outline:none;
+}
+.day-edit textarea{min-height:84px;resize:vertical;line-height:1.6}
+.day-edit input:focus,.day-edit select:focus,.day-edit textarea:focus{border-color:var(--orange)}
+.day-edit .row-btns{display:flex;gap:8px;align-items:center;flex-wrap:wrap}
+.add-day-wrap{display:none;text-align:center;margin:18px 0}
+.edit-on .add-day-wrap{display:block}
 
 /* ===== Budget ===== */
 .budget-card{
@@ -158,14 +210,15 @@ h2.sec-title::before{content:"";width:6px;height:28px;border-radius:4px;backgrou
   transition:border-color .2s;
 }
 .field input:focus,select:focus{border-color:var(--teal)}
-select{cursor:pointer;appearance:none;background-image:linear-gradient(45deg,transparent 50%,var(--teal) 50%),linear-gradient(135deg,var(--teal) 50%,transparent 50%);background-position:calc(0% + 18px) 50%,calc(0% + 13px) 50%;background-size:5px 5px;background-repeat:no-repeat}
-.stepper{display:flex;align-items:center;gap:10px}
+select{cursor:pointer}
+.stepper{display:flex;align-items:center;gap:10px;flex-wrap:wrap}
 .stepper button{
   width:38px;height:38px;border-radius:10px;border:1px solid var(--bg3);
   background:var(--bg3);color:var(--text);font-size:1.2rem;cursor:pointer;font-weight:800;
 }
 .stepper button:hover{background:var(--teal);color:#1b2027}
 .stepper .count{font-size:1.3rem;font-weight:800;min-width:36px;text-align:center;color:var(--orange)}
+.stepper .note{color:var(--muted);font-size:.85rem}
 
 .hotel-block{
   background:var(--bg);border:1px solid var(--bg3);border-radius:12px;
@@ -194,6 +247,12 @@ select{cursor:pointer;appearance:none;background-image:linear-gradient(45deg,tra
 .edit-on .hotel-edit{display:grid}
 .edit-hint{display:none;background:rgba(255,87,34,.1);border:1px dashed var(--orange);color:var(--orange-soft);border-radius:10px;padding:10px 16px;font-size:.88rem;margin-bottom:16px}
 .edit-on .edit-hint{display:block}
+.nights-ctl{display:flex;align-items:center;gap:6px}
+.nights-ctl button{
+  width:26px;height:26px;border-radius:7px;border:1px solid var(--bg3);
+  background:var(--bg3);color:var(--text);cursor:pointer;font-weight:800;font-size:.9rem;line-height:1;
+}
+.nights-ctl button:hover{background:var(--teal);color:#1b2027}
 
 /* payment */
 .pay-options{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-bottom:16px}
@@ -235,6 +294,11 @@ table.budget tr.total td.zar{color:var(--teal);font-size:1rem;font-weight:700}
 .inst .dt{color:var(--muted);font-size:.74rem;margin-top:2px}
 .inst:first-child{border-color:var(--orange)}
 .inst:first-child .a{color:var(--orange)}
+.inst-note{
+  background:var(--bg);border:1px solid var(--bg3);border-radius:10px;
+  padding:10px 14px;font-size:.88rem;color:var(--muted);margin-top:10px;
+}
+.inst-note b{color:var(--teal)}
 
 /* converter */
 .converter{
@@ -278,7 +342,6 @@ footer{
   text-align:center;color:var(--muted);font-size:.85rem;
 }
 
-/* back to top / map */
 #backToMap{
   position:fixed;bottom:22px;inset-inline-start:22px;z-index:60;
   box-shadow:var(--shadow);display:none;
@@ -289,18 +352,21 @@ footer{
 @media print{
   :root{--bg:#fff;--bg2:#fff;--bg3:#ccc;--text:#111;--muted:#444;--teal:#0a6b6e;--orange:#c53d12;--shadow:none}
   body{background:#fff;color:#111;font-size:11pt}
-  .toolbar,.no-print,#backToMap,.edit-hint,.hotel-edit,.converter,.stepper button,.map-card,.sec-desc{display:none !important}
+  .toolbar,.no-print,#backToMap,.edit-hint,.hotel-edit,.day-edit,.add-day-wrap,.converter,
+  .stepper button,.map-card,.sec-desc,.links-row,.nights-ctl button,#simCaption,#pickBanner,.itin-controls{display:none !important}
   header{background:#fff;border-bottom:2px solid #c53d12;padding:10px 0}
   header h1{color:#111;font-size:1.5rem}
   header .sub{color:#0a6b6e}
   .badge{border:1px solid #999;color:#111;background:#fff}
   section{padding:14px 0 4px;break-inside:avoid-page}
-  .day-card,.budget-card,.info-card,.hotel-block,.inst{
+  .day-card,.budget-card,.info-card,.hotel-block,.inst,.inst-note{
     background:#fff;border:1px solid #bbb;box-shadow:none;break-inside:avoid;
   }
   .day-head{background:#f4f4f4;border-bottom:1px solid #bbb}
   .day-num{background:#c53d12;color:#fff;-webkit-print-color-adjust:exact;print-color-adjust:exact}
   .day-body .tip{background:#eef6f6;color:#0a6b6e;border-inline-start-color:#0a6b6e;-webkit-print-color-adjust:exact;print-color-adjust:exact}
+  .day-imgs figure{width:110px}
+  .day-imgs .ph{width:110px;height:74px;border:1px solid #bbb;background:#f4f4f4}
   select{display:none}
   .print-hotel-name{display:inline !important;font-weight:700}
   .field input{border:none;background:#fff;padding:2px 0;color:#111;font-weight:700}
@@ -321,12 +387,12 @@ footer{
 <header>
   <div class="container">
     <h1>رحلة <span class="accent">كيب تاون</span> والجاردن روت 🇿🇦</h1>
-    <div class="sub">جنوب أفريقيا · ١٠ – ٢٠ يوليو ٢٠٢٦ · ١١ يوماً / ١٠ ليالٍ</div>
+    <div class="sub" id="headerDates"></div>
     <div class="badges">
       <span class="badge">👥 المسافرون: <b id="travelersBadge">2</b></span>
-      <span class="badge">🚗 رحلة برية بسيارة مستأجرة</span>
+      <span class="badge">📅 أيام الرحلة: <b id="daysBadge"></b></span>
+      <span class="badge">🏨 <b id="nightsBadge"></b></span>
       <span class="badge">🐋 موسم مشاهدة الحيتان</span>
-      <span class="badge">🌍 المسافة الكلية: <b>~1,650 كم</b></span>
     </div>
   </div>
 </header>
@@ -335,7 +401,7 @@ footer{
 <div class="toolbar no-print">
   <div class="container">
     <button class="btn btn-ghost btn-edit" id="editToggle">✏️ وضع تعديل الرحلة</button>
-    <button class="btn btn-teal" onclick="window.print()">🖨️ طباعة / تصدير PDF</button>
+    <button class="btn btn-teal" onclick="window.print()">🖨️ طباعة / PDF</button>
     <button class="btn btn-ghost" id="resetBtn">↺ استعادة الافتراضي</button>
     <nav class="quicknav">
       <a href="#map">الخريطة</a>
@@ -352,74 +418,31 @@ footer{
 
 <!-- ============ MAP ============ -->
 <section id="map">
-  <h2 class="sec-title">خريطة المسار التفاعلية</h2>
-  <p class="sec-desc">اضغط على أي محطة في الخريطة للانتقال مباشرة إلى يومها في الجدول.</p>
+  <h2 class="sec-title">خريطة المسار التفاعلية
+    <button class="btn btn-orange btn-sm no-print" id="simBtn" style="margin-inline-start:auto">▶️ محاكاة الرحلة</button>
+  </h2>
+  <p class="sec-desc">اضغط على أي محطة للانتقال إلى يومها في الجدول، أو شغّل المحاكاة لمشاهدة مسار الرحلة يوماً بيوم. الخريطة تتحدث تلقائياً مع أي تعديل على الأيام.</p>
   <div class="map-card">
-    <svg viewBox="0 0 1000 430" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="خريطة مسار الرحلة من كيب تاون إلى الجاردن روت">
-      <!-- coastline -->
+    <svg id="routeSvg" viewBox="0 0 1000 430" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="خريطة مسار الرحلة من كيب تاون إلى الجاردن روت">
       <path d="M30,395 C90,375 130,390 180,400 C240,412 300,395 380,388 C470,380 560,392 640,385 C730,377 820,388 900,378 C940,373 970,365 990,360"
             fill="none" stroke="#76ABAE" stroke-width="1.5" opacity=".25"/>
       <path d="M30,415 C120,400 250,420 400,408 C560,396 750,412 990,385"
             fill="none" stroke="#76ABAE" stroke-width="1" opacity=".15"/>
       <text x="500" y="424" fill="#76ABAE" opacity=".45" font-size="13" text-anchor="middle" font-family="Tajawal">المحيط الأطلسي · المحيط الهندي</text>
-      <!-- mountains deco -->
       <path d="M60,275 L95,235 L130,275 Z" fill="#393f4a"/>
       <path d="M555,165 L590,125 L625,165 Z" fill="#393f4a"/>
       <path d="M845,205 L878,168 L912,205 Z" fill="#393f4a"/>
       <text x="95" y="228" fill="#aab2bd" font-size="11" text-anchor="middle" font-family="Tajawal">جبل الطاولة</text>
       <text x="590" y="118" fill="#aab2bd" font-size="11" text-anchor="middle" font-family="Tajawal">جبال سوارتبيرغ</text>
-
-      <!-- route -->
-      <path class="route-path" d="M90,300 C120,260 145,255 175,240 C205,255 220,300 235,330 C320,345 430,330 520,310 C545,260 560,215 590,200 C625,225 665,275 700,290 C730,285 760,272 790,270 C820,262 850,250 880,240"/>
-
-      <!-- waypoints (data-day links to itinerary day id) -->
-      <g class="wp" data-day="day-1" tabindex="0" role="button" aria-label="كيب تاون - اليوم الأول">
-        <circle class="pulse" cx="90" cy="300" r="9"/>
-        <circle class="dot" cx="90" cy="300" r="11"/>
-        <text x="90" y="338" text-anchor="middle">كيب تاون</text>
-        <text class="nights" x="90" y="356" text-anchor="middle">الأيام 1–5 · 5 ليالٍ</text>
-      </g>
-      <g class="wp" data-day="day-4" tabindex="0" role="button" aria-label="ستيلينبوش - اليوم الرابع">
-        <circle class="dot" cx="175" cy="240" r="8"/>
-        <text x="175" y="218" text-anchor="middle">ستيلينبوش</text>
-        <text class="nights" x="175" y="202" text-anchor="middle">اليوم 4</text>
-      </g>
-      <g class="wp" data-day="day-6" tabindex="0" role="button" aria-label="هيرمانوس - اليوم السادس">
-        <circle class="pulse" cx="235" cy="330" r="8"/>
-        <circle class="dot" cx="235" cy="330" r="9"/>
-        <text x="235" y="368" text-anchor="middle">هيرمانوس 🐋</text>
-        <text class="nights" x="235" y="386" text-anchor="middle">اليوم 6 · ليلة</text>
-      </g>
-      <g class="wp" data-day="day-7" tabindex="0" role="button" aria-label="موسيل باي - اليوم السابع">
-        <circle class="dot" cx="520" cy="310" r="8"/>
-        <text x="520" y="348" text-anchor="middle">موسيل باي</text>
-        <text class="nights" x="520" y="366" text-anchor="middle">اليوم 7 · توقّف</text>
-      </g>
-      <g class="wp" data-day="day-10" tabindex="0" role="button" aria-label="أودتشورن - اليوم العاشر">
-        <circle class="dot" cx="590" cy="200" r="8"/>
-        <text x="590" y="180" text-anchor="middle">أودتشورن</text>
-        <text class="nights" x="590" y="164" text-anchor="middle">اليوم 10 · ليلة</text>
-      </g>
-      <g class="wp" data-day="day-8" tabindex="0" role="button" aria-label="نيسنا - اليوم الثامن">
-        <circle class="pulse" cx="700" cy="290" r="8"/>
-        <circle class="dot" cx="700" cy="290" r="10"/>
-        <text x="700" y="328" text-anchor="middle">نيسنا</text>
-        <text class="nights" x="700" y="346" text-anchor="middle">الأيام 7–9 · 3 ليالٍ</text>
-      </g>
-      <g class="wp" data-day="day-9" tabindex="0" role="button" aria-label="بليتنبيرغ باي - اليوم التاسع">
-        <circle class="dot" cx="790" cy="270" r="8"/>
-        <text x="790" y="248" text-anchor="middle">بليتنبيرغ باي</text>
-      </g>
-      <g class="wp" data-day="day-9" tabindex="0" role="button" aria-label="تسيتسيكاما - اليوم التاسع">
-        <circle class="dot" cx="880" cy="240" r="8"/>
-        <text x="880" y="218" text-anchor="middle">تسيتسيكاما</text>
-        <text class="nights" x="880" y="202" text-anchor="middle">اليوم 9</text>
-      </g>
+      <g id="routeLayer"></g>
+      <g id="simMarker" style="display:none"><text font-size="26" text-anchor="middle">🚗</text></g>
     </svg>
+    <div id="simCaption"></div>
+    <div id="pickBanner">📍 انقر الآن على الخريطة لتحديد مكان الموقع الجديد...</div>
     <div class="map-legend">
-      <span><i class="lg-dot"></i> محطة مبيت / زيارة</span>
-      <span><i class="lg-line"></i> مسار القيادة (طريق N2 والجاردن روت)</span>
-      <span>💡 المحطات النابضة = محطات المبيت الرئيسية</span>
+      <span><i class="lg-dot"></i> محطة على المسار</span>
+      <span><i class="lg-line"></i> مسار القيادة (N2 والجاردن روت)</span>
+      <span>💡 المحطات النابضة = مدن المبيت (كيب تاون ونيسنا فقط)</span>
     </div>
   </div>
 </section>
@@ -427,217 +450,31 @@ footer{
 <!-- ============ ITINERARY ============ -->
 <section id="itinerary">
   <h2 class="sec-title">جدول الرحلة اليومي</h2>
-  <p class="sec-desc">برنامج ١١ يوماً مُرتّب جغرافياً لتقليل القيادة، مع نصيحة عملية لكل يوم.</p>
-
-  <div class="day-card" id="day-1">
-    <div class="day-head">
-      <span class="day-num">اليوم 1</span>
-      <h3>الوصول إلى كيب تاون والواجهة البحرية</h3>
-      <span class="city-tag">كيب تاون</span>
-      <span class="date">الجمعة 10 يوليو</span>
-    </div>
-    <div class="day-body">
-      <ul>
-        <li>الوصول إلى مطار كيب تاون الدولي (CPT) واستلام السيارة المستأجرة.</li>
-        <li>تسجيل الدخول في الفندق والراحة من السفر.</li>
-        <li>جولة مسائية في V&A Waterfront: المطاعم، الأسواق، وعجلة كيب الدوارة.</li>
-        <li>عشاء على الواجهة البحرية مع إطلالة على جبل الطاولة.</li>
-      </ul>
-      <div class="tip">💡 نصيحة: فعّل شريحة بيانات محلية (Vodacom أو MTN) من المطار مباشرة، واطلب سيارة بدفع رباعي خفيف إن أمكن لطرق الجاردن روت.</div>
+  <p class="sec-desc">المبيت في كيب تاون ونيسنا (الجاردن روت) فقط — هيرمانوس وبقية المحطات زيارات على المسار. فعّل "وضع تعديل الرحلة" لتعديل أو حذف أو إضافة أيام ومواقع.</p>
+  <div class="itin-controls">
+    <span style="color:var(--muted);font-size:.92rem">📅 عدد أيام الرحلة:</span>
+    <div class="stepper">
+      <button type="button" id="daysMinus" aria-label="إنقاص الأيام">−</button>
+      <span class="count" id="daysCount"></span>
+      <button type="button" id="daysPlus" aria-label="زيادة الأيام">+</button>
+      <span class="note" id="daysNote"></span>
     </div>
   </div>
-
-  <div class="day-card" id="day-2">
-    <div class="day-head">
-      <span class="day-num">اليوم 2</span>
-      <h3>جبل الطاولة وحي بوكاب الملوّن</h3>
-      <span class="city-tag">كيب تاون</span>
-      <span class="date">السبت 11 يوليو</span>
-    </div>
-    <div class="day-body">
-      <ul>
-        <li>صعود جبل الطاولة بالتلفريك الدوّار صباحاً (الأجواء أصفى قبل الظهر).</li>
-        <li>جولة تصوير في حي بوكاب (Bo-Kaap) بمنازله الملوّنة وتاريخ مسلمي الكيب.</li>
-        <li>زيارة حديقة الشركة (Company's Garden) ووسط المدينة التاريخي.</li>
-        <li>غداء في سوق Greenmarket Square وتسوّق الهدايا التذكارية.</li>
-      </ul>
-      <div class="tip">💡 نصيحة: تحقق من حالة التلفريك على موقعه قبل الذهاب — يتوقف عند الرياح القوية. في يوليو خذ سترة؛ القمة أبرد بـ 5–8 درجات.</div>
-    </div>
-  </div>
-
-  <div class="day-card" id="day-3">
-    <div class="day-head">
-      <span class="day-num">اليوم 3</span>
-      <h3>شبه جزيرة الكيب وبطاريق بولدرز</h3>
-      <span class="city-tag">كيب تاون</span>
-      <span class="date">الأحد 12 يوليو</span>
-    </div>
-    <div class="day-body">
-      <ul>
-        <li>قيادة عبر طريق تشابمانز بيك (Chapman's Peak) — من أجمل الطرق الساحلية في العالم.</li>
-        <li>زيارة رأس الرجاء الصالح وكيب بوينت (Cape Point) وركوب القطار الجبلي.</li>
-        <li>مشاهدة مستعمرة البطاريق الأفريقية في شاطئ بولدرز (Boulders Beach).</li>
-        <li>جولة قصيرة في بلدة سايمونز تاون البحرية ثم العودة عبر ميزنبيرغ.</li>
-      </ul>
-      <div class="tip">💡 نصيحة: لا تترك أي أغراض ظاهرة في السيارة عند المواقف، وانتبه من قرود البابون عند كيب بوينت — لا تُطعمها أبداً.</div>
-    </div>
-  </div>
-
-  <div class="day-card" id="day-4">
-    <div class="day-head">
-      <span class="day-num">اليوم 4</span>
-      <h3>ستيلينبوش وفرانشهوك (منطقة الواينلاندز)</h3>
-      <span class="city-tag">كيب تاون</span>
-      <span class="date">الاثنين 13 يوليو</span>
-    </div>
-    <div class="day-body">
-      <ul>
-        <li>رحلة يومية إلى ستيلينبوش: البلدة الجامعية التاريخية بطرازها الهولندي.</li>
-        <li>عبور ممر هيلشوغته الجبلي إلى فرانشهوك ومناظرها البانورامية.</li>
-        <li>غداء ريفي في إحدى المزارع التاريخية وتجربة الأجبان المحلية.</li>
-        <li>زيارة حديقة بابيلونستورن (Babylonstoren) النباتية الشهيرة.</li>
-      </ul>
-      <div class="tip">💡 نصيحة: احجز مدخل بابيلونستورن مسبقاً عبر الإنترنت؛ التذاكر محدودة وتنفد في نهايات الأسبوع.</div>
-    </div>
-  </div>
-
-  <div class="day-card" id="day-5">
-    <div class="day-head">
-      <span class="day-num">اليوم 5</span>
-      <h3>حدائق كيرستنبوش وكامبس باي</h3>
-      <span class="city-tag">كيب تاون</span>
-      <span class="date">الثلاثاء 14 يوليو</span>
-    </div>
-    <div class="day-body">
-      <ul>
-        <li>صباحاً: حدائق كيرستنبوش النباتية الوطنية وممشى الجسر المعلّق (Boomslang).</li>
-        <li>زيارة أكواريوم المحيطين في الواترفرونت (مناسب لو كان الطقس ماطراً).</li>
-        <li>قهوة الغروب على شاطئ كامبس باي وقمم الرسل الاثني عشر خلفك.</li>
-        <li>عشاء وداع كيب تاون في حي سي بوينت على الكورنيش.</li>
-      </ul>
-      <div class="tip">💡 نصيحة: رتّب حقائبك الليلة — غداً تبدأ جولة الجاردن روت البرية. عبّئ وقود السيارة مساءً.</div>
-    </div>
-  </div>
-
-  <div class="day-card" id="day-6">
-    <div class="day-head">
-      <span class="day-num">اليوم 6</span>
-      <h3>هيرمانوس — عاصمة مشاهدة الحيتان 🐋</h3>
-      <span class="city-tag">هيرمانوس</span>
-      <span class="date">الأربعاء 15 يوليو · قيادة ~120 كم</span>
-    </div>
-    <div class="day-body">
-      <ul>
-        <li>الانطلاق صباحاً عبر الطريق الساحلي R44 (Clarence Drive) المذهل.</li>
-        <li>الوصول إلى هيرمانوس: مشاهدة الحيتان الجنوبية من المنحدرات (يوليو بداية الموسم).</li>
-        <li>رحلة بحرية اختيارية لمشاهدة الحيتان عن قرب.</li>
-        <li>المشي في ممشى الجرف (Cliff Path) والمبيت في هيرمانوس.</li>
-      </ul>
-      <div class="tip">💡 نصيحة: أنصت لـ"منادي الحيتان" (Whale Crier) في وسط البلدة — ينفخ بوقاً عند رصد الحيتان ويدلّك على مكانها.</div>
-    </div>
-  </div>
-
-  <div class="day-card" id="day-7">
-    <div class="day-head">
-      <span class="day-num">اليوم 7</span>
-      <h3>الطريق إلى نيسنا عبر موسيل باي</h3>
-      <span class="city-tag">هيرمانوس ← نيسنا</span>
-      <span class="date">الخميس 16 يوليو · قيادة ~390 كم</span>
-    </div>
-    <div class="day-body">
-      <ul>
-        <li>انطلاقة مبكرة على الطريق N2 — أطول يوم قيادة في الرحلة.</li>
-        <li>توقّف للغداء في موسيل باي وزيارة متحف بارتولوميو دياز وشجرة البريد الشهيرة.</li>
-        <li>استراحة قصيرة في بلدة جورج أو ويلدرنيس وشاطئها الممتد.</li>
-        <li>الوصول إلى نيسنا مساءً وتسجيل الدخول لثلاث ليالٍ.</li>
-      </ul>
-      <div class="tip">💡 نصيحة: قسّم القيادة بتوقفات كل ساعتين، وتجنب القيادة بعد مغيب الشمس في الطرق الريفية.</div>
-    </div>
-  </div>
-
-  <div class="day-card" id="day-8">
-    <div class="day-head">
-      <span class="day-num">اليوم 8</span>
-      <h3>نيسنا: البحيرة والرأسان الصخريان</h3>
-      <span class="city-tag">نيسنا</span>
-      <span class="date">الجمعة 17 يوليو</span>
-    </div>
-    <div class="day-body">
-      <ul>
-        <li>رحلة بحرية في بحيرة نيسنا حتى رأسَي نيسنا (Knysna Heads).</li>
-        <li>إطلالة بانورامية من نقطة المشاهدة الشرقية (East Head Viewpoint).</li>
-        <li>جولة في الواجهة البحرية (Knysna Waterfront) وجزيرة ثيسن.</li>
-        <li>اختياري: محمية فيذربيد الطبيعية أو غابات نيسنا وأشجارها العملاقة.</li>
-      </ul>
-      <div class="tip">💡 نصيحة: احجز رحلة الغروب البحرية مسبقاً — الأماكن محدودة في يوليو وقت موسم مهرجان المحار.</div>
-    </div>
-  </div>
-
-  <div class="day-card" id="day-9">
-    <div class="day-head">
-      <span class="day-num">اليوم 9</span>
-      <h3>بليتنبيرغ باي وحديقة تسيتسيكاما الوطنية</h3>
-      <span class="city-tag">نيسنا (رحلة يومية)</span>
-      <span class="date">السبت 18 يوليو · قيادة ~190 كم ذهاباً وعودة</span>
-    </div>
-    <div class="day-body">
-      <ul>
-        <li>صباحاً: محمية روبرغ الطبيعية في بليتنبيرغ باي ومسار المشي الساحلي.</li>
-        <li>زيارة Monkeyland وBirds of Eden — أكبر قفص طيور حر في العالم.</li>
-        <li>حديقة تسيتسيكاما الوطنية: الجسور المعلقة فوق مصب نهر ستورمز.</li>
-        <li>اختياري للمغامرين: أعلى قفزة بنجي من جسر في العالم (جسر بلوكرانس، 216م).</li>
-      </ul>
-      <div class="tip">💡 نصيحة: البس حذاء مشي مريحاً وخذ معطفاً مقاوماً للمطر — مسار الجسور المعلقة يستغرق ساعة تقريباً.</div>
-    </div>
-  </div>
-
-  <div class="day-card" id="day-10">
-    <div class="day-head">
-      <span class="day-num">اليوم 10</span>
-      <h3>أودتشورن: كهوف كانغو ومزارع النعام</h3>
-      <span class="city-tag">نيسنا ← أودتشورن</span>
-      <span class="date">الأحد 19 يوليو · قيادة ~130 كم</span>
-    </div>
-    <div class="day-body">
-      <ul>
-        <li>الانطلاق عبر ممر أوتينيكوا الجبلي إلى منطقة الكارو الصغرى.</li>
-        <li>جولة في كهوف كانغو (Cango Caves) — تشكيلات كلسية عمرها ملايين السنين.</li>
-        <li>زيارة مزرعة نعام تفاعلية وتجربة إطعام النعام.</li>
-        <li>المبيت في أودتشورن — ليلة كارو صحراوية صافية مثالية لمراقبة النجوم.</li>
-      </ul>
-      <div class="tip">💡 نصيحة: احجز جولة الكهوف القياسية (Heritage Tour) وليست المغامرة إن كنتم لا تحبون الممرات الضيقة.</div>
-    </div>
-  </div>
-
-  <div class="day-card" id="day-11">
-    <div class="day-head">
-      <span class="day-num">اليوم 11</span>
-      <h3>طريق 62 والعودة — المغادرة</h3>
-      <span class="city-tag">أودتشورن ← كيب تاون</span>
-      <span class="date">الاثنين 20 يوليو · قيادة ~420 كم</span>
-    </div>
-    <div class="day-body">
-      <ul>
-        <li>العودة إلى كيب تاون عبر الطريق 62 (Route 62) الأسطوري بين الجبال.</li>
-        <li>توقّف للقهوة في بلدة بارّيدال أو متجر Ronnies Sex Shop الشهير (مقهى طريف على الطريق!).</li>
-        <li>غداء في مونتاغو أو روبرتسون.</li>
-        <li>تسليم السيارة في مطار كيب تاون والمغادرة مساءً.</li>
-      </ul>
-      <div class="tip">💡 نصيحة: اترك هامش 4 ساعات قبل موعد الإقلاع — الطريق طويل وتسليم السيارة وإجراءات المطار تحتاج وقتاً.</div>
-    </div>
+  <div id="daysContainer"></div>
+  <div class="add-day-wrap">
+    <button class="btn btn-orange" id="addDayBtn">➕ إضافة يوم جديد</button>
   </div>
 </section>
 
 <!-- ============ BUDGET ============ -->
 <section id="budget">
   <h2 class="sec-title">حاسبة الميزانية المرنة</h2>
-  <p class="sec-desc">عدّل الأرقام مباشرة وستُحدَّث الميزانية والتحويل للراند الجنوب أفريقي فوراً. كل تعديلاتك تُحفظ تلقائياً في المتصفح.</p>
+  <p class="sec-desc">عدّل الأرقام مباشرة وستُحدَّث الميزانية والتحويل للراند فوراً. التقسيط (تابي/تمارا) يشمل الطيران والفنادق فقط، والباقي يُدفع مباشرة.</p>
 
-  <div class="edit-hint">✏️ <b>وضع تعديل الرحلة مفعّل:</b> يمكنك الآن تغيير أسماء الفنادق وأسعارها وصورها من الحقول الظاهرة أسفل كل فندق. التعديلات تُحفظ تلقائياً.</div>
+  <div class="edit-hint">✏️ <b>وضع تعديل الرحلة مفعّل:</b> عدّل أسماء الفنادق وأسعارها وصورها أدناه، وعدّل أيام الرحلة ومواقعها من قسم الجدول. كل شيء يُحفظ تلقائياً.</div>
 
   <div class="budget-card">
     <div class="budget-grid">
-      <!-- ===== Right column: inputs ===== -->
       <div>
         <div class="field">
           <label>عدد المسافرين</label>
@@ -645,12 +482,13 @@ footer{
             <button type="button" id="travMinus" aria-label="إنقاص عدد المسافرين">−</button>
             <span class="count" id="travCount">2</span>
             <button type="button" id="travPlus" aria-label="زيادة عدد المسافرين">+</button>
-            <span style="color:var(--muted);font-size:.85rem" id="roomsNote"></span>
+            <span class="note" id="roomsNote"></span>
           </div>
         </div>
         <div class="field">
           <label>سعر تذكرة الطيران للشخص الواحد (ريال سعودي) — ذهاب وعودة</label>
           <input type="number" id="flightPrice" min="0" step="50">
+          <div class="links-row no-print" id="flightLinks"></div>
         </div>
         <div class="field">
           <label>المواصلات: استئجار سيارة + وقود + مواقف (ريال سعودي، إجمالي)</label>
@@ -665,11 +503,10 @@ footer{
           <input type="number" id="foodPrice" min="0" step="50">
         </div>
 
-        <h3 style="color:var(--teal);font-size:1.05rem;margin:18px 0 12px">🏨 اختيار الفنادق</h3>
-        <div id="hotelsContainer"><!-- hotel blocks rendered by JS --></div>
+        <h3 style="color:var(--teal);font-size:1.05rem;margin:18px 0 12px">🏨 السكن (كيب تاون والجاردن روت فقط)</h3>
+        <div id="hotelsContainer"></div>
       </div>
 
-      <!-- ===== Left column: payment + table ===== -->
       <div>
         <h3 style="color:var(--teal);font-size:1.05rem;margin-bottom:12px">💳 طريقة الدفع</h3>
         <div class="pay-options" id="payOptions">
@@ -681,12 +518,12 @@ footer{
           <label class="pay-opt" data-pay="tabby">
             <input type="radio" name="pay" value="tabby">
             <div class="t">🟣 تابي Tabby</div>
-            <div class="d">4 أقساط بدون فوائد</div>
+            <div class="d">4 أقساط — الطيران والفنادق فقط</div>
           </label>
           <label class="pay-opt" data-pay="tamara">
             <input type="radio" name="pay" value="tamara">
             <div class="t">🟢 تمارا Tamara</div>
-            <div class="d">4 أقساط بدون فوائد</div>
+            <div class="d">4 أقساط — الطيران والفنادق فقط</div>
           </label>
         </div>
 
@@ -699,8 +536,9 @@ footer{
         <div class="per-person" id="perPerson"></div>
 
         <div class="installments" id="installments">
-          <h3 style="color:var(--teal);font-size:1rem" id="instTitle">📅 جدول الأقساط</h3>
+          <h3 style="color:var(--teal);font-size:1rem" id="instTitle"></h3>
           <div class="inst-grid" id="instGrid"></div>
+          <div class="inst-note" id="instNote"></div>
           <div class="warn" style="margin-top:10px">ملاحظة: الأقساط حسب توفر الخدمة لدى جهة الحجز، وقد تتطلب تابي/تمارا موافقة ائتمانية. خصم الكاش لا يُطبَّق مع التقسيط.</div>
         </div>
 
@@ -753,14 +591,14 @@ footer{
       </ul>
     </div>
     <div class="info-card">
-      <h3>🏜️ أودتشورن (الكارو الصغرى)</h3>
+      <h3>🏜️ أودتشورن (رحلة يومية)</h3>
       <div class="temp-row"><span>العظمى نهاراً</span><span class="v">18–20°C</span></div>
       <div class="temp-row"><span>الصغرى ليلاً</span><span class="v">3–5°C</span></div>
       <div class="temp-row"><span>أيام المطر</span><span class="v">2–3 أيام</span></div>
-      <div class="temp-row"><span>السماء ليلاً</span><span class="v">✨ صافية للنجوم</span></div>
+      <div class="temp-row"><span>السماء</span><span class="v">✨ صافية غالباً</span></div>
       <ul style="margin-top:10px">
-        <li>مناخ شبه صحراوي: شمس نهاراً وبرد قارس ليلاً — خذوا طبقات دافئة.</li>
-        <li>أفضل ليلة في الرحلة لمراقبة درب التبانة.</li>
+        <li>مناخ شبه صحراوي: شمس نهاراً وبرد ليلاً — خذوا طبقات دافئة ليوم الزيارة.</li>
+        <li>زيارة نهارية من نيسنا عبر ممر أوتينيكوا الجبلي (~ساعة ونصف).</li>
       </ul>
     </div>
   </div>
@@ -772,7 +610,7 @@ footer{
         <li>طبقات: تيشيرتات + سترة صوف + جاكيت مقاوم للمطر والرياح.</li>
         <li>حذاء مشي مريح مقاوم للماء + شمسية صغيرة.</li>
         <li>قبعة وواقي شمس — شمس الشتاء هناك قوية رغم البرودة.</li>
-        <li>ملابس دافئة للليل (خاصة أودتشورن) ومنظار لمشاهدة الحيتان.</li>
+        <li>ملابس دافئة للمساء ومنظار لمشاهدة الحيتان في هيرمانوس.</li>
       </ul>
     </div>
     <div class="info-card" id="plugs">
@@ -823,64 +661,140 @@ footer{
 
 <script>
 'use strict';
-/* ================= Data & State ================= */
-const STORAGE_KEY = 'capetown-trip-2026-v1';
+/* ================= Constants ================= */
+const STORAGE_KEY = 'capetown-trip-2026-v2';
+const START_DATE = new Date(2026, 6, 10); // 10 July 2026
+const WEEKDAYS = ['الأحد','الاثنين','الثلاثاء','الأربعاء','الخميس','الجمعة','السبت'];
+const MONTHS = ['يناير','فبراير','مارس','أبريل','مايو','يونيو','يوليو','أغسطس','سبتمبر','أكتوبر','نوفمبر','ديسمبر'];
+
+/* Known places: map coordinates + Wikipedia title for photos */
+const PLACES = {
+  capetown:    {name:'كيب تاون',        x:90,  y:300, emoji:'🏙️', stay:true},
+  stellenbosch:{name:'ستيلينبوش',       x:175, y:240, emoji:'🍇'},
+  hermanus:    {name:'هيرمانوس',        x:235, y:330, emoji:'🐋'},
+  mosselbay:   {name:'موسيل باي',       x:520, y:310, emoji:'⚓'},
+  wilderness:  {name:'ويلدرنيس',        x:598, y:298, emoji:'🏖️'},
+  oudtshoorn:  {name:'أودتشورن',        x:590, y:200, emoji:'🦩'},
+  knysna:      {name:'نيسنا',           x:700, y:290, emoji:'🌉', stay:true},
+  plettenberg: {name:'بليتنبيرغ باي',   x:790, y:270, emoji:'🏝️'},
+  tsitsikamma: {name:'تسيتسيكاما',      x:880, y:240, emoji:'🌲'}
+};
+
+/* ================= Default itinerary =================
+   المبيت في كيب تاون ونيسنا فقط — هيرمانوس محطة على المسار بدون نوم */
+const DEFAULT_DAYS = [
+  {place:'capetown', title:'الوصول إلى كيب تاون والواجهة البحرية',
+   acts:['الوصول إلى مطار كيب تاون الدولي (CPT) واستلام السيارة المستأجرة.','تسجيل الدخول في الفندق والراحة من السفر.','جولة مسائية في V&A Waterfront: المطاعم، الأسواق، وعجلة كيب الدوارة.','عشاء على الواجهة البحرية مع إطلالة على جبل الطاولة.'],
+   links:[['موقع V&A Waterfront','https://www.waterfront.co.za'],['مطار كيب تاون','https://www.airports.co.za/airports/cape-town-international-airport']],
+   imgs:['Victoria & Alfred Waterfront','Cape Town'],
+   tip:'فعّل شريحة بيانات محلية (Vodacom أو MTN) من المطار مباشرة، واطلب سيارة مريحة لطرق الجاردن روت.'},
+
+  {place:'capetown', title:'جبل الطاولة وحي بوكاب الملوّن',
+   acts:['صعود جبل الطاولة بالتلفريك الدوّار صباحاً (الأجواء أصفى قبل الظهر).','جولة تصوير في حي بوكاب (Bo-Kaap) بمنازله الملوّنة وتاريخ مسلمي الكيب.','زيارة حديقة الشركة (Company\'s Garden) ووسط المدينة التاريخي.','غداء في سوق Greenmarket Square وتسوّق الهدايا التذكارية.'],
+   links:[['حجز تلفريك جبل الطاولة','https://www.tablemountain.net'],['متحف بوكاب','https://www.iziko.org.za/museums/bo-kaap-museum']],
+   imgs:['Table Mountain','Bo-Kaap'],
+   tip:'تحقق من حالة التلفريك على موقعه قبل الذهاب — يتوقف عند الرياح القوية. في يوليو خذ سترة؛ القمة أبرد بـ 5–8 درجات.'},
+
+  {place:'capetown', title:'شبه جزيرة الكيب وبطاريق بولدرز',
+   acts:['قيادة عبر طريق تشابمانز بيك (Chapman\'s Peak) — من أجمل الطرق الساحلية في العالم.','زيارة رأس الرجاء الصالح وكيب بوينت (Cape Point) وركوب القطار الجبلي.','مشاهدة مستعمرة البطاريق الأفريقية في شاطئ بولدرز (Boulders Beach).','جولة قصيرة في بلدة سايمونز تاون البحرية ثم العودة عبر ميزنبيرغ.'],
+   links:[['كيب بوينت','https://capepoint.co.za'],['طريق تشابمانز بيك','https://www.chapmanspeakdrive.co.za'],['شاطئ بولدرز (SANParks)','https://www.sanparks.org/parks/table_mountain/tourism/attractions.php']],
+   imgs:['Cape Point','Boulders Beach','Chapman\'s Peak'],
+   tip:'لا تترك أي أغراض ظاهرة في السيارة عند المواقف، وانتبه من قرود البابون عند كيب بوينت — لا تُطعمها أبداً.'},
+
+  {place:'stellenbosch', title:'ستيلينبوش وفرانشهوك (الواينلاندز)',
+   acts:['رحلة يومية إلى ستيلينبوش: البلدة الجامعية التاريخية بطرازها الهولندي.','عبور ممر هيلشوغته الجبلي إلى فرانشهوك ومناظرها البانورامية.','غداء ريفي في إحدى المزارع التاريخية وتجربة الأجبان المحلية.','زيارة حديقة بابيلونستورن (Babylonstoren) النباتية الشهيرة، ثم العودة لكيب تاون.'],
+   links:[['بابيلونستورن (احجز مسبقاً)','https://babylonstoren.com'],['دليل ستيلينبوش','https://visitstellenbosch.org']],
+   imgs:['Stellenbosch','Franschhoek'],
+   tip:'احجز مدخل بابيلونستورن مسبقاً عبر الإنترنت؛ التذاكر محدودة وتنفد في نهايات الأسبوع.'},
+
+  {place:'capetown', title:'حدائق كيرستنبوش وكامبس باي',
+   acts:['صباحاً: حدائق كيرستنبوش النباتية الوطنية وممشى الجسر المعلّق (Boomslang).','زيارة أكواريوم المحيطين في الواترفرونت (مناسب لو كان الطقس ماطراً).','قهوة الغروب على شاطئ كامبس باي وقمم الرسل الاثني عشر خلفك.','عشاء وداع كيب تاون في حي سي بوينت على الكورنيش.'],
+   links:[['حدائق كيرستنبوش','https://www.sanbi.org/gardens/kirstenbosch'],['أكواريوم المحيطين','https://www.aquarium.co.za']],
+   imgs:['Kirstenbosch National Botanical Garden','Camps Bay'],
+   tip:'رتّب حقائبك الليلة — غداً تبدأ جولة الجاردن روت. عبّئ وقود السيارة مساءً.'},
+
+  {place:'hermanus', title:'إلى الجاردن روت عبر هيرمانوس 🐋 (بدون مبيت)',
+   acts:['انطلاقة مبكرة (7 صباحاً) عبر الطريق الساحلي R44 (Clarence Drive) المذهل.','توقّف 3–4 ساعات في هيرمانوس: مشاهدة الحيتان الجنوبية من المنحدرات وممشى الجرف.','غداء سريع في هيرمانوس ثم مواصلة الطريق N2 شرقاً.','استراحة قهوة في سويلندام أو موسيل باي، والوصول إلى نيسنا مساءً (إجمالي ~500 كم).'],
+   links:[['رحلات الحيتان البحرية','https://southernrightcharters.co.za'],['دليل هيرمانوس','https://hermanus.co.za']],
+   imgs:['Hermanus','Walker Bay'],
+   tip:'أنصت لـ"منادي الحيتان" (Whale Crier) في وسط البلدة — ينفخ بوقاً عند رصد الحيتان. لا تتأخروا بعد الساعة 2 ظهراً لتجنب القيادة ليلاً.'},
+
+  {place:'knysna', title:'نيسنا: البحيرة والرأسان الصخريان',
+   acts:['صباح هادئ وفطور على بحيرة نيسنا.','رحلة بحرية في البحيرة حتى رأسَي نيسنا (Knysna Heads).','إطلالة بانورامية من نقطة المشاهدة الشرقية (East Head Viewpoint).','جولة في الواجهة البحرية (Knysna Waterfront) وجزيرة ثيسن.'],
+   links:[['دليل نيسنا الرسمي','https://www.visitknysna.co.za'],['رحلات فيذربيد البحرية','https://www.featherbed.co.za']],
+   imgs:['Knysna','Knysna River'],
+   tip:'احجز رحلة الغروب البحرية مسبقاً — الأماكن محدودة في يوليو وقت مهرجان المحار.'},
+
+  {place:'plettenberg', title:'بليتنبيرغ باي وحديقة تسيتسيكاما',
+   acts:['صباحاً: محمية روبرغ الطبيعية في بليتنبيرغ باي ومسار المشي الساحلي.','زيارة Monkeyland وBirds of Eden — أكبر قفص طيور حر في العالم.','حديقة تسيتسيكاما الوطنية: الجسور المعلقة فوق مصب نهر ستورمز.','اختياري للمغامرين: أعلى قفزة بنجي من جسر في العالم (بلوكرانس، 216م). العودة للمبيت في نيسنا.'],
+   links:[['حديقة تسيتسيكاما (SANParks)','https://www.sanparks.org/parks/garden_route'],['Monkeyland','https://www.monkeyland.co.za'],['قفزة بلوكرانس بنجي','https://faceadrenalin.com']],
+   imgs:['Tsitsikamma National Park','Plettenberg Bay'],
+   tip:'البس حذاء مشي مريحاً وخذ معطفاً مقاوماً للمطر — مسار الجسور المعلقة يستغرق ساعة تقريباً.'},
+
+  {place:'oudtshoorn', title:'رحلة يومية: كهوف كانغو ومزارع النعام',
+   acts:['انطلاق صباحي من نيسنا عبر ممر أوتينيكوا الجبلي إلى الكارو الصغرى (~ساعة ونصف).','جولة في كهوف كانغو (Cango Caves) — تشكيلات كلسية عمرها ملايين السنين.','زيارة مزرعة نعام تفاعلية وتجربة إطعام النعام.','غداء كارو محلي ثم العودة مساءً للمبيت في نيسنا.'],
+   links:[['كهوف كانغو (احجز الجولة)','https://www.cangocaves.co.za'],['مزرعة سفاري للنعام','https://www.safariostrich.co.za']],
+   imgs:['Cango Caves','Oudtshoorn'],
+   tip:'احجز جولة الكهوف القياسية (Heritage Tour) وليست المغامرة إن كنتم لا تحبون الممرات الضيقة.'},
+
+  {place:'wilderness', title:'يوم حر: ويلدرنيس وشواطئ الجاردن روت',
+   acts:['صباح حر: شاطئ ويلدرنيس الممتد ونقطة Map of Africa البانورامية.','اختياري: تجديف كانو في نهر Touw أو ركوب دراجات على مسار السكة القديمة.','جولة تسوق وقهوة في بلدة جورج أو سيدجفيلد.','أمسية أخيرة هادئة في نيسنا وعشاء وداع الجاردن روت.'],
+   links:[['محمية ويلدرنيس (SANParks)','https://www.sanparks.org/parks/garden_route/camps/wilderness'],['دليل الجاردن روت','https://www.gardenroute.co.za']],
+   imgs:['Wilderness, Western Cape','Garden Route'],
+   tip:'يوم مرن — لو فاتكم نشاط سابق بسبب المطر فهذا اليوم فرصة تعويضه.'},
+
+  {place:'capetown', title:'العودة إلى كيب تاون والمغادرة',
+   acts:['انطلاقة مبكرة على الطريق N2 غرباً نحو كيب تاون (~500 كم، 5–6 ساعات).','توقّف للغداء في سويلندام — أقدم ثالث بلدة في جنوب أفريقيا.','تعبئة الوقود وتسليم السيارة في مطار كيب تاون.','المغادرة مساءً — في حفظ الله.'],
+   links:[['مطار كيب تاون','https://www.airports.co.za/airports/cape-town-international-airport']],
+   imgs:['Cape Town International Airport','N2 (South Africa)'],
+   tip:'اتركوا هامش 4 ساعات قبل الإقلاع — الطريق طويل وتسليم السيارة وإجراءات المطار تحتاج وقتاً.'}
+];
 
 const DEFAULT_STATE = {
   travelers: 2,
-  flightPrice: 4200,      // SAR per person, round trip
-  transportPrice: 2800,   // SAR total (car rental 11 days + fuel)
-  activitiesPrice: 2600,  // SAR total
-  foodPrice: 3300,        // SAR total
+  flightPrice: 4200,
+  transportPrice: 2800,
+  activitiesPrice: 2600,
+  foodPrice: 3300,
   payment: 'cash',
-  rate: 4.75,             // 1 SAR = 4.75 ZAR
+  rate: 4.75,
+  ctNights: 5,
+  days: DEFAULT_DAYS,
+  customPlaces: {},
   hotels: {
     capetown: {
-      label: 'كيب تاون', nights: 5, selected: 0,
+      label: 'كيب تاون', selected: 0,
       options: [
         {name:'Radisson RED V&A Waterfront', price: 950, img:''},
         {name:'The Table Bay Hotel (فاخر)', price: 1600, img:''},
         {name:'Premier Hotel Cape Town', price: 600, img:''}
       ]
     },
-    hermanus: {
-      label: 'هيرمانوس', nights: 1, selected: 1,
-      options: [
-        {name:'The Marine Hermanus (فاخر)', price: 1250, img:''},
-        {name:'Misty Waves Boutique Hotel', price: 650, img:''},
-        {name:'Whale Coast Hotel', price: 450, img:''}
-      ]
-    },
     knysna: {
-      label: 'نيسنا', nights: 3, selected: 0,
+      label: 'الجاردن روت — نيسنا', selected: 0,
       options: [
         {name:'The Turbine Boutique Hotel', price: 850, img:''},
         {name:'Premier Resort The Moorings', price: 700, img:''},
         {name:'Knysna Log-Inn Hotel', price: 550, img:''}
       ]
-    },
-    oudtshoorn: {
-      label: 'أودتشورن', nights: 1, selected: 1,
-      options: [
-        {name:'Surval Boutique Olive Estate', price: 750, img:''},
-        {name:'Hlangana Lodge', price: 500, img:''},
-        {name:'Queens Hotel', price: 430, img:''}
-      ]
     }
   }
 };
 
+/* ================= State ================= */
 let state = loadState();
+let pickingForDay = null; // index of day waiting for a map click
 
 function loadState(){
   try{
     const raw = localStorage.getItem(STORAGE_KEY);
     if(!raw) return structuredClone(DEFAULT_STATE);
     const saved = JSON.parse(raw);
-    // merge defensively so new fields in future versions don't break old saves
     const merged = structuredClone(DEFAULT_STATE);
     Object.assign(merged, saved);
-    merged.hotels = merged.hotels || {};
+    if(!Array.isArray(merged.days) || merged.days.length < 2) merged.days = structuredClone(DEFAULT_DAYS);
+    merged.customPlaces = saved.customPlaces || {};
+    merged.hotels = {};
     for(const key of Object.keys(DEFAULT_STATE.hotels)){
       merged.hotels[key] = Object.assign(structuredClone(DEFAULT_STATE.hotels[key]), saved.hotels?.[key]);
     }
@@ -899,112 +813,446 @@ function saveState(){
   saveTimer = setTimeout(()=>ind.classList.remove('show'), 1600);
 }
 
-/* ================= Formatting ================= */
+/* ================= Helpers ================= */
 const fmt = n => Math.round(n).toLocaleString('en-US');
 const sar = n => fmt(n) + ' ر.س';
 const zar = n => 'R ' + fmt(n * state.rate);
+function escapeHtml(s){return String(s ?? '').replace(/[&<>"']/g, c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]))}
+const escapeAttr = escapeHtml;
 
-/* ================= Hotels rendering ================= */
+function getPlace(key){ return PLACES[key] || state.customPlaces[key] || null; }
+function allPlaces(){ return Object.assign({}, PLACES, state.customPlaces); }
+function dayDate(i){ const d = new Date(START_DATE); d.setDate(d.getDate()+i); return d; }
+function fmtDate(d){ return `${WEEKDAYS[d.getDay()]} ${d.getDate()} ${MONTHS[d.getMonth()]}`; }
+function isoDate(d){ return d.toISOString().slice(0,10); }
+function totalNights(){ return Math.max(1, state.days.length - 1); }
+function ctNights(){ return Math.min(Math.max(1, state.ctNights), totalNights()); }
+function knNights(){ return Math.max(0, totalNights() - ctNights()); }
+function roomsCount(){ return Math.max(1, Math.ceil(state.travelers / 2)); }
+
+/* ================= Wikipedia images (free, CORS-enabled) ================= */
+const IMG_CACHE_PREFIX = 'wimg2:';
+async function wikiThumb(title){
+  const ck = IMG_CACHE_PREFIX + title;
+  const cached = localStorage.getItem(ck);
+  if(cached) return cached === 'x' ? null : cached;
+  try{
+    const r = await fetch('https://en.wikipedia.org/api/rest_v1/page/summary/' + encodeURIComponent(title.replace(/ /g,'_')), {headers:{Accept:'application/json'}});
+    if(!r.ok) throw 0;
+    const j = await r.json();
+    const src = j.thumbnail?.source || j.originalimage?.source || null;
+    try{ localStorage.setItem(ck, src || 'x'); }catch(e){}
+    return src;
+  }catch(e){ return null; }
+}
+function hydrateImages(root){
+  (root || document).querySelectorAll('.ph[data-wiki]:not([data-done])').forEach(async ph=>{
+    ph.dataset.done = '1';
+    const src = await wikiThumb(ph.dataset.wiki);
+    if(src){
+      const img = new Image();
+      img.alt = ph.dataset.wiki;
+      img.loading = 'lazy';
+      img.onload = ()=>{ ph.textContent=''; ph.appendChild(img); };
+      img.src = src;
+    }
+  });
+}
+
+/* ================= Map ================= */
+function buildRoute(){
+  const pts = [];
+  state.days.forEach((d,i)=>{
+    const p = getPlace(d.place);
+    if(!p) return;
+    const last = pts[pts.length-1];
+    if(last && last.key === d.place){ last.days.push(i+1); }
+    else pts.push({key:d.place, x:p.x, y:p.y, name:p.name, emoji:p.emoji||'📍', stay:!!p.stay, days:[i+1]});
+  });
+  return pts;
+}
+function routePathD(pts){
+  if(pts.length < 2) return '';
+  let d = `M${pts[0].x},${pts[0].y}`;
+  for(let i=1;i<pts.length;i++){
+    const a=pts[i-1], b=pts[i];
+    const mx=(a.x+b.x)/2, my=(a.y+b.y)/2 - Math.min(35, Math.hypot(b.x-a.x,b.y-a.y)*.18) ;
+    d += ` Q${mx},${my} ${b.x},${b.y}`;
+  }
+  return d;
+}
+function renderMap(){
+  stopSim();
+  const layer = document.getElementById('routeLayer');
+  const pts = buildRoute();
+  let html = '';
+  if(pts.length >= 2) html += `<path id="routePath" class="route-path" d="${routePathD(pts)}"/>`;
+  pts.forEach(p=>{
+    const daysLbl = p.days.length === 1 ? `اليوم ${p.days[0]}` : `الأيام ${p.days[0]}–${p.days[p.days.length-1]}`;
+    const pulse = p.stay ? `<circle class="pulse" cx="${p.x}" cy="${p.y}" r="9"/>` : '';
+    const below = p.y > 250;
+    const ly = below ? p.y + 36 : p.y - 22;
+    const ly2 = below ? p.y + 54 : p.y - 38;
+    html += `<g class="wp" data-day="day-${p.days[0]}" data-key="${escapeAttr(p.key)}" tabindex="0" role="button" aria-label="${escapeAttr(p.name)}">
+      ${pulse}<circle class="dot" cx="${p.x}" cy="${p.y}" r="${p.stay?11:8}"/>
+      <text x="${p.x}" y="${ly}" text-anchor="middle">${escapeHtml(p.name)} ${p.emoji}</text>
+      <text class="nights" x="${p.x}" y="${ly2}" text-anchor="middle">${daysLbl}${p.stay?' · مبيت':''}</text>
+    </g>`;
+  });
+  layer.innerHTML = html;
+  layer.querySelectorAll('.wp').forEach(wp=>{
+    const go = ()=>{
+      const target = document.getElementById(wp.dataset.day);
+      if(!target) return;
+      target.scrollIntoView({behavior:'smooth', block:'start'});
+      document.querySelectorAll('.day-card.flash').forEach(c=>c.classList.remove('flash'));
+      target.classList.add('flash');
+      setTimeout(()=>target.classList.remove('flash'), 2600);
+    };
+    wp.addEventListener('click', go);
+    wp.addEventListener('keydown', e=>{ if(e.key==='Enter'||e.key===' '){e.preventDefault();go();} });
+  });
+}
+
+/* map click → add custom place */
+const svgEl = document.getElementById('routeSvg');
+svgEl.addEventListener('click', e=>{
+  if(pickingForDay === null) return;
+  const pt = svgEl.createSVGPoint();
+  pt.x = e.clientX; pt.y = e.clientY;
+  const loc = pt.matrixTransform(svgEl.getScreenCTM().inverse());
+  const name = prompt('اسم الموقع الجديد:');
+  endPick();
+  if(!name){ renderAll(); return; }
+  const key = 'custom_' + Date.now();
+  state.customPlaces[key] = {name: name.trim(), x: Math.round(loc.x), y: Math.round(loc.y), emoji:'📍'};
+  if(state.days[pickIdx]) state.days[pickIdx].place = key;
+  saveState(); renderAll();
+});
+let pickIdx = null;
+function startPick(dayIdx){
+  pickIdx = dayIdx; pickingForDay = dayIdx;
+  svgEl.classList.add('picking');
+  document.getElementById('pickBanner').classList.add('show');
+  document.getElementById('map').scrollIntoView({behavior:'smooth'});
+}
+function endPick(){
+  pickingForDay = null;
+  svgEl.classList.remove('picking');
+  document.getElementById('pickBanner').classList.remove('show');
+}
+
+/* ================= Trip simulation ================= */
+let simRunning = false, simRAF = null, simTimeout = null;
+const simBtn = document.getElementById('simBtn');
+simBtn.addEventListener('click', ()=> simRunning ? stopSim() : startSim());
+
+function stopSim(){
+  simRunning = false;
+  if(simRAF) cancelAnimationFrame(simRAF);
+  if(simTimeout) clearTimeout(simTimeout);
+  simRAF = simTimeout = null;
+  const m = document.getElementById('simMarker');
+  if(m) m.style.display = 'none';
+  document.getElementById('simCaption')?.classList.remove('show');
+  document.querySelectorAll('.wp.active').forEach(w=>w.classList.remove('active'));
+  if(simBtn) simBtn.innerHTML = '▶️ محاكاة الرحلة';
+}
+function startSim(){
+  const path = document.getElementById('routePath');
+  const pts = buildRoute();
+  if(!path || pts.length < 2) return;
+  simRunning = true;
+  simBtn.innerHTML = '⏹ إيقاف المحاكاة';
+  document.getElementById('map').scrollIntoView({behavior:'smooth', block:'start'});
+  const marker = document.getElementById('simMarker');
+  const caption = document.getElementById('simCaption');
+  const L = path.getTotalLength();
+  // find path-length fraction nearest to each waypoint
+  const SAMPLES = 500;
+  const fractions = pts.map(p=>{
+    let best = 0, bd = Infinity;
+    for(let i=0;i<=SAMPLES;i++){
+      const q = path.getPointAtLength(L*i/SAMPLES);
+      const d = (q.x-p.x)**2 + (q.y-p.y)**2;
+      if(d < bd){ bd = d; best = i/SAMPLES; }
+    }
+    return best * L;
+  });
+  fractions[0] = 0; fractions[fractions.length-1] = L;
+
+  marker.style.display = '';
+  caption.classList.add('show');
+  let seg = 0;          // moving toward pts[seg+1]
+  let len = 0;
+  const SPEED = 110;    // svg px per second
+  let lastT = null;
+
+  function setMarker(l){
+    const q = path.getPointAtLength(Math.min(l, L));
+    marker.setAttribute('transform', `translate(${q.x},${q.y - 14})`);
+  }
+  function announce(i){
+    const p = pts[i];
+    document.querySelectorAll('.wp.active').forEach(w=>w.classList.remove('active'));
+    const wp = document.querySelector(`.wp[data-key="${CSS.escape(p.key)}"]`);
+    if(wp) wp.classList.add('active');
+    const firstDay = p.days[0];
+    const d = state.days[firstDay-1];
+    const daysLbl = p.days.length===1 ? `اليوم ${firstDay}` : `الأيام ${p.days[0]}–${p.days[p.days.length-1]}`;
+    caption.innerHTML = `📍 <b>${escapeHtml(p.name)}</b> — ${daysLbl}${p.stay?' · مبيت 🏨':''}<br><span style="color:var(--muted)">${escapeHtml(d ? d.title : '')}</span>`;
+  }
+  announce(0);
+  setMarker(0);
+
+  function step(t){
+    if(!simRunning) return;
+    if(lastT === null) lastT = t;
+    const dt = (t - lastT)/1000; lastT = t;
+    len += SPEED * dt;
+    const target = fractions[seg+1];
+    if(len >= target){
+      len = target; setMarker(len);
+      seg++;
+      announce(seg);
+      if(seg >= pts.length-1){
+        caption.innerHTML += '<br>🏁 <b>انتهت المحاكاة — رحلة سعيدة!</b>';
+        simTimeout = setTimeout(stopSim, 3500);
+        return;
+      }
+      lastT = null;
+      simTimeout = setTimeout(()=>{ if(simRunning) simRAF = requestAnimationFrame(step); }, 1500);
+      return;
+    }
+    setMarker(len);
+    simRAF = requestAnimationFrame(step);
+  }
+  simTimeout = setTimeout(()=>{ if(simRunning) simRAF = requestAnimationFrame(step); }, 900);
+}
+
+/* ================= Itinerary ================= */
+function placeOptionsHtml(selectedKey){
+  const groups = Object.entries(allPlaces()).map(([k,p])=>
+    `<option value="${escapeAttr(k)}" ${k===selectedKey?'selected':''}>${escapeHtml(p.name)} ${p.emoji||''}</option>`).join('');
+  return groups + `<option value="__pick__">➕ موقع جديد (انقر على الخريطة)...</option>`;
+}
+
+function renderItinerary(){
+  const cont = document.getElementById('daysContainer');
+  cont.innerHTML = '';
+  state.days.forEach((d,i)=>{
+    const p = getPlace(d.place);
+    const date = dayDate(i);
+    const card = document.createElement('div');
+    card.className = 'day-card';
+    card.id = 'day-' + (i+1);
+    const imgsHtml = (d.imgs||[]).slice(0,3).map(t=>
+      `<figure><div class="ph" data-wiki="${escapeAttr(t)}">📷</div><figcaption>${escapeHtml(t)}</figcaption></figure>`).join('');
+    const linksHtml = (d.links||[]).map(l=>
+      `<a class="chip" href="${escapeAttr(l[1])}" target="_blank" rel="noopener">🔗 ${escapeHtml(l[0])}</a>`).join('');
+    card.innerHTML = `
+      <div class="day-head">
+        <span class="day-num">اليوم ${i+1}</span>
+        <h3>${escapeHtml(d.title)}</h3>
+        <span class="city-tag">${escapeHtml(p ? p.name : '—')} ${p?.emoji||''}</span>
+        <span class="date">${fmtDate(date)}</span>
+      </div>
+      <div class="day-body">
+        ${imgsHtml ? `<div class="day-imgs">${imgsHtml}</div>` : ''}
+        <ul>${(d.acts||[]).map(a=>`<li>${escapeHtml(a)}</li>`).join('')}</ul>
+        ${linksHtml ? `<div class="links-row">${linksHtml}</div>` : ''}
+        ${d.tip ? `<div class="tip">💡 نصيحة: ${escapeHtml(d.tip)}</div>` : ''}
+      </div>
+      <div class="day-edit">
+        <div class="full"><label>عنوان اليوم</label><input type="text" data-i="${i}" data-f="title" value="${escapeAttr(d.title)}"></div>
+        <div><label>الموقع على الخريطة</label><select data-i="${i}" data-f="place">${placeOptionsHtml(d.place)}</select></div>
+        <div><label>روابط (سطر لكل رابط: الاسم | الرابط)</label><textarea data-i="${i}" data-f="links">${escapeHtml((d.links||[]).map(l=>l[0]+' | '+l[1]).join('\n'))}</textarea></div>
+        <div class="full"><label>الفعاليات والأنشطة (سطر لكل نشاط)</label><textarea data-i="${i}" data-f="acts">${escapeHtml((d.acts||[]).join('\n'))}</textarea></div>
+        <div class="full"><label>صور (عناوين صفحات ويكيبيديا بالإنجليزية، سطر لكل صورة — حتى 3)</label><textarea data-i="${i}" data-f="imgs" style="min-height:56px">${escapeHtml((d.imgs||[]).join('\n'))}</textarea></div>
+        <div class="full"><label>نصيحة اليوم</label><input type="text" data-i="${i}" data-f="tip" value="${escapeAttr(d.tip||'')}"></div>
+        <div class="full row-btns">
+          <button class="btn btn-sm btn-ghost" data-add="${i}">➕ إضافة يوم بعده</button>
+          <button class="btn btn-sm btn-danger" data-del="${i}" ${state.days.length<=2?'disabled':''}>🗑 حذف هذا اليوم</button>
+        </div>
+      </div>`;
+    cont.appendChild(card);
+  });
+
+  /* edit wiring (change = on blur, keeps typing smooth) */
+  cont.querySelectorAll('[data-f]').forEach(el=>{
+    el.addEventListener('change', e=>{
+      const i = +e.target.dataset.i, f = e.target.dataset.f, v = e.target.value;
+      const d = state.days[i];
+      if(!d) return;
+      if(f === 'place'){
+        if(v === '__pick__'){ startPick(i); return; }
+        d.place = v;
+      }
+      else if(f === 'acts') d.acts = v.split('\n').map(s=>s.trim()).filter(Boolean);
+      else if(f === 'imgs') d.imgs = v.split('\n').map(s=>s.trim()).filter(Boolean).slice(0,3);
+      else if(f === 'links') d.links = v.split('\n').map(s=>{
+        const parts = s.split('|').map(x=>x.trim());
+        if(parts.length >= 2 && parts[1]) return [parts[0], parts.slice(1).join('|')];
+        if(parts[0].startsWith('http')) return [parts[0], parts[0]];
+        return null;
+      }).filter(Boolean);
+      else d[f] = v;
+      saveState(); renderAll();
+    });
+  });
+  cont.querySelectorAll('[data-del]').forEach(b=>b.addEventListener('click', ()=>{
+    const i = +b.dataset.del;
+    if(state.days.length <= 2) return;
+    if(confirm(`حذف اليوم ${i+1} (${state.days[i].title})؟`)){
+      state.days.splice(i,1);
+      state.ctNights = Math.min(state.ctNights, totalNights());
+      saveState(); renderAll();
+    }
+  }));
+  cont.querySelectorAll('[data-add]').forEach(b=>b.addEventListener('click', ()=> addDayAt(+b.dataset.add + 1)));
+
+  document.getElementById('daysCount').textContent = state.days.length;
+  document.getElementById('daysNote').textContent = `(${totalNights()} ليالٍ: ${ctNights()} كيب تاون + ${knNights()} الجاردن روت)`;
+  hydrateImages(cont);
+}
+
+function addDayAt(idx){
+  state.days.splice(idx, 0, {
+    place:'knysna',
+    title:'يوم حر — استرخاء واستكشاف',
+    acts:['وقت حر للتسوق أو الشواطئ أو تعويض الأنشطة المؤجلة.'],
+    links:[], imgs:['Garden Route'], tip:''
+  });
+  saveState(); renderAll();
+  setTimeout(()=>document.getElementById('day-'+(idx+1))?.scrollIntoView({behavior:'smooth'}), 100);
+}
+document.getElementById('addDayBtn').addEventListener('click', ()=> addDayAt(state.days.length - 1));
+document.getElementById('daysPlus').addEventListener('click', ()=>{
+  if(state.days.length < 21) addDayAt(state.days.length - 1);
+});
+document.getElementById('daysMinus').addEventListener('click', ()=>{
+  if(state.days.length > 2){
+    state.days.splice(state.days.length - 2, 1); // remove last day before departure
+    state.ctNights = Math.min(state.ctNights, totalNights());
+    saveState(); renderAll();
+  }
+});
+
+/* ================= Hotels & booking ================= */
+function cityDates(key){
+  const n = totalNights();
+  if(key === 'capetown') return [dayDate(0), dayDate(ctNights())];
+  return [dayDate(ctNights()), dayDate(n)];
+}
+function bookingLinks(key){
+  const cityEn = key === 'capetown' ? 'Cape Town, South Africa' : 'Knysna, South Africa';
+  const slug = key === 'capetown' ? 'Cape-Town--South-Africa' : 'Knysna--South-Africa';
+  const [ci, co] = cityDates(key).map(isoDate);
+  const t = state.travelers, rooms = roomsCount();
+  const nights = key === 'capetown' ? ctNights() : knNights();
+  return [
+    ['Booking.com', `https://www.booking.com/searchresults.ar.html?ss=${encodeURIComponent(cityEn)}&checkin=${ci}&checkout=${co}&group_adults=${t}&no_rooms=${rooms}`],
+    ['Airbnb', `https://www.airbnb.com/s/${slug}/homes?checkin=${ci}&checkout=${co}&adults=${t}`],
+    ['Agoda', `https://www.agoda.com/ar-sa/search?textToSearch=${encodeURIComponent(cityEn)}&checkIn=${ci}&los=${Math.max(1,nights)}&adults=${t}&rooms=${rooms}`],
+    ['Expedia', `https://www.expedia.com/Hotel-Search?destination=${encodeURIComponent(cityEn)}&startDate=${ci}&endDate=${co}&adults=${t}`]
+  ];
+}
+function flightLinksHtml(){
+  const dep = isoDate(dayDate(0)), ret = isoDate(dayDate(totalNights()));
+  const yymmdd = s => s.slice(2).replace(/-/g,'');
+  return [
+    ['Google Flights', `https://www.google.com/travel/flights?q=${encodeURIComponent(`flights from Jeddah to Cape Town on ${dep} return ${ret}`)}`],
+    ['Skyscanner', `https://www.skyscanner.com.sa/transport/flights/jed/cpt/${yymmdd(dep)}/${yymmdd(ret)}/?adults=${state.travelers}`]
+  ].map(l=>`<a class="chip book" href="${escapeAttr(l[1])}" target="_blank" rel="noopener">✈️ ${escapeHtml(l[0])}</a>`).join('');
+}
+
 function renderHotels(){
   const cont = document.getElementById('hotelsContainer');
   cont.innerHTML = '';
   for(const [key, city] of Object.entries(state.hotels)){
+    const nights = key === 'capetown' ? ctNights() : knNights();
     const sel = city.options[city.selected] || city.options[0];
+    const total = sel.price * nights * roomsCount();
+    const [ci, co] = cityDates(key);
+    const nightsCtl = key === 'capetown'
+      ? `<span class="nights-ctl no-print"><button type="button" data-n="-1" aria-label="إنقاص الليالي">−</button><b style="color:var(--orange)">${nights}</b><button type="button" data-n="1" aria-label="زيادة الليالي">+</button> ليالٍ</span>`
+      : `<span class="nights-tag">${nights} ${nights===1?'ليلة':'ليالٍ'} (الباقي تلقائياً)</span>`;
     const block = document.createElement('div');
     block.className = 'hotel-block';
     block.innerHTML = `
-      <h4>📍 ${city.label} <span class="nights-tag">${city.nights} ${city.nights === 1 ? 'ليلة' : 'ليالٍ'}</span></h4>
+      <h4>📍 ${escapeHtml(city.label)} ${nightsCtl}</h4>
+      <div style="color:var(--muted);font-size:.8rem;margin-bottom:8px">${fmtDate(ci)} ← ${fmtDate(co)}</div>
       <div class="hotel-row">
         <div class="hotel-img">${sel.img ? `<img src="${escapeAttr(sel.img)}" alt="${escapeAttr(sel.name)}" onerror="this.parentElement.textContent='🏨'">` : '🏨'}</div>
         <div class="hotel-main">
-          <select data-city="${key}" class="hotel-select" aria-label="اختيار فندق ${city.label}">
+          <select data-city="${key}" class="hotel-select" aria-label="اختيار فندق ${escapeAttr(city.label)}">
             ${city.options.map((o,i)=>`<option value="${i}" ${i===city.selected?'selected':''}>${escapeHtml(o.name)} — ${fmt(o.price)} ر.س/ليلة</option>`).join('')}
           </select>
           <span class="print-hotel-name">${escapeHtml(sel.name)}</span>
           <div class="hotel-price-line">
-            <span class="pn">${fmt(sel.price)} ر.س × ${city.nights} ${city.nights === 1 ? 'ليلة' : 'ليالٍ'} × ${roomsCount()} ${roomsCount()===1?'غرفة':'غرف'}</span>
-            <span class="pt" dir="ltr">${sar(sel.price * city.nights * roomsCount())} · ${zar(sel.price * city.nights * roomsCount())}</span>
+            <span class="pn">${fmt(sel.price)} ر.س × ${nights} ${nights===1?'ليلة':'ليالٍ'} × ${roomsCount()} ${roomsCount()===1?'غرفة':'غرف'}</span>
+            <span class="pt" dir="ltr">${sar(total)} · ${zar(total)}</span>
           </div>
         </div>
       </div>
+      <div class="links-row no-print">${bookingLinks(key).map(l=>`<a class="chip book" href="${escapeAttr(l[1])}" target="_blank" rel="noopener">🛏️ احجز عبر ${escapeHtml(l[0])}</a>`).join('')}</div>
       <div class="hotel-edit">
         <div class="field full"><label>اسم الفندق</label><input type="text" data-city="${key}" data-edit="name" value="${escapeAttr(sel.name)}"></div>
         <div class="field"><label>السعر لليلة (ر.س)</label><input type="number" min="0" step="10" data-city="${key}" data-edit="price" value="${sel.price}"></div>
         <div class="field"><label>رابط صورة الفندق (URL)</label><input type="url" dir="ltr" placeholder="https://..." data-city="${key}" data-edit="img" value="${escapeAttr(sel.img)}"></div>
       </div>`;
     cont.appendChild(block);
+    block.querySelectorAll('.nights-ctl button').forEach(b=>b.addEventListener('click', ()=>{
+      const next = ctNights() + (+b.dataset.n);
+      if(next >= 1 && next <= totalNights()-0){ state.ctNights = Math.min(next, totalNights()); saveState(); renderAll(); }
+    }));
   }
-  // listeners
   cont.querySelectorAll('.hotel-select').forEach(s=>{
     s.addEventListener('change', e=>{
       state.hotels[e.target.dataset.city].selected = +e.target.value;
-      update();
+      saveState(); renderHotels(); renderBudget();
     });
   });
   cont.querySelectorAll('[data-edit]').forEach(inp=>{
-    inp.addEventListener('input', e=>{
+    inp.addEventListener('change', e=>{
       const city = state.hotels[e.target.dataset.city];
       const opt = city.options[city.selected];
       const field = e.target.dataset.edit;
       if(field === 'price') opt.price = Math.max(0, +e.target.value || 0);
       else opt[field] = e.target.value;
-      // re-render lighter parts without rebuilding the focused input
-      renderBudget();
-      saveState();
-      if(field !== 'price' && field !== 'name') renderHotels(); // refresh image
-      else {
-        // update visible labels in place
-        const blk = e.target.closest('.hotel-block');
-        const lbl = blk.querySelector('.hotel-select option:checked');
-        if(lbl) lbl.textContent = `${opt.name} — ${fmt(opt.price)} ر.س/ليلة`;
-        const line = blk.querySelector('.hotel-price-line');
-        if(line){
-          line.querySelector('.pn').textContent = `${fmt(opt.price)} ر.س × ${city.nights} ${city.nights===1?'ليلة':'ليالٍ'} × ${roomsCount()} ${roomsCount()===1?'غرفة':'غرف'}`;
-          line.querySelector('.pt').textContent = `${sar(opt.price * city.nights * roomsCount())} · ${zar(opt.price * city.nights * roomsCount())}`;
-        }
-        const pname = blk.querySelector('.print-hotel-name');
-        if(pname) pname.textContent = opt.name;
-      }
+      saveState(); renderHotels(); renderBudget();
     });
   });
+  document.getElementById('flightLinks').innerHTML = flightLinksHtml();
 }
 
-function escapeHtml(s){return String(s).replace(/[&<>"']/g, c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]))}
-function escapeAttr(s){return escapeHtml(s)}
-
-/* ================= Budget calculation ================= */
-function roomsCount(){ return Math.max(1, Math.ceil(state.travelers / 2)); }
-
+/* ================= Budget ================= */
 function hotelsTotal(){
   let t = 0;
-  for(const city of Object.values(state.hotels)){
+  for(const [key, city] of Object.entries(state.hotels)){
+    const nights = key === 'capetown' ? ctNights() : knNights();
     const sel = city.options[city.selected] || city.options[0];
-    t += sel.price * city.nights * roomsCount();
+    t += sel.price * nights * roomsCount();
   }
   return t;
 }
-
 function calc(){
   const flights = state.flightPrice * state.travelers;
   const hotels = hotelsTotal();
-  const transport = state.transportPrice;
-  const activities = state.activitiesPrice;
-  const food = state.foodPrice;
-  const subtotal = flights + hotels + transport + activities + food;
+  const rest = state.transportPrice + state.activitiesPrice + state.foodPrice;
   const discount = state.payment === 'cash' ? (flights + hotels) * 0.05 : 0;
-  const total = subtotal - discount;
-  return {flights, hotels, transport, activities, food, subtotal, discount, total};
+  const instBase = flights + hotels;            // installments cover flights+hotels only
+  const total = flights + hotels + rest - discount;
+  return {flights, hotels, rest, discount, total, instBase};
 }
-
 function renderBudget(){
   const c = calc();
-  const body = document.getElementById('budgetBody');
   const rows = [
     ['✈️ الطيران (' + state.travelers + ' ' + (state.travelers===1?'مسافر':state.travelers===2?'مسافرَين':'مسافرين') + ')', c.flights],
-    ['🏨 الفنادق (10 ليالٍ × ' + roomsCount() + ' ' + (roomsCount()===1?'غرفة':'غرف') + ')', c.hotels],
-    ['🚗 المواصلات (سيارة + وقود)', c.transport],
-    ['🎟️ الأنشطة والجولات', c.activities],
-    ['🍽️ الطعام والمطاعم', c.food],
+    ['🏨 الفنادق (' + totalNights() + ' ليالٍ × ' + roomsCount() + ' ' + (roomsCount()===1?'غرفة':'غرف') + ')', c.hotels],
+    ['🚗 المواصلات (سيارة + وقود)', state.transportPrice],
+    ['🎟️ الأنشطة والجولات', state.activitiesPrice],
+    ['🍽️ الطعام والمطاعم', state.foodPrice],
   ];
   let html = rows.map(([label, v]) =>
     `<tr><td>${label}</td><td class="sar">${sar(v)}</td><td class="zar">${zar(v)}</td></tr>`).join('');
@@ -1012,50 +1260,53 @@ function renderBudget(){
     html += `<tr class="discount"><td>💵 خصم الدفع كاش 5% (فنادق + طيران)</td><td class="sar" dir="ltr">− ${sar(c.discount)}</td><td class="zar" dir="ltr">− ${zar(c.discount)}</td></tr>`;
   }
   html += `<tr class="total"><td>الإجمالي</td><td class="sar">${sar(c.total)}</td><td class="zar">${zar(c.total)}</td></tr>`;
-  body.innerHTML = html;
-
+  document.getElementById('budgetBody').innerHTML = html;
   document.getElementById('perPerson').textContent =
     `للشخص الواحد: ${sar(c.total / state.travelers)} ≈ ${zar(c.total / state.travelers)}`;
 
-  // installments
   const instBox = document.getElementById('installments');
   if(state.payment === 'tabby' || state.payment === 'tamara'){
     instBox.classList.add('show');
     const brand = state.payment === 'tabby' ? 'تابي Tabby' : 'تمارا Tamara';
-    document.getElementById('instTitle').textContent = `📅 جدول أقساط ${brand} — 4 دفعات بدون فوائد`;
-    const part = c.total / 4;
+    document.getElementById('instTitle').textContent = `📅 أقساط ${brand} — الطيران والفنادق فقط (4 دفعات)`;
+    const part = c.instBase / 4;
     const labels = ['عند الحجز','بعد شهر','بعد شهرين','بعد 3 أشهر'];
     document.getElementById('instGrid').innerHTML = labels.map((l,i)=>
       `<div class="inst"><div class="n">القسط ${i+1} · ${l}</div><div class="a">${sar(part)}</div><div class="dt">≈ ${zar(part)}</div></div>`
     ).join('');
+    document.getElementById('instNote').innerHTML =
+      `قيمة المقسَّط (طيران + فنادق): <b>${sar(c.instBase)}</b> · يُدفع مباشرة (مواصلات + أنشطة + طعام): <b>${sar(c.rest)}</b>`;
   } else {
     instBox.classList.remove('show');
   }
 
-  // header badge + rooms note
   document.getElementById('travelersBadge').textContent = state.travelers;
   document.getElementById('travCount').textContent = state.travelers;
   document.getElementById('roomsNote').textContent = `(${roomsCount()} ${roomsCount()===1?'غرفة':'غرف'} مزدوجة)`;
+  document.getElementById('daysBadge').textContent = state.days.length;
+  document.getElementById('nightsBadge').textContent = `${ctNights()} ليالٍ كيب تاون + ${knNights()} الجاردن روت`;
+  const end = dayDate(state.days.length - 1);
+  document.getElementById('headerDates').textContent =
+    `جنوب أفريقيا · ${START_DATE.getDate()} ${MONTHS[START_DATE.getMonth()]} – ${end.getDate()} ${MONTHS[end.getMonth()]} ${end.getFullYear()} · ${state.days.length} يوماً / ${totalNights()} ليالٍ`;
 }
 
-/* ================= Inputs wiring ================= */
+/* ================= Wiring ================= */
 function bindNumber(id, key){
   const el = document.getElementById(id);
   el.value = state[key];
   el.addEventListener('input', ()=>{
     state[key] = Math.max(0, +el.value || 0);
-    renderBudget(); renderHotels(); saveState();
+    renderBudget(); saveState();
   });
+  el.addEventListener('change', ()=>{ renderHotels(); });
 }
-
 document.getElementById('travMinus').addEventListener('click', ()=>{
-  if(state.travelers > 1){ state.travelers--; update(); }
+  if(state.travelers > 1){ state.travelers--; saveState(); renderHotels(); renderBudget(); }
 });
 document.getElementById('travPlus').addEventListener('click', ()=>{
-  if(state.travelers < 12){ state.travelers++; update(); }
+  if(state.travelers < 12){ state.travelers++; saveState(); renderHotels(); renderBudget(); }
 });
 
-/* payment options */
 function renderPayment(){
   document.querySelectorAll('.pay-opt').forEach(opt=>{
     const on = opt.dataset.pay === state.payment;
@@ -1070,11 +1321,10 @@ document.querySelectorAll('.pay-opt').forEach(opt=>{
   });
 });
 
-/* ================= Currency converter ================= */
+/* converter */
 const convSar = document.getElementById('convSar');
 const convZar = document.getElementById('convZar');
 const rateInput = document.getElementById('rateInput');
-
 convSar.addEventListener('input', ()=>{
   convZar.value = convSar.value === '' ? '' : (+convSar.value * state.rate).toFixed(2);
 });
@@ -1083,40 +1333,27 @@ convZar.addEventListener('input', ()=>{
 });
 rateInput.addEventListener('input', ()=>{
   const r = +rateInput.value;
-  if(r > 0){ state.rate = r; renderBudget(); renderHotels(); saveState();
+  if(r > 0){
+    state.rate = r; renderBudget(); renderHotels(); saveState();
     if(convSar.value !== '') convZar.value = (+convSar.value * state.rate).toFixed(2);
   }
 });
 
-/* ================= Edit mode ================= */
+/* edit mode */
 document.getElementById('editToggle').addEventListener('click', ()=>{
   document.body.classList.toggle('edit-on');
   const on = document.body.classList.contains('edit-on');
   document.getElementById('editToggle').innerHTML = on ? '✅ إنهاء التعديل' : '✏️ وضع تعديل الرحلة';
-  if(on) document.getElementById('budget').scrollIntoView({behavior:'smooth'});
+  if(!on) endPick();
 });
 
-/* ================= Reset ================= */
+/* reset */
 document.getElementById('resetBtn').addEventListener('click', ()=>{
-  if(confirm('هل تريد استعادة جميع الأسعار والفنادق والإعدادات الافتراضية؟ ستُحذف تعديلاتك المحفوظة.')){
+  if(confirm('هل تريد استعادة الخطة والأسعار والفنادق الافتراضية؟ ستُحذف تعديلاتك المحفوظة.')){
     localStorage.removeItem(STORAGE_KEY);
     state = structuredClone(DEFAULT_STATE);
-    update(true);
+    renderAll();
   }
-});
-
-/* ================= Map interactivity ================= */
-document.querySelectorAll('.wp').forEach(wp=>{
-  const go = ()=>{
-    const target = document.getElementById(wp.dataset.day);
-    if(!target) return;
-    target.scrollIntoView({behavior:'smooth', block:'start'});
-    document.querySelectorAll('.day-card.flash').forEach(c=>c.classList.remove('flash'));
-    target.classList.add('flash');
-    setTimeout(()=>target.classList.remove('flash'), 2600);
-  };
-  wp.addEventListener('click', go);
-  wp.addEventListener('keydown', e=>{ if(e.key==='Enter'||e.key===' '){e.preventDefault();go();} });
 });
 
 /* back-to-map button */
@@ -1124,25 +1361,25 @@ window.addEventListener('scroll', ()=>{
   document.getElementById('backToMap').classList.toggle('show', window.scrollY > 700);
 }, {passive:true});
 
-/* ================= Master update ================= */
-function update(skipSave){
+/* ================= Master render ================= */
+function renderAll(){
   document.getElementById('flightPrice').value = state.flightPrice;
   document.getElementById('transportPrice').value = state.transportPrice;
   document.getElementById('activitiesPrice').value = state.activitiesPrice;
   document.getElementById('foodPrice').value = state.foodPrice;
   rateInput.value = state.rate;
   renderPayment();
+  renderMap();
+  renderItinerary();
   renderHotels();
   renderBudget();
-  if(!skipSave) saveState();
 }
 
-/* init */
 bindNumber('flightPrice','flightPrice');
 bindNumber('transportPrice','transportPrice');
 bindNumber('activitiesPrice','activitiesPrice');
 bindNumber('foodPrice','foodPrice');
-update(true);
+renderAll();
 </script>
 </body>
 </html>
