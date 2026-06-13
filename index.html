@@ -254,6 +254,26 @@ select{cursor:pointer}
 }
 .nights-ctl button:hover{background:var(--teal);color:#1b2027}
 
+/* driver */
+.drv-row{
+  display:flex;align-items:center;gap:12px;flex-wrap:wrap;
+  padding:10px 0;border-bottom:1px dashed rgba(170,178,189,.15);
+}
+.drv-row:last-of-type{border-bottom:none}
+.drv-row .drv-check{display:flex;align-items:center;gap:8px;flex:1;min-width:210px;cursor:pointer}
+.drv-row input[type=checkbox]{width:18px;height:18px;accent-color:var(--orange);cursor:pointer}
+.drv-row .drv-label{font-size:.92rem}
+.drv-row .drv-days{color:var(--muted);font-size:.8rem}
+.drv-row input[type=number]{
+  width:110px;background:var(--bg2);border:1px solid var(--bg3);color:var(--text);
+  border-radius:10px;padding:7px 10px;font-family:inherit;font-size:.92rem;outline:none;
+}
+.drv-row input[type=number]:focus{border-color:var(--teal)}
+.drv-row .drv-total{font-size:.85rem;color:var(--teal);direction:ltr;min-width:140px;text-align:left}
+.drv-row.off .drv-total,.drv-row.off input[type=number]{opacity:.35}
+.drv-sum{margin-top:10px;font-size:.92rem;color:var(--text);display:flex;justify-content:space-between;flex-wrap:wrap;gap:6px}
+.drv-sum b{color:var(--orange)}
+
 /* payment */
 .pay-options{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-bottom:16px}
 @media(max-width:560px){.pay-options{grid-template-columns:1fr}}
@@ -491,8 +511,16 @@ footer{
           <div class="links-row no-print" id="flightLinks"></div>
         </div>
         <div class="field">
-          <label>المواصلات: استئجار سيارة + وقود + مواقف (ريال سعودي، إجمالي)</label>
+          <label>المواصلات: استئجار سيارة + وقود + مواقف (ريال سعودي، إجمالي) — ضعه 0 لو اعتمدتم السائق الخاص</label>
           <input type="number" id="transportPrice" min="0" step="50">
+        </div>
+        <div class="field">
+          <label>🚘 سائق خاص — فعّله للمدن التي تحتاجها فقط (السعر لليوم بالريال)</label>
+          <div class="hotel-block" style="margin-bottom:0">
+            <div id="driverContainer"></div>
+            <div class="drv-sum"><span>إجمالي السائق الخاص:</span><span id="driverSum" dir="ltr">0</span></div>
+            <div class="links-row no-print" id="driverLinks"></div>
+          </div>
         </div>
         <div class="field">
           <label>الأنشطة والجولات (تلفريك، رحلات بحرية، كهوف...) — إجمالي</label>
@@ -759,6 +787,11 @@ const DEFAULT_STATE = {
   payment: 'cash',
   rate: 4.75,
   ctNights: 5,
+  driver: {
+    capetown: {on:false, price:450},
+    transfer: {on:false, price:800},
+    garden:   {on:false, price:500}
+  },
   days: DEFAULT_DAYS,
   customPlaces: {},
   hotels: {
@@ -794,6 +827,10 @@ function loadState(){
     Object.assign(merged, saved);
     if(!Array.isArray(merged.days) || merged.days.length < 2) merged.days = structuredClone(DEFAULT_DAYS);
     merged.customPlaces = saved.customPlaces || {};
+    merged.driver = {};
+    for(const key of Object.keys(DEFAULT_STATE.driver)){
+      merged.driver[key] = Object.assign(structuredClone(DEFAULT_STATE.driver[key]), saved.driver?.[key]);
+    }
     merged.hotels = {};
     for(const key of Object.keys(DEFAULT_STATE.hotels)){
       merged.hotels[key] = Object.assign(structuredClone(DEFAULT_STATE.hotels[key]), saved.hotels?.[key]);
@@ -1226,6 +1263,61 @@ function renderHotels(){
   document.getElementById('flightLinks').innerHTML = flightLinksHtml();
 }
 
+/* ================= Private driver ================= */
+function driverSegments(){
+  const ct = ctNights();
+  const garden = Math.max(0, state.days.length - ct - 1);
+  return [
+    {key:'capetown', label:'كيب تاون (جولات المدينة وشبه الجزيرة)', days: ct},
+    {key:'transfer', label:'يوم الانتقال: كيب تاون ← نيسنا عبر هيرمانوس', days: 1},
+    {key:'garden',   label:'الجاردن روت (نيسنا وما حولها + العودة)', days: garden}
+  ];
+}
+function driverTotal(){
+  return driverSegments().reduce((t,s)=>{
+    const d = state.driver[s.key];
+    return t + (d?.on ? Math.max(0, d.price) * s.days : 0);
+  }, 0);
+}
+function renderDriver(){
+  const cont = document.getElementById('driverContainer');
+  cont.innerHTML = driverSegments().map(s=>{
+    const d = state.driver[s.key];
+    const segTotal = d.price * s.days;
+    return `<div class="drv-row ${d.on?'':'off'}">
+      <label class="drv-check">
+        <input type="checkbox" data-drv="${s.key}" ${d.on?'checked':''}>
+        <span><span class="drv-label">${escapeHtml(s.label)}</span><br><span class="drv-days">${s.days} ${s.days===1?'يوم':'أيام'} × سعر اليوم</span></span>
+      </label>
+      <input type="number" min="0" step="50" data-drvprice="${s.key}" value="${d.price}" aria-label="سعر اليوم لسائق ${escapeAttr(s.label)}">
+      <span class="drv-total">${sar(segTotal)} · ${zar(segTotal)}</span>
+    </div>`;
+  }).join('');
+  const t = driverTotal();
+  document.getElementById('driverSum').textContent = t > 0 ? `${sar(t)} · ${zar(t)}` : '— غير مفعّل';
+  document.getElementById('driverLinks').innerHTML = [
+    ['GetYourGuide', 'https://www.getyourguide.com/s/?q=' + encodeURIComponent('private driver Cape Town Garden Route')],
+    ['Viator', 'https://www.viator.com/searchResults/all?text=' + encodeURIComponent('private driver Cape Town')]
+  ].map(l=>`<a class="chip book" href="${escapeAttr(l[1])}" target="_blank" rel="noopener">🚘 سائقون عبر ${escapeHtml(l[0])}</a>`).join('');
+
+  cont.querySelectorAll('[data-drv]').forEach(cb=>cb.addEventListener('change', ()=>{
+    state.driver[cb.dataset.drv].on = cb.checked;
+    saveState(); renderDriver(); renderBudget();
+  }));
+  cont.querySelectorAll('[data-drvprice]').forEach(inp=>{
+    inp.addEventListener('input', ()=>{
+      state.driver[inp.dataset.drvprice].price = Math.max(0, +inp.value || 0);
+      saveState(); renderBudget();
+      const row = inp.closest('.drv-row');
+      const seg = driverSegments().find(s=>s.key===inp.dataset.drvprice);
+      const st = state.driver[inp.dataset.drvprice].price * seg.days;
+      row.querySelector('.drv-total').textContent = `${sar(st)} · ${zar(st)}`;
+      const t2 = driverTotal();
+      document.getElementById('driverSum').textContent = t2 > 0 ? `${sar(t2)} · ${zar(t2)}` : '— غير مفعّل';
+    });
+  });
+}
+
 /* ================= Budget ================= */
 function hotelsTotal(){
   let t = 0;
@@ -1239,7 +1331,7 @@ function hotelsTotal(){
 function calc(){
   const flights = state.flightPrice * state.travelers;
   const hotels = hotelsTotal();
-  const rest = state.transportPrice + state.activitiesPrice + state.foodPrice;
+  const rest = state.transportPrice + driverTotal() + state.activitiesPrice + state.foodPrice;
   const discount = state.payment === 'cash' ? (flights + hotels) * 0.05 : 0;
   const instBase = flights + hotels;            // installments cover flights+hotels only
   const total = flights + hotels + rest - discount;
@@ -1251,6 +1343,7 @@ function renderBudget(){
     ['✈️ الطيران (' + state.travelers + ' ' + (state.travelers===1?'مسافر':state.travelers===2?'مسافرَين':'مسافرين') + ')', c.flights],
     ['🏨 الفنادق (' + totalNights() + ' ليالٍ × ' + roomsCount() + ' ' + (roomsCount()===1?'غرفة':'غرف') + ')', c.hotels],
     ['🚗 المواصلات (سيارة + وقود)', state.transportPrice],
+    ...(driverTotal() > 0 ? [['🚘 سائق خاص (' + driverSegments().filter(s=>state.driver[s.key].on).reduce((n,s)=>n+s.days,0) + ' أيام)', driverTotal()]] : []),
     ['🎟️ الأنشطة والجولات', state.activitiesPrice],
     ['🍽️ الطعام والمطاعم', state.foodPrice],
   ];
@@ -1372,6 +1465,7 @@ function renderAll(){
   renderMap();
   renderItinerary();
   renderHotels();
+  renderDriver();
   renderBudget();
 }
 
