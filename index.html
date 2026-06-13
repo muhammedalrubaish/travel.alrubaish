@@ -898,11 +898,11 @@ const DEFAULT_DAYS = [
    imgs:['Kirstenbosch National Botanical Garden','Stellenbosch','Camps Bay'],
    tip:'احجز مدخل بابيلونستورن مسبقاً عبر الإنترنت. رتّب حقائبك الليلة — غداً تبدأ جولة الجاردن روت، وعبّئ وقود السيارة مساءً.'},
 
-  {place:'hermanus', title:'إلى الجاردن روت عبر هيرمانوس 🐋 (بدون مبيت)',
-   acts:['انطلاقة مبكرة (7 صباحاً) عبر الطريق الساحلي R44 (Clarence Drive) المذهل.','توقّف 3–4 ساعات في هيرمانوس: مشاهدة الحيتان الجنوبية من المنحدرات وممشى الجرف.','غداء سريع في هيرمانوس ثم مواصلة الطريق N2 شرقاً.','استراحة قهوة في سويلندام أو موسيل باي، والوصول إلى نيسنا مساءً (إجمالي ~500 كم).'],
-   links:[['رحلات الحيتان البحرية','https://southernrightcharters.co.za'],['دليل هيرمانوس','https://hermanus.co.za']],
+  {place:'hermanus', title:'هيرمانوس 🐋 — يوم الحيتان (مبيت ليلة واحدة)',
+   acts:['انطلاقة مبكرة (7 صباحاً) عبر الطريق الساحلي R44 (Clarence Drive) المذهل.','وصول هيرمانوس ضحىً: مشاهدة الحيتان الجنوبية من المنحدرات وممشى الجرف ساعتين.','رحلة بحرية لمشاهدة الحيتان عن قرب مع شركة Southern Right Charters (احجز مسبقاً).','غداء في وسط هيرمانوس، جولة في سوق الميناء مساءً، وعشاء بإطلالة على الخليج — ثم المبيت في هيرمانوس.'],
+   links:[['رحلات الحيتان البحرية','https://southernrightcharters.co.za'],['دليل هيرمانوس','https://hermanus.co.za'],['The Marine Hotel','https://www.marine.co.za']],
    imgs:['Hermanus','Walker Bay'],
-   tip:'أنصت لـ"منادي الحيتان" (Whale Crier) في وسط البلدة — ينفخ بوقاً عند رصد الحيتان. لا تتأخروا بعد الساعة 2 ظهراً لتجنب القيادة ليلاً.'},
+   tip:'أنصت لـ"منادي الحيتان" (Whale Crier) في وسط البلدة — ينفخ بوقاً عند رصد الحيتان. المبيت في هيرمانوس يتيح لك رحلة الحيتان البحرية دون تسرّع، ويكسر مسافة 500 كم إلى الجاردن روت ليومَين مريحَين.'},
 
   {place:'knysna', title:'نيسنا: البحيرة والرأسان الصخريان',
    acts:['صباح هادئ وفطور على بحيرة نيسنا.','رحلة بحرية في البحيرة حتى رأسَي نيسنا (Knysna Heads).','إطلالة بانورامية من نقطة المشاهدة الشرقية (East Head Viewpoint).','جولة في الواجهة البحرية (Knysna Waterfront) وجزيرة ثيسن.'],
@@ -1006,6 +1006,14 @@ const DEFAULT_STATE = {
         {name:'Premier Hotel Cape Town', price: 600, img:''}
       ]
     },
+    hermanus: {
+      label: 'هيرمانوس 🐋', selected: 0,
+      options: [
+        {name:'The Marine Hotel Hermanus', price: 900, img:''},
+        {name:'Burgundy Estate Hermanus', price: 650, img:''},
+        {name:'Harbour House Hotel Hermanus', price: 750, img:''}
+      ]
+    },
     knysna: {
       label: 'الجاردن روت — نيسنا', selected: 0,
       options: [
@@ -1085,8 +1093,9 @@ function fmtDate(d){ return `${WEEKDAYS[d.getDay()]} ${d.getDate()} ${MONTHS[d.g
 function isoDate(d){ return d.toISOString().slice(0,10); }
 function totalNights(){ return Math.max(1, state.days.length - 1); }
 function ctNights(){ return Math.min(Math.max(1, state.ctNights), totalNights()); }
-const LODGE_NIGHTS = 1; // Garden Route Game Lodge — fixed 1 night on return
-function knNights(){ return Math.max(0, totalNights() - ctNights() - LODGE_NIGHTS); }
+const LODGE_NIGHTS = 1;    // Garden Route Game Lodge — fixed 1 night on return
+const HERMANUS_NIGHTS = 1; // Hermanus overnight on the way to Garden Route
+function knNights(){ return Math.max(0, totalNights() - ctNights() - HERMANUS_NIGHTS - LODGE_NIGHTS); }
 function roomsCount(){ return Math.max(1, Math.ceil(state.travelers / 2)); }
 
 /* ================= Wikipedia images (free, CORS-enabled) ================= */
@@ -1371,7 +1380,7 @@ function renderItinerary(){
   cont.querySelectorAll('[data-add]').forEach(b=>b.addEventListener('click', ()=> addDayAt(+b.dataset.add + 1)));
 
   document.getElementById('daysCount').textContent = state.days.length;
-  document.getElementById('daysNote').textContent = `(${totalNights()} ليالٍ: ${ctNights()} كيب تاون + ${knNights()} الجاردن روت)`;
+  document.getElementById('daysNote').textContent = `(${totalNights()} ليالٍ: ${ctNights()} كيب تاون + ${HERMANUS_NIGHTS} هيرمانوس + ${knNights()} الجاردن روت + ${LODGE_NIGHTS} Game Lodge)`;
   hydrateImages(cont);
 }
 
@@ -1401,10 +1410,11 @@ document.getElementById('daysMinus').addEventListener('click', ()=>{
 function cityDates(key){
   const n = totalNights();
   const kn = knNights();
-  const firstCT = ctNights() - 1;          // nights 1…firstCT in Cape Town
-  const knStart = firstCT;                  // Knysna starts night firstCT+1
-  const lodgeStart = knStart + kn;          // Lodge night: after Knysna
-  if(key === 'capetown')  return [dayDate(0), dayDate(n)];      // full window for booking link
+  const hermStart = ctNights() - 1;                         // Hermanus check-in after initial CT nights
+  const knStart = hermStart + HERMANUS_NIGHTS;              // Knysna starts after Hermanus
+  const lodgeStart = knStart + kn;                          // Lodge night: after Knysna
+  if(key === 'capetown')  return [dayDate(0), dayDate(n)];
+  if(key === 'hermanus')  return [dayDate(hermStart), dayDate(hermStart + HERMANUS_NIGHTS)];
   if(key === 'knysna')    return [dayDate(knStart), dayDate(knStart + kn)];
   if(key === 'gamelodge') return [dayDate(lodgeStart), dayDate(lodgeStart + LODGE_NIGHTS)];
   return [dayDate(0), dayDate(n)];
@@ -1417,8 +1427,8 @@ function bookingLinks(key){
       ['Booking.com', `https://www.booking.com/searchresults.ar.html?ss=Garden+Route+Game+Lodge&checkin=${ci}&checkout=${co}&group_adults=${state.travelers}&no_rooms=${roomsCount()}`],
     ];
   }
-  const cityEn = key === 'capetown' ? 'Cape Town, South Africa' : 'Knysna, South Africa';
-  const slug = key === 'capetown' ? 'Cape-Town--South-Africa' : 'Knysna--South-Africa';
+  const cityEn = key === 'capetown' ? 'Cape Town, South Africa' : key === 'hermanus' ? 'Hermanus, South Africa' : 'Knysna, South Africa';
+  const slug = key === 'capetown' ? 'Cape-Town--South-Africa' : key === 'hermanus' ? 'Hermanus--South-Africa' : 'Knysna--South-Africa';
   const t = state.travelers, rooms = roomsCount();
   const nights = hotelNights(key);
   const [ciD, coD] = cityDates(key);
@@ -1453,10 +1463,12 @@ function renderHotels(){
       : '';
     const lodgeNote = key === 'gamelodge'
       ? `<span style="color:var(--teal);font-size:.78rem;margin-inline-start:8px">🦁 ليلة واحدة في الطريق (${fmtDate(ci)} ← ${fmtDate(co)})</span>`
+      : key === 'hermanus'
+      ? `<span style="color:var(--teal);font-size:.78rem;margin-inline-start:8px">🐋 ليلة واحدة في الطريق (${fmtDate(ci)} ← ${fmtDate(co)})</span>`
       : '';
     const nightsCtl = key === 'capetown'
       ? `<span class="nights-ctl no-print"><button type="button" data-n="-1" aria-label="إنقاص الليالي">−</button><b style="color:var(--orange)">${nights}</b><button type="button" data-n="1" aria-label="زيادة الليالي">+</button> ليالٍ</span>`
-      : key === 'gamelodge'
+      : (key === 'gamelodge' || key === 'hermanus')
         ? `<span class="nights-tag">ليلة واحدة ثابتة</span>`
         : `<span class="nights-tag">${nights} ${nights===1?'ليلة':'ليالٍ'} (تلقائياً)</span>`;
     const block = document.createElement('div');
@@ -1736,6 +1748,7 @@ function renderDriver(){
 /* ================= Budget ================= */
 function hotelNights(key){
   if(key === 'capetown')  return ctNights();
+  if(key === 'hermanus')  return HERMANUS_NIGHTS;
   if(key === 'knysna')    return knNights();
   if(key === 'gamelodge') return LODGE_NIGHTS;
   return 0;
@@ -1799,7 +1812,7 @@ function renderBudget(){
   document.getElementById('travCount').textContent = state.travelers;
   document.getElementById('roomsNote').textContent = `(${roomsCount()} ${roomsCount()===1?'غرفة':'غرف'} مزدوجة)`;
   document.getElementById('daysBadge').textContent = state.days.length;
-  document.getElementById('nightsBadge').textContent = `${ctNights()} كيب تاون + ${knNights()} نيسنا + ${LODGE_NIGHTS} Game Lodge`;
+  document.getElementById('nightsBadge').textContent = `${ctNights()} كيب تاون + ${HERMANUS_NIGHTS} هيرمانوس + ${knNights()} نيسنا + ${LODGE_NIGHTS} Game Lodge`;
   const end = dayDate(state.days.length - 1);
   document.getElementById('headerDates').textContent =
     `جنوب أفريقيا · ${START_DATE.getDate()} ${MONTHS[START_DATE.getMonth()]} – ${end.getDate()} ${MONTHS[end.getMonth()]} ${end.getFullYear()} · ${state.days.length} يوماً / ${totalNights()} ليالٍ`;
