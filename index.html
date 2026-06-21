@@ -926,7 +926,7 @@ footer{
 <script>
 'use strict';
 /* ================= Constants ================= */
-const STORAGE_KEY = 'capetown-trip-2026-v4';
+const STORAGE_KEY = 'capetown-trip-2026-v5';
 const START_DATE = new Date(2026, 6, 21); // 21 July 2026
 const WEEKDAYS = ['الأحد','الاثنين','الثلاثاء','الأربعاء','الخميس','الجمعة','السبت'];
 const MONTHS = ['يناير','فبراير','مارس','أبريل','مايو','يونيو','يوليو','أغسطس','سبتمبر','أكتوبر','نوفمبر','ديسمبر'];
@@ -946,59 +946,77 @@ const PLACES = {
 
 /* ================= Default itinerary =================
    هيرمانوس 1 ليلة → ويلدرنيس 2 ليالٍ → موسيل باي 2 ليالٍ → كيب تاون 3 ليالٍ */
+/* صور حقيقية مباشرة من ويكيميديا كومنز (Special:FilePath → CDN سريع، بدون أي طلب API) */
+const _CW = 'https://commons.wikimedia.org/wiki/Special:FilePath/';
+const _CWQ = '?width=1000';
+const IMG = {
+  whales:      _CW+'Southern_Right_Whales_(Hermanus).jpg'+_CWQ,
+  table:       _CW+'Table_mountain_and_the_ocean_cape_town.JPG'+_CWQ,
+  knysna:      _CW+'Knysna%27s_Western_Head.JPG'+_CWQ,
+  mosselbay:   _CW+'Mossel_Bay%2C_6506%2C_South_Africa_-_panoramio.jpg'+_CWQ,
+  elephant:    _CW+'Elephant_side-view_Kruger.jpg'+_CWQ,
+  lion:        _CW+'Lion_in_masai_mara.jpg'+_CWQ,
+  franschhoek: _CW+'Franschhoek%2C_Western_Cape%2C_South_Africa_(20318451198).jpg'+_CWQ,
+  stellenbosch:_CW+'Stellenbosch-region.JPG'+_CWQ,
+  bokaap:      _CW+'Cape_Town_Bo-Kaap_city_street.jpg'+_CWQ,
+  capepoint:   _CW+'Lighthouse_Cape_Point%2C_South_Africa.JPG'+_CWQ,
+  penguins:    _CW+'African_penguin_near_Boulders_Beach.jpg'+_CWQ,
+  chapmans:    _CW+'ChapmansPeakDrive_View.jpg'+_CWQ,
+  waterfront:  _CW+'Victorian_Clock_Tower%2C_1883._Table_Bay_Harbour%2C_Cape_Town%2C_Western_Cape._Gothic_Style._Painted_Red_previously._02.JPG'+_CWQ
+};
 const DEFAULT_DAYS = [
   {place:'hermanus', title:'الوصول إلى هيرمانوس — بلدة الحيتان 🐋',
    acts:['الوصول إلى مطار كيب تاون الدولي (CPT) من أديس أبابا، واستلام سيارة الإيجار.','القيادة (~120 كم، ساعة ونصف) عبر الطريق الساحلي R44/N2 المذهل نحو هيرمانوس.','تسجيل الدخول في الفندق والاسترخاء بعد رحلة الطيران.','جولة مسائية على ممشى الجرف (Cliff Path) المطل على خليج ووكر، وعشاء في وسط البلدة.'],
    links:[['دليل هيرمانوس الرسمي','https://hermanus.co.za'],['مطار كيب تاون','https://www.airports.co.za/airports/cape-town-international-airport']],
-   imgs:['Hermanus','Southern right whale'],
+   imgs:[{c:'حيتان هيرمانوس الجنوبية',u:IMG.whales},{c:'جبل الطاولة عند الوصول',u:IMG.table}],
    tip:'فعّل شريحة Vodacom أو MTN من المطار مباشرة. أنصت لـ"منادي الحيتان" (Whale Crier) في وسط هيرمانوس — ينفخ بوقاً كلما رصد حوتاً.'},
 
   {place:'wilderness', title:'هيرمانوس → ويلدرنيس عبر ساحل الجاردن روت',
    acts:['صباحاً: مشاهدة الحيتان الجنوبية من منحدرات هيرمانوس أو رحلة بحرية قصيرة.','زيارة Old Harbour Museum وسوق هيرمانوس الصباحي.','انطلاق على N2 شرقاً نحو ويلدرنيس (~250 كم، 3 ساعات) مع استراحة في سويلندام.','الوصول إلى ويلدرنيس مساءً وتسجيل الدخول — قرية ساحلية هادئة ذات شواطئ رملية ذهبية.'],
    links:[['رحلات الحيتان البحرية','https://southernrightcharters.co.za'],['دليل ويلدرنيس','https://www.wilderness-info.com']],
-   imgs:['Southern right whale','Wilderness, Western Cape'],
+   imgs:[{c:'مشاهدة الحيتان',u:IMG.whales},{c:'ساحل الجاردن روت',u:IMG.knysna}],
    tip:'لا تتأخر في هيرمانوس — اغادر بعد الظهر لتصل ويلدرنيس قبل المغرب. يوليو موسم ذروة الحيتان الجنوبية.'},
 
   {place:'wilderness', title:'يوم حر في ويلدرنيس — ويمكن زيارة نيسنا',
    acts:['استكشاف شاطئ ويلدرنيس الرملي الطويل المطل على المحيط الهندي.','جلسة كاياك أو تجديف في بحيرة ويلدرنيس الهادئة.','رحلة يومية اختيارية إلى نيسنا شرقاً (~80 كم، ساعة) لرؤية الرأسَين الصخريَّين الشهيرَين.','ليلة هادئة بمطعم محلي على الشاطئ.'],
    links:[['حديقة ويلدرنيس الوطنية','https://www.sanparks.org/parks/garden_route'],['دليل نيسنا','https://www.visitknysna.co.za']],
-   imgs:['Wilderness, Western Cape','Knysna'],
+   imgs:[{c:'رأسا نيسنا الشهيران',u:IMG.knysna},{c:'الساحل الجنوبي',u:IMG.mosselbay}],
    tip:'نيسنا شرق ويلدرنيس على N2 — اذهب صباحاً وعد ظهراً. اليوم مرن لأنك لا تنتقل للمبيت في مدينة أخرى.'},
 
   {place:'mosselbay', title:'ويلدرنيس → موسيل باي (غرباً على N2)',
    acts:['صباح هادئ في ويلدرنيس وفطور كامل.','القيادة غرباً على N2 نحو موسيل باي (~80 كم، ساعة واحدة) عبر جورج — عاصمة الجاردن روت.','الوصول إلى موسيل باي وتسجيل الدخول.','جولة في متحف بارتولوميو دياز (Dias Museum Complex) على الواجهة البحرية.'],
    links:[['دليل موسيل باي','https://www.visitmosselbay.co.za'],['متحف ديسكوفري','https://diasmuseum.co.za']],
-   imgs:['Mossel Bay','George, Western Cape'],
+   imgs:[{c:'موسيل باي',u:IMG.mosselbay},{c:'ساحل الجاردن روت',u:IMG.knysna}],
    tip:'موسيل باي غرب ويلدرنيس وليس شرقها — المسافة قصيرة (~80 كم، ساعة). احجز السفاري مسبقاً إن أردت اليوم التالي.'},
 
   {place:'mosselbay', title:'يوم السفاري الاختياري 🦁 — موسيل باي',
    acts:['سفاري اختياري لشخصين في Botlierskop Private Game Reserve — انطلاق الساعة 11 صباحاً.','يمكن مشاهدة الخمسة الكبار (أسد، فيل، جاموس، فهد، كركدن) في محمية خالية من الملاريا.','(بديل) استكشاف Cape St Blaize Cave والممشى الساحلي البانورامي.','عشاء على ميناء موسيل باي مع إطلالة على المحيط الهندي.'],
    links:[['Botlierskop Private Game Reserve (احجز مسبقاً)','https://www.botlierskop.co.za'],['دليل موسيل باي','https://www.visitmosselbay.co.za']],
-   imgs:['African bush elephant','African lion'],
+   imgs:[{c:'فيل أفريقي',u:IMG.elephant},{c:'أسد',u:IMG.lion}],
    tip:'احجز السفاري مباشرة عبر موقع Botlierskop أو اتصل بهم — الأماكن محدودة. الجولة الصباحية (11 ص) مناسبة ولا تعيقكم لاحقاً.'},
 
   {place:'capetown', title:'موسيل باي → فرانشهوك وستيلينبوش → كيب تاون',
    acts:['انطلاقة مبكرة من موسيل باي نحو كيب تاون (~380 كم، 4 ساعات).','توقّف اختياري في فرانشهوك — القرية الفرنسية الساحرة وكروم العنب (~30 كم قبل كيب تاون).','جولة قصيرة في ستيلينبوش وبلدتها التاريخية ذات الطراز الهولندي.','الوصول إلى كيب تاون مساءً وتسجيل الدخول في الفندق.'],
    links:[['دليل فرانشهوك','https://www.franschhoek.org.za'],['دليل ستيلينبوش','https://visitstellenbosch.org']],
-   imgs:['Franschhoek','Stellenbosch'],
+   imgs:[{c:'فرانشهوك',u:IMG.franschhoek},{c:'ستيلينبوش',u:IMG.stellenbosch}],
    tip:'فرانشهوك وستيلينبوش على الطريق من موسيل باي إلى كيب تاون — خطط لساعة لكل منهما إن رغبتما.'},
 
   {place:'capetown', title:'جبل الطاولة وحي بوكاب الملوّن',
    acts:['صعود جبل الطاولة بالتلفريك الدوّار صباحاً (الأجواء أصفى قبل الظهر).','جولة تصوير في حي بوكاب (Bo-Kaap) بمنازله الملوّنة وتاريخ مسلمي الكيب.','زيارة حديقة الشركة (Company\'s Garden) ووسط المدينة التاريخي.','عشاء في V&A Waterfront مع إطلالة على جبل الطاولة.'],
    links:[['حجز تلفريك جبل الطاولة','https://www.tablemountain.net'],['متحف بوكاب','https://www.iziko.org.za/museums/bo-kaap-museum']],
-   imgs:['Table Mountain','Bo-Kaap'],
+   imgs:[{c:'جبل الطاولة',u:IMG.table},{c:'حي بوكاب الملوّن',u:IMG.bokaap}],
    tip:'تحقق من حالة التلفريك على موقعه قبل الذهاب — يتوقف عند الرياح القوية. في يوليو خذ سترة؛ قمة الجبل أبرد بـ 5–8 درجات.'},
 
   {place:'capetown', title:'شبه جزيرة الكيب وبطاريق بولدرز',
    acts:['قيادة عبر طريق تشابمانز بيك (Chapman\'s Peak) — من أجمل الطرق الساحلية في العالم.','زيارة رأس الرجاء الصالح وكيب بوينت (Cape Point) وركوب القطار الجبلي.','مشاهدة مستعمرة البطاريق الأفريقية في شاطئ بولدرز (Boulders Beach).','ليلة وداع في كامبس باي أو واجهة V&A Waterfront.'],
    links:[['كيب بوينت','https://capepoint.co.za'],['طريق تشابمانز بيك','https://www.chapmanspeakdrive.co.za'],['شاطئ بولدرز (SANParks)','https://www.sanparks.org/parks/table_mountain/tourism/attractions.php']],
-   imgs:['Cape Point','Boulders Beach','Chapman\'s Peak'],
+   imgs:[{c:'كيب بوينت',u:IMG.capepoint},{c:'بطاريق بولدرز',u:IMG.penguins},{c:'طريق تشابمانز بيك',u:IMG.chapmans}],
    tip:'لا تترك أي أغراض ظاهرة في السيارة عند المواقف، وانتبه من قرود البابون عند كيب بوينت — لا تُطعمها أبداً.'},
 
   {place:'capetown', title:'يوم المغادرة — وداع كيب تاون ✈️',
    acts:['فطور مبكر وتعبئة الحقائب.','جولة أخيرة في V&A Waterfront أو شراء هدايا من الأسواق المحلية.','تعبئة وقود السيارة وتسليمها في مطار كيب تاون الدولي.','المغادرة عبر أديس أبابا نحو الرياض — في حفظ الله.'],
    links:[['مطار كيب تاون','https://www.airports.co.za/airports/cape-town-international-airport']],
-   imgs:['Cape Town','Victoria & Alfred Waterfront'],
+   imgs:[{c:'V&A Waterfront',u:IMG.waterfront},{c:'وداعاً جبل الطاولة',u:IMG.table}],
    tip:'اتركوا هامش 4 ساعات قبل الإقلاع — تسليم السيارة وإجراءات المطار تحتاج وقتاً.'}
 ];
 
@@ -1215,7 +1233,7 @@ function ctNights(){ return Math.max(1, totalNights() - HM_NIGHTS - WD_NIGHTS - 
 function roomsCount(){ return Math.max(1, Math.ceil(state.travelers / 2)); }
 
 /* ================= Images (Wikipedia API + direct URLs) ================= */
-const IMG_CACHE_PREFIX = 'wimg3:';
+const IMG_CACHE_PREFIX = 'wimg4:';
 async function wikiThumb(title){
   if(title.startsWith('http')) return title; // direct URL — use as-is
   const ck = IMG_CACHE_PREFIX + title;
@@ -1228,7 +1246,7 @@ async function wikiThumb(title){
     let src = j.thumbnail?.source || null;
     if(src) src = src.replace(/\/\d+px-/, '/1200px-'); // request larger size
     src = src || j.originalimage?.source || null;
-    try{ localStorage.setItem(ck, src || 'x'); }catch(e){}
+    if(src){ try{ localStorage.setItem(ck, src); }catch(e){} } // cache successes only — retry on failure
     return src;
   }catch(e){ return null; }
 }
@@ -1435,8 +1453,11 @@ function renderItinerary(){
     const card = document.createElement('div');
     card.className = 'day-card';
     card.id = 'day-' + (i+1);
-    const imgsHtml = (d.imgs||[]).slice(0,3).map(t=>
-      `<figure><div class="ph" data-wiki="${escapeAttr(t)}">📷</div><figcaption>${escapeHtml(t)}</figcaption></figure>`).join('');
+    const imgsHtml = (d.imgs||[]).slice(0,3).map(t=>{
+      const u = (t && typeof t === 'object') ? t.u : t;
+      const c = (t && typeof t === 'object') ? t.c : t;
+      return `<figure><div class="ph" data-wiki="${escapeAttr(u)}">📷</div><figcaption>${escapeHtml(c)}</figcaption></figure>`;
+    }).join('');
     const linksHtml = (d.links||[]).map(l=>
       `<a class="chip" href="${escapeAttr(l[1])}" target="_blank" rel="noopener">🔗 ${escapeHtml(l[0])}</a>`).join('');
     card.innerHTML = `
@@ -1457,7 +1478,7 @@ function renderItinerary(){
         <div><label>الموقع على الخريطة</label><select data-i="${i}" data-f="place">${placeOptionsHtml(d.place)}</select></div>
         <div><label>روابط (سطر لكل رابط: الاسم | الرابط)</label><textarea data-i="${i}" data-f="links">${escapeHtml((d.links||[]).map(l=>l[0]+' | '+l[1]).join('\n'))}</textarea></div>
         <div class="full"><label>الفعاليات والأنشطة (سطر لكل نشاط)</label><textarea data-i="${i}" data-f="acts">${escapeHtml((d.acts||[]).join('\n'))}</textarea></div>
-        <div class="full"><label>صور (عناوين صفحات ويكيبيديا بالإنجليزية، سطر لكل صورة — حتى 3)</label><textarea data-i="${i}" data-f="imgs" style="min-height:56px">${escapeHtml((d.imgs||[]).join('\n'))}</textarea></div>
+        <div class="full"><label>تعليقات الصور (سطر لكل صورة — حتى 3)</label><textarea data-i="${i}" data-f="imgs" style="min-height:56px">${escapeHtml((d.imgs||[]).map(t=>(t&&typeof t==='object')?t.c:t).join('\n'))}</textarea></div>
         <div class="full"><label>نصيحة اليوم</label><input type="text" data-i="${i}" data-f="tip" value="${escapeAttr(d.tip||'')}"></div>
         <div class="full row-btns">
           <button class="btn btn-sm btn-ghost" data-add="${i}">➕ إضافة يوم بعده</button>
@@ -1478,7 +1499,14 @@ function renderItinerary(){
         d.place = v;
       }
       else if(f === 'acts') d.acts = v.split('\n').map(s=>s.trim()).filter(Boolean);
-      else if(f === 'imgs') d.imgs = v.split('\n').map(s=>s.trim()).filter(Boolean).slice(0,3);
+      else if(f === 'imgs'){
+        const old = d.imgs||[];
+        d.imgs = v.split('\n').map(s=>s.trim()).filter(Boolean).slice(0,3).map((cap,idx)=>{
+          const prev = old[idx];
+          const u = (prev && typeof prev === 'object') ? prev.u : (cap.startsWith('http') ? cap : '');
+          return {c:cap, u:u};
+        });
+      }
       else if(f === 'links') d.links = v.split('\n').map(s=>{
         const parts = s.split('|').map(x=>x.trim());
         if(parts.length >= 2 && parts[1]) return [parts[0], parts.slice(1).join('|')];
@@ -1509,7 +1537,7 @@ function addDayAt(idx){
     place:'capetown',
     title:'يوم حر — استرخاء واستكشاف',
     acts:['وقت حر للتسوق أو الشواطئ أو تعويض الأنشطة المؤجلة.'],
-    links:[], imgs:['Cape Town'], tip:''
+    links:[], imgs:[], tip:''
   });
   saveState(); renderAll();
   setTimeout(()=>document.getElementById('day-'+(idx+1))?.scrollIntoView({behavior:'smooth'}), 100);
