@@ -79,6 +79,65 @@ nav.quicknav{display:flex;gap:4px;flex-wrap:wrap}
 nav.quicknav a{color:var(--muted);text-decoration:none;font-size:.88rem;padding:6px 10px;border-radius:8px}
 nav.quicknav a:hover{color:var(--orange);background:var(--bg2)}
 
+/* ===== Checklist / To-Do ===== */
+.chk-progress-badge{
+  margin-inline-start:auto;font-size:.92rem;font-weight:700;color:var(--teal);
+  background:var(--bg2);border:1px solid var(--bg3);border-radius:999px;padding:4px 14px;
+}
+.chk-bar-wrap{display:flex;align-items:center;gap:12px;margin-bottom:22px;flex-wrap:wrap}
+.chk-bar{flex:1;min-width:160px;height:12px;background:var(--bg3);border-radius:999px;overflow:hidden}
+.chk-bar-fill{height:100%;width:0;border-radius:999px;
+  background:linear-gradient(90deg,var(--orange),var(--teal));transition:width .5s ease}
+.chk-bar-label{font-size:.9rem;color:var(--muted);font-weight:700;min-width:42px;text-align:center}
+.chk-group{
+  background:var(--bg2);border:1px solid var(--bg3);border-radius:var(--radius);
+  box-shadow:var(--shadow);padding:16px 18px;margin-bottom:16px;
+}
+.chk-group-head{display:flex;align-items:center;gap:10px;margin-bottom:12px;flex-wrap:wrap}
+.chk-group-title{font-size:1.08rem;font-weight:800}
+.chk-group-count{font-size:.82rem;color:var(--muted);background:var(--bg);border-radius:999px;padding:2px 10px}
+.chk-item{
+  display:flex;align-items:flex-start;gap:11px;padding:10px 8px;border-radius:10px;
+  transition:background .2s;border:1px solid transparent;
+}
+.chk-item:hover{background:var(--bg3)}
+.chk-item input[type=checkbox]{
+  appearance:none;-webkit-appearance:none;flex:0 0 auto;
+  width:22px;height:22px;margin-top:2px;border:2px solid var(--teal);border-radius:7px;
+  cursor:pointer;position:relative;transition:background .2s,border-color .2s;
+}
+.chk-item input[type=checkbox]:hover{border-color:var(--orange)}
+.chk-item input[type=checkbox]:checked{background:var(--teal);border-color:var(--teal)}
+.chk-item input[type=checkbox]:checked::after{
+  content:"✓";position:absolute;inset:0;display:flex;align-items:center;justify-content:center;
+  color:#1b2027;font-size:14px;font-weight:800;
+}
+.chk-item label{flex:1;cursor:pointer;font-size:.97rem;line-height:1.55;padding-top:1px}
+.chk-item.done label{text-decoration:line-through;color:var(--muted)}
+.chk-item.done{opacity:.7}
+.chk-done-tag{
+  font-size:.72rem;font-weight:700;color:var(--teal);background:rgba(118,171,174,.15);
+  border-radius:999px;padding:1px 9px;align-self:center;white-space:nowrap;
+}
+.chk-del{
+  background:transparent;border:none;color:#ff8a70;cursor:pointer;font-size:1rem;
+  opacity:0;transition:opacity .2s;padding:2px 6px;border-radius:6px;align-self:center;
+}
+.chk-item:hover .chk-del{opacity:1}
+.chk-del:hover{background:rgba(255,87,34,.12)}
+.chk-add{display:flex;gap:8px;margin-top:10px}
+.chk-add input{
+  flex:1;background:var(--bg);border:1px solid var(--bg3);border-radius:9px;
+  color:var(--text);font-family:inherit;font-size:.92rem;padding:8px 12px;
+}
+.chk-add input:focus{outline:none;border-color:var(--teal)}
+.chk-add button{flex:0 0 auto}
+@media print{
+  .chk-del,.chk-add,#chkClearDone{display:none!important}
+  .chk-item input[type=checkbox]{border-color:#999}
+  .chk-group{box-shadow:none;border-color:#ccc}
+}
+
 /* ===== Sections ===== */
 section{padding:46px 0 14px}
 h2.sec-title{
@@ -546,6 +605,7 @@ footer{
     <nav class="quicknav">
       <a href="#map">الخريطة</a>
       <a href="#itinerary">الجدول</a>
+      <a href="#checklist">المهام</a>
       <a href="#activities">الفعاليات</a>
       <a href="#budget">الميزانية</a>
       <a href="#weather">الطقس</a>
@@ -605,6 +665,20 @@ footer{
   <div class="add-day-wrap">
     <button class="btn btn-orange" id="addDayBtn">➕ إضافة يوم جديد</button>
   </div>
+</section>
+
+<!-- ============ CHECKLIST / TO-DO ============ -->
+<section id="checklist">
+  <h2 class="sec-title">قائمة مهام السفر ✅
+    <span class="chk-progress-badge" id="chkBadge"></span>
+  </h2>
+  <p class="sec-desc">كل ما تبقّى قبل الرحلة وخلالها في مكان واحد. علّم ✓ عند الانتهاء من أي مهمة وستُشطب تلقائياً، ويتحدّث شريط التقدّم. تقدر تضيف مهامك الخاصة أو تحذف أي مهمة — كل شيء يُحفظ تلقائياً.</p>
+  <div class="chk-bar-wrap">
+    <div class="chk-bar"><div class="chk-bar-fill" id="chkBarFill"></div></div>
+    <span class="chk-bar-label" id="chkBarLabel"></span>
+    <button class="btn btn-ghost btn-sm no-print" id="chkClearDone" title="حذف المهام المنتهية">🧹 مسح المنتهية</button>
+  </div>
+  <div id="checklistContainer"></div>
 </section>
 
 <!-- ============ ACTIVITIES ============ -->
@@ -979,6 +1053,45 @@ const DEFAULT_ACTIVITIES = [
   {id:'bungee',     group:'الجاردن روت', name:'قفزة بنجي بلوكرانس 216م (للمغامرين)', price:380, on:false, url:'https://faceadrenalin.com'}
 ];
 
+/* ================= Travel checklist (To-Do) ================= */
+const CHECKLIST_CATS = [
+  {key:'docs',   label:'📄 المستندات والحجوزات'},
+  {key:'before', label:'🧳 قبل السفر'},
+  {key:'pack',   label:'🎒 الأمتعة'},
+  {key:'trip',   label:'✈️ خلال الرحلة'}
+];
+const DEFAULT_CHECKLIST = [
+  // المستندات والحجوزات
+  {id:'d1', cat:'docs',   text:'التأكد من صلاحية جواز السفر (6 أشهر بعد تاريخ العودة)', done:false},
+  {id:'d2', cat:'docs',   text:'تأكيد حجز الطيران NHR1FH — الرياض ↔ كيب تاون عبر أديس أبابا', done:false},
+  {id:'d3', cat:'docs',   text:'التحقق من متطلبات تأشيرة جنوب أفريقيا وإصدارها', done:false},
+  {id:'d4', cat:'docs',   text:'طباعة/حفظ تذاكر الطيران وبطاقات الصعود', done:false},
+  {id:'d5', cat:'docs',   text:'حجز الفنادق (كيب تاون ونيسنا) وحفظ التأكيدات', done:false},
+  {id:'d6', cat:'docs',   text:'حجز/تأكيد سيارة الإيجار في مطار كيب تاون', done:false},
+  {id:'d7', cat:'docs',   text:'إصدار تأمين سفر يغطي مدة الرحلة', done:false},
+  // قبل السفر
+  {id:'b1', cat:'before', text:'التحقق من شهادة الحمى الصفراء (ترانزيت أديس أبابا) إن لزمت', done:false},
+  {id:'b2', cat:'before', text:'تحويل/سحب عملة الراند الجنوب أفريقي (ZAR)', done:false},
+  {id:'b3', cat:'before', text:'إبلاغ البنك بالسفر لتفعيل البطاقات في الخارج', done:false},
+  {id:'b4', cat:'before', text:'شراء شريحة eSIM أو شريحة محلية (Vodacom / MTN)', done:false},
+  {id:'b5', cat:'before', text:'إصدار رخصة قيادة دولية', done:false},
+  {id:'b6', cat:'before', text:'متابعة حالة الطقس (يوليو = شتاء جنوب أفريقيا)', done:false},
+  // الأمتعة
+  {id:'p1', cat:'pack',   text:'ملابس شتوية ومعطف دافئ (الأجواء باردة في يوليو)', done:false},
+  {id:'p2', cat:'pack',   text:'محول كهرباء Type M / N · 230 فولت', done:false},
+  {id:'p3', cat:'pack',   text:'الأدوية الشخصية وحقيبة إسعافات أولية', done:false},
+  {id:'p4', cat:'pack',   text:'كاميرا + شواحن + بطارية احتياطية (باوربانك)', done:false},
+  {id:'p5', cat:'pack',   text:'حذاء مشي مريح لمسارات الجاردن روت', done:false},
+  {id:'p6', cat:'pack',   text:'نظارة شمسية وواقٍ من الشمس', done:false},
+  // خلال الرحلة
+  {id:'t1', cat:'trip',   text:'استلام السيارة وتفعيل الشريحة من المطار', done:false},
+  {id:'t2', cat:'trip',   text:'جبل الطاولة وحي بوكاب 📸', done:false},
+  {id:'t3', cat:'trip',   text:'مشاهدة الحيتان في هيرمانوس 🐋', done:false},
+  {id:'t4', cat:'trip',   text:'سفاري في Garden Route Game Lodge 🦁', done:false},
+  {id:'t5', cat:'trip',   text:'تعبئة وقود السيارة قبل تسليمها', done:false},
+  {id:'t6', cat:'trip',   text:'الوصول للمطار قبل 4 ساعات من إقلاع العودة', done:false}
+];
+
 const DEFAULT_STATE = {
   travelers: 2,
   flightPrice: 4200,
@@ -988,6 +1101,7 @@ const DEFAULT_STATE = {
   payment: 'cash',
   rate: 4.75,
   ctNights: 5,
+  checklist: DEFAULT_CHECKLIST,
   activities: DEFAULT_ACTIVITIES,
   driver: {
     capetown: {on:false, price:450},
@@ -1048,6 +1162,16 @@ function loadState(){
     // preserve custom activities added by user
     const defaultIds = new Set(DEFAULT_ACTIVITIES.map(a=>a.id));
     (saved.activities||[]).filter(a=>a&&a.id&&!defaultIds.has(a.id)).forEach(a=>merged.activities.push(structuredClone(a)));
+    // checklist: keep default tasks (preserving done state) + any custom tasks the user added
+    const savedChk = {};
+    (saved.checklist || []).forEach(c=>{ if(c && c.id) savedChk[c.id] = c; });
+    merged.checklist = DEFAULT_CHECKLIST.map(c=>{
+      const s = savedChk[c.id];
+      return s ? Object.assign(structuredClone(c), {done:!!s.done}) : structuredClone(c);
+    });
+    const defaultChkIds = new Set(DEFAULT_CHECKLIST.map(c=>c.id));
+    (saved.checklist||[]).filter(c=>c&&c.id&&!defaultChkIds.has(c.id))
+      .forEach(c=>merged.checklist.push({id:c.id, cat:CHECKLIST_CATS.some(k=>k.key===c.cat)?c.cat:'before', text:String(c.text||''), done:!!c.done}));
     merged.driver = {};
     for(const key of Object.keys(DEFAULT_STATE.driver)){
       merged.driver[key] = Object.assign(structuredClone(DEFAULT_STATE.driver[key]), saved.driver?.[key]);
@@ -1954,6 +2078,80 @@ window.addEventListener('scroll', ()=>{
 }, {passive:true});
 
 /* ================= Master render ================= */
+/* ================= Checklist (To-Do) ================= */
+let _chkSeq = 0;
+function renderChecklist(){
+  const cont = document.getElementById('checklistContainer');
+  const list = state.checklist || (state.checklist = structuredClone(DEFAULT_CHECKLIST));
+  const total = list.length;
+  const done = list.filter(c=>c.done).length;
+  const pct = total ? Math.round(done/total*100) : 0;
+
+  document.getElementById('chkBarFill').style.width = pct + '%';
+  document.getElementById('chkBarLabel').textContent = pct + '%';
+  document.getElementById('chkBadge').textContent = `${done} / ${total} مكتملة`;
+  document.getElementById('chkClearDone').style.display = done ? '' : 'none';
+
+  cont.innerHTML = CHECKLIST_CATS.map(cat=>{
+    const items = list.filter(c=>c.cat===cat.key);
+    const cDone = items.filter(c=>c.done).length;
+    const rows = items.map(c=>`
+      <div class="chk-item ${c.done?'done':''}" data-id="${escapeAttr(c.id)}">
+        <input type="checkbox" id="chk_${escapeAttr(c.id)}" ${c.done?'checked':''} aria-label="${escapeAttr(c.text)}">
+        <label for="chk_${escapeAttr(c.id)}">${escapeHtml(c.text)}</label>
+        ${c.done?'<span class="chk-done-tag">تم ✓</span>':''}
+        <button class="chk-del no-print" data-del="${escapeAttr(c.id)}" title="حذف المهمة" aria-label="حذف">🗑️</button>
+      </div>`).join('') || '<div style="color:var(--muted);font-size:.9rem;padding:6px 8px">لا توجد مهام بعد — أضف مهمة بالأسفل.</div>';
+    return `
+      <div class="chk-group">
+        <div class="chk-group-head">
+          <span class="chk-group-title">${cat.label}</span>
+          <span class="chk-group-count">${cDone}/${items.length}</span>
+        </div>
+        ${rows}
+        <div class="chk-add no-print">
+          <input type="text" data-addinput="${cat.key}" placeholder="➕ أضف مهمة جديدة..." maxlength="160">
+          <button class="btn btn-teal btn-sm" data-addbtn="${cat.key}">إضافة</button>
+        </div>
+      </div>`;
+  }).join('');
+
+  // toggle done
+  cont.querySelectorAll('.chk-item input[type=checkbox]').forEach(cb=>{
+    cb.addEventListener('change', e=>{
+      const id = e.target.closest('.chk-item').dataset.id;
+      const item = state.checklist.find(c=>c.id===id);
+      if(item){ item.done = e.target.checked; saveState(); renderChecklist(); }
+    });
+  });
+  // delete
+  cont.querySelectorAll('[data-del]').forEach(b=>{
+    b.addEventListener('click', ()=>{
+      state.checklist = state.checklist.filter(c=>c.id!==b.dataset.del);
+      saveState(); renderChecklist();
+    });
+  });
+  // add (button + Enter)
+  const addFrom = key=>{
+    const inp = cont.querySelector(`[data-addinput="${key}"]`);
+    const text = (inp.value||'').trim();
+    if(!text) return;
+    state.checklist.push({id:'cu'+Date.now()+(_chkSeq++), cat:key, text, done:false});
+    saveState(); renderChecklist();
+  };
+  cont.querySelectorAll('[data-addbtn]').forEach(b=>b.addEventListener('click', ()=>addFrom(b.dataset.addbtn)));
+  cont.querySelectorAll('[data-addinput]').forEach(inp=>inp.addEventListener('keydown', e=>{
+    if(e.key==='Enter'){ e.preventDefault(); addFrom(inp.dataset.addinput); }
+  }));
+}
+document.getElementById('chkClearDone').addEventListener('click', ()=>{
+  if(!state.checklist.some(c=>c.done)) return;
+  if(confirm('حذف جميع المهام المنتهية؟')){
+    state.checklist = state.checklist.filter(c=>!c.done);
+    saveState(); renderChecklist();
+  }
+});
+
 function renderAll(){
   document.getElementById('flightPrice').value = state.flightPrice;
   document.getElementById('transportPrice').value = state.transportPrice;
@@ -1963,6 +2161,7 @@ function renderAll(){
   renderPayment();
   renderMap();
   renderItinerary();
+  renderChecklist();
   renderActivities();
   initAddActBtn();
   renderHotels();
