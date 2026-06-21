@@ -946,23 +946,22 @@ const PLACES = {
 
 /* ================= Default itinerary =================
    هيرمانوس 1 ليلة → ويلدرنيس 2 ليالٍ → موسيل باي 2 ليالٍ → كيب تاون 3 ليالٍ */
-/* صور حقيقية مباشرة من ويكيميديا كومنز (Special:FilePath → CDN سريع، بدون أي طلب API) */
-const _CW = 'https://commons.wikimedia.org/wiki/Special:FilePath/';
-const _CWQ = '?width=1000';
+/* صور مباشرة من Wikimedia CDN — بدون أي طلب API أو redirect */
+const _W = 'https://upload.wikimedia.org/wikipedia/commons/thumb/';
 const IMG = {
-  whales:      _CW+'Southern_Right_Whales_(Hermanus).jpg'+_CWQ,
-  table:       _CW+'Table_mountain_and_the_ocean_cape_town.JPG'+_CWQ,
-  knysna:      _CW+'Knysna%27s_Western_Head.JPG'+_CWQ,
-  mosselbay:   _CW+'Mossel_Bay%2C_6506%2C_South_Africa_-_panoramio.jpg'+_CWQ,
-  elephant:    _CW+'Elephant_side-view_Kruger.jpg'+_CWQ,
-  lion:        _CW+'Lion_in_masai_mara.jpg'+_CWQ,
-  franschhoek: _CW+'Franschhoek%2C_Western_Cape%2C_South_Africa_(20318451198).jpg'+_CWQ,
-  stellenbosch:_CW+'Stellenbosch-region.JPG'+_CWQ,
-  bokaap:      _CW+'Cape_Town_Bo-Kaap_city_street.jpg'+_CWQ,
-  capepoint:   _CW+'Lighthouse_Cape_Point%2C_South_Africa.JPG'+_CWQ,
-  penguins:    _CW+'African_penguin_near_Boulders_Beach.jpg'+_CWQ,
-  chapmans:    _CW+'ChapmansPeakDrive_View.jpg'+_CWQ,
-  waterfront:  _CW+'Victorian_Clock_Tower%2C_1883._Table_Bay_Harbour%2C_Cape_Town%2C_Western_Cape._Gothic_Style._Painted_Red_previously._02.JPG'+_CWQ
+  whales:      _W+'a/a9/Southern_Right_Whales_%28Hermanus%29.jpg/800px-Southern_Right_Whales_%28Hermanus%29.jpg',
+  table:       _W+'a/a9/Table_mountain_and_the_ocean_cape_town.JPG/800px-Table_mountain_and_the_ocean_cape_town.JPG',
+  knysna:      _W+'a/a9/Knysna%27s_Western_Head.JPG/800px-Knysna%27s_Western_Head.JPG',
+  mosselbay:   _W+'c/c6/Mossel_Bay%2C_6506%2C_South_Africa_-_panoramio.jpg/800px-Mossel_Bay%2C_6506%2C_South_Africa_-_panoramio.jpg',
+  elephant:    _W+'2/22/Elephant_side-view_Kruger.jpg/800px-Elephant_side-view_Kruger.jpg',
+  lion:        _W+'f/f8/Lion_in_masai_mara.jpg/800px-Lion_in_masai_mara.jpg',
+  franschhoek: _W+'2/22/Franschhoek%2C_Western_Cape%2C_South_Africa_%2820318451198%29.jpg/800px-Franschhoek%2C_Western_Cape%2C_South_Africa_%2820318451198%29.jpg',
+  stellenbosch:_W+'2/28/Stellenbosch-region.JPG/800px-Stellenbosch-region.JPG',
+  bokaap:      _W+'6/6d/Cape_Town_Bo-Kaap_city_street.jpg/800px-Cape_Town_Bo-Kaap_city_street.jpg',
+  capepoint:   _W+'9/95/Lighthouse_Cape_Point%2C_South_Africa.JPG/800px-Lighthouse_Cape_Point%2C_South_Africa.JPG',
+  penguins:    _W+'4/4a/African_penguin_near_Boulders_Beach.jpg/800px-African_penguin_near_Boulders_Beach.jpg',
+  chapmans:    _W+'e/e7/ChapmansPeakDrive_View.jpg/800px-ChapmansPeakDrive_View.jpg',
+  waterfront:  _W+'b/bb/Victorian_Clock_Tower%2C_1883._Table_Bay_Harbour%2C_Cape_Town%2C_Western_Cape._Gothic_Style._Painted_Red_previously._02.JPG/800px-Victorian_Clock_Tower%2C_1883._Table_Bay_Harbour%2C_Cape_Town%2C_Western_Cape._Gothic_Style._Painted_Red_previously._02.JPG'
 };
 const DEFAULT_DAYS = [
   {place:'hermanus', title:'الوصول إلى هيرمانوس — بلدة الحيتان 🐋',
