@@ -3,69 +3,219 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>رحلة كيب تاون والجاردن روت — يوليو 2026</title>
+<title>رحلات الربيش</title>
+<meta name="application-name" content="رحلات الربيش">
+<meta name="apple-mobile-web-app-title" content="رحلات الربيش">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="theme-color" content="#f8612b">
+<link rel="icon" type="image/png" sizes="32x32" href="favicon-32.png">
+<link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect width='100' height='100' rx='22' fill='%23f8612b'/><text y='72' x='50' text-anchor='middle' font-size='62'>✈️</text></svg>">
+<link rel="apple-touch-icon" href="apple-touch-icon.png">
+<link rel="manifest" href="manifest.json">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@400;500;700;800&display=swap" rel="stylesheet">
 <style>
 :root{
-  --bg:#222831;
-  --bg2:#2d343f;
-  --bg3:#393f4a;
-  --orange:#FF5722;
-  --orange-soft:#ff7a4d;
-  --teal:#76ABAE;
-  --teal-soft:#a3cdcf;
-  --text:#EEEEEE;
-  --muted:#aab2bd;
-  --radius:14px;
-  --shadow:0 6px 24px rgba(0,0,0,.35);
+  --bg:#fbfaf4;          /* inner surfaces / inputs */
+  --bg2:#ffffff;         /* card surface */
+  --bg3:#e8e4d6;         /* borders / subtle fills */
+  --orange:#f8612b;      /* primary accent */
+  --orange-soft:#ff8154;
+  --teal:#1f9277;        /* readable deep green accent */
+  --teal-soft:#26896f;   /* accent text on tinted bg */
+  --lime:#cfe85a;        /* chartreuse accent fills */
+  --lime-deep:#aacb34;
+  --text:#1d2a24;        /* main text */
+  --muted:#6f7d75;       /* muted text */
+  --radius:18px;
+  --shadow:0 16px 38px rgba(29,42,36,.10);
 }
 *{box-sizing:border-box;margin:0;padding:0}
 html{scroll-behavior:smooth}
 body{
   font-family:'Tajawal',system-ui,sans-serif;
-  background:var(--bg);
+  background:
+    radial-gradient(820px 560px at -6% -6%, rgba(207,232,90,.22), transparent 60%),
+    radial-gradient(880px 680px at 106% -2%, rgba(248,97,43,.09), transparent 55%),
+    radial-gradient(700px 700px at 100% 100%, rgba(31,146,119,.08), transparent 60%),
+    linear-gradient(160deg,#eef3e5 0%,#f4f1e8 42%,#f8f1e8 100%);
+  background-attachment:fixed;
   color:var(--text);
   line-height:1.7;
+  min-height:100vh;
 }
 .container{max-width:1100px;margin:0 auto;padding:0 18px}
 
 /* ===== Header ===== */
 header{
-  background:linear-gradient(135deg,#1b2027 0%,#222831 55%,#26323a 100%);
+  position:relative;
+  background:
+    radial-gradient(120% 150% at 12% 0%, rgba(207,232,90,.35) 0%, transparent 52%),
+    radial-gradient(120% 150% at 100% 100%, rgba(248,97,43,.16) 0%, transparent 50%),
+    linear-gradient(135deg,#f3f7ea 0%,#fdf7f0 100%);
   border-bottom:1px solid var(--bg3);
-  padding:42px 0 30px;
+  padding:56px 0 42px;
   text-align:center;
+  overflow:hidden;
 }
-header h1{font-size:2.1rem;font-weight:800;letter-spacing:.5px}
+header h1{font-size:2.3rem;font-weight:800;letter-spacing:.3px;color:var(--text)}
 header h1 .accent{color:var(--orange)}
-header .sub{color:var(--teal);font-size:1.1rem;margin-top:8px;font-weight:500}
-.badges{display:flex;gap:10px;justify-content:center;flex-wrap:wrap;margin-top:18px}
+header .sub{color:var(--teal);font-size:1.1rem;margin-top:10px;font-weight:600}
+.badges{display:flex;gap:10px;justify-content:center;flex-wrap:wrap;margin-top:22px}
 .badge{
-  background:var(--bg2);border:1px solid var(--bg3);border-radius:999px;
-  padding:6px 16px;font-size:.9rem;color:var(--text)
+  background:#fff;border:1px solid var(--bg3);border-radius:999px;
+  padding:8px 18px;font-size:.9rem;color:var(--text);
+  box-shadow:0 6px 16px rgba(29,42,36,.07);font-weight:500;
 }
-.badge b{color:var(--teal)}
+.badge b{color:var(--teal);font-weight:700}
+
+/* ===== Home Hero (app-style) ===== */
+.home-hero{
+  position:relative;overflow:hidden;
+  background:
+    radial-gradient(120% 140% at 0% 0%, rgba(207,232,90,.30) 0%, transparent 52%),
+    radial-gradient(120% 150% at 100% 0%, rgba(248,97,43,.14) 0%, transparent 48%),
+    linear-gradient(135deg,#f3f7ea 0%,#fdf7f0 100%);
+  border-bottom:1px solid var(--bg3);
+  padding:26px 0 30px;
+}
+.home-top{display:flex;align-items:center;gap:14px;margin-bottom:20px}
+.home-hello{font-size:1.7rem;font-weight:800;line-height:1.2}
+.home-hello b{color:var(--orange)}
+.home-sub{color:var(--teal);font-size:.9rem;font-weight:600;margin-top:5px}
+.home-avatar{
+  margin-inline-start:auto;width:54px;height:54px;border-radius:50%;flex-shrink:0;
+  background:linear-gradient(135deg,var(--lime),var(--teal));
+  display:flex;align-items:center;justify-content:center;font-size:1.6rem;
+  box-shadow:0 8px 20px rgba(31,146,119,.30);border:3px solid #fff;
+}
+.home-search-row{display:flex;gap:12px;margin-bottom:18px}
+.home-search{
+  flex:1;display:flex;align-items:center;gap:10px;background:#fff;
+  border:1px solid var(--bg3);border-radius:999px;padding:13px 20px;
+  box-shadow:0 8px 22px rgba(29,42,36,.06);
+}
+.home-search .hs-ic{display:flex;color:var(--muted)}
+.home-search .hs-ic svg{width:19px;height:19px}
+.home-avatar svg{width:26px;height:26px;color:#fff}
+.home-filter svg{width:22px;height:22px}
+.home-search input{
+  flex:1;border:none;outline:none;background:transparent;
+  font-family:inherit;font-size:.96rem;color:var(--text);
+}
+.home-filter{
+  width:54px;height:54px;flex-shrink:0;border:none;border-radius:18px;cursor:pointer;
+  background:var(--orange);color:#fff;font-size:1.25rem;
+  display:flex;align-items:center;justify-content:center;
+  box-shadow:0 10px 24px rgba(248,97,43,.34);transition:transform .15s, background .2s;
+}
+.home-filter:hover{transform:translateY(-2px);background:var(--orange-soft)}
+.edit-on .home-filter{background:var(--teal);box-shadow:0 10px 24px rgba(31,146,119,.34)}
+.home-chips{display:flex;gap:10px;overflow-x:auto;padding:2px 0 6px;scrollbar-width:none}
+.home-chips::-webkit-scrollbar{display:none}
+.home-chip{
+  flex-shrink:0;display:inline-flex;align-items:center;gap:6px;
+  border:1px solid var(--bg3);background:#fff;color:var(--text);
+  border-radius:999px;padding:9px 18px;font-family:inherit;font-size:.88rem;font-weight:700;
+  cursor:pointer;transition:all .18s;box-shadow:0 4px 12px rgba(29,42,36,.05);white-space:nowrap;
+}
+.home-chip:hover{border-color:var(--orange)}
+.home-chip.active{background:var(--orange);border-color:var(--orange);color:#fff;box-shadow:0 8px 18px rgba(248,97,43,.30)}
+.home-pop-head{display:flex;align-items:center;justify-content:space-between;margin:18px 0 14px}
+.home-pop-title{font-size:1.4rem;font-weight:800}
+.home-seeall{color:var(--teal);font-size:.86rem;font-weight:700;text-decoration:none;background:none;border:none;cursor:pointer;font-family:inherit;padding:0}
+.home-seeall:hover{color:var(--orange)}
+.home-cards{display:flex;gap:16px;overflow-x:auto;padding:4px 0 10px;scroll-snap-type:x mandatory;scrollbar-width:none}
+.home-cards::-webkit-scrollbar{display:none}
+.dest-card{
+  position:relative;flex:0 0 78%;max-width:340px;height:230px;border-radius:24px;overflow:hidden;
+  scroll-snap-align:start;cursor:pointer;background:linear-gradient(135deg,#cfe0d6,#a9c2b4);
+  box-shadow:0 16px 36px rgba(29,42,36,.16);transition:transform .25s, box-shadow .25s;
+}
+@media(min-width:760px){.dest-card{flex-basis:42%}}
+.dest-card:hover{transform:translateY(-4px);box-shadow:0 22px 46px rgba(29,42,36,.22)}
+.dest-card .dest-img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;display:block}
+.dest-card .dest-shade{position:absolute;inset:0;background:linear-gradient(to top, rgba(0,0,0,.62) 0%, rgba(0,0,0,.12) 46%, transparent 70%)}
+.dest-rating{
+  position:absolute;top:14px;inset-inline-start:14px;z-index:2;
+  background:rgba(255,255,255,.93);border-radius:999px;padding:5px 12px;
+  font-size:.82rem;font-weight:800;color:var(--text);display:flex;align-items:center;gap:5px;
+  box-shadow:0 4px 12px rgba(0,0,0,.18);direction:ltr;
+}
+.dest-rating .star{color:#f5a623}
+.dest-rating small{color:var(--muted);font-weight:600}
+.dest-info{position:absolute;bottom:0;inset-inline-start:0;z-index:2;padding:18px 20px;color:#fff;max-width:75%}
+.dest-info .dn{font-size:1.55rem;font-weight:800;line-height:1.1;text-shadow:0 2px 10px rgba(0,0,0,.4)}
+.dest-info .dt{font-size:.86rem;opacity:.94;margin-top:4px;text-shadow:0 1px 6px rgba(0,0,0,.4)}
+.dest-go{
+  position:absolute;bottom:16px;inset-inline-end:16px;z-index:3;
+  width:46px;height:46px;border-radius:50%;border:none;cursor:pointer;
+  background:#fff;color:var(--text);font-size:1.15rem;
+  display:flex;align-items:center;justify-content:center;
+  box-shadow:0 6px 16px rgba(0,0,0,.22);transition:transform .15s, background .2s, color .2s;
+}
+.dest-go:hover{background:var(--orange);color:#fff;transform:scale(1.08)}
+.home-stats{display:flex;gap:10px;flex-wrap:wrap;margin-top:18px}
+@media print{
+  .home-search-row,.home-chips,.home-cards,.home-pop-head{display:none!important}
+  .home-hero{background:#fff;border-bottom:2px solid #c53d12;padding:12px 0}
+  .home-hello{font-size:1.4rem}
+}
+
+/* ===== Bottom App Nav ===== */
+.appnav{
+  position:fixed;bottom:0;left:0;right:0;z-index:120;
+  background:rgba(255,255,255,.95);backdrop-filter:blur(14px);
+  border-top:1px solid var(--bg3);box-shadow:0 -8px 28px rgba(29,42,36,.10);
+  display:flex;align-items:center;justify-content:space-around;
+  padding:8px 12px;padding-bottom:calc(8px + env(safe-area-inset-bottom,0px));
+}
+.appnav-item{
+  display:flex;flex-direction:column;align-items:center;gap:3px;flex:1;
+  color:var(--muted);text-decoration:none;font-size:.62rem;font-weight:700;cursor:pointer;
+  background:none;border:none;font-family:inherit;transition:color .2s;
+}
+.appnav-item svg{width:22px;height:22px;flex-shrink:0;transition:color .2s}
+.appnav-item:hover,.appnav-item.active{color:var(--orange)}
+.appnav-fab{
+  flex:0 0 auto;width:58px;height:58px;border-radius:50%;border:none;cursor:pointer;
+  background:var(--orange);color:#fff;
+  margin-top:-26px;box-shadow:0 10px 24px rgba(248,97,43,.42);
+  display:flex;align-items:center;justify-content:center;transition:transform .2s, background .2s;
+}
+.appnav-fab svg{width:26px;height:26px}
+.appnav-fab:hover{transform:translateY(-2px) rotate(90deg);background:var(--orange-soft)}
+.edit-on .appnav-fab{background:var(--teal);box-shadow:0 10px 24px rgba(31,146,119,.42)}
+body{padding-bottom:74px}
+#backToMap{bottom:88px}
+@media print{.appnav{display:none!important}body{padding-bottom:0}.page{display:block!important}}
+
+/* ===== SPA Pages ===== */
+.page{display:none}
+.page.active{display:block;animation:pageFadeIn .22s ease}
+@keyframes pageFadeIn{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:translateY(0)}}
 
 /* ===== Toolbar ===== */
 .toolbar{
   position:sticky;top:0;z-index:50;
-  background:rgba(34,40,49,.92);backdrop-filter:blur(8px);
+  background:rgba(255,255,255,.82);backdrop-filter:blur(12px);
   border-bottom:1px solid var(--bg3);
-  padding:10px 0;
+  padding:11px 0;
+  box-shadow:0 6px 22px rgba(29,42,36,.05);
 }
 .toolbar .container{display:flex;gap:10px;align-items:center;flex-wrap:wrap}
 .btn{
-  border:none;border-radius:10px;padding:9px 18px;cursor:pointer;
+  border:none;border-radius:999px;padding:10px 20px;cursor:pointer;
   font-family:inherit;font-size:.95rem;font-weight:700;
   transition:transform .15s ease, box-shadow .15s ease, background .2s;
   display:inline-flex;align-items:center;gap:7px;text-decoration:none;
 }
 .btn:hover{transform:translateY(-1px)}
-.btn-orange{background:var(--orange);color:#fff}
-.btn-orange:hover{background:var(--orange-soft)}
-.btn-teal{background:var(--teal);color:#1b2027}
+.btn-orange{background:var(--orange);color:#fff;box-shadow:0 8px 20px rgba(248,97,43,.28)}
+.btn-orange:hover{background:var(--orange-soft);box-shadow:0 10px 24px rgba(248,97,43,.34)}
+.btn-teal{background:var(--teal);color:#fff;box-shadow:0 8px 20px rgba(31,146,119,.22)}
 .btn-teal:hover{background:var(--teal-soft)}
 .btn-ghost{background:transparent;color:var(--muted);border:1px solid var(--bg3)}
 .btn-ghost:hover{color:var(--text);border-color:var(--teal)}
@@ -73,11 +223,77 @@ header .sub{color:var(--teal);font-size:1.1rem;margin-top:8px;font-weight:500}
 .btn-danger{background:transparent;color:#ff8a70;border:1px solid #ff8a70}
 .btn-danger:hover{background:rgba(255,87,34,.12)}
 .edit-on .btn-edit{background:var(--orange);color:#fff;border-color:var(--orange)}
-.save-indicator{margin-inline-start:auto;color:var(--muted);font-size:.85rem;opacity:0;transition:opacity .4s}
-.save-indicator.show{opacity:1;color:var(--teal)}
+.save-indicator{
+  position:fixed;top:14px;inset-inline-start:14px;z-index:130;
+  background:rgba(255,255,255,.95);backdrop-filter:blur(8px);
+  border:1px solid var(--bg3);border-radius:999px;padding:7px 16px;
+  color:var(--teal);font-size:.82rem;font-weight:700;
+  box-shadow:0 8px 22px rgba(29,42,36,.12);
+  opacity:0;transform:translateY(-8px);transition:opacity .35s, transform .35s;pointer-events:none;
+}
+.save-indicator.show{opacity:1;transform:translateY(0)}
 nav.quicknav{display:flex;gap:4px;flex-wrap:wrap}
 nav.quicknav a{color:var(--muted);text-decoration:none;font-size:.88rem;padding:6px 10px;border-radius:8px}
-nav.quicknav a:hover{color:var(--orange);background:var(--bg2)}
+nav.quicknav a:hover{color:var(--orange);background:rgba(248,97,43,.1)}
+
+/* ===== Checklist / To-Do ===== */
+.chk-progress-badge{
+  margin-inline-start:auto;font-size:.92rem;font-weight:700;color:var(--teal);
+  background:var(--bg2);border:1px solid var(--bg3);border-radius:999px;padding:4px 14px;
+}
+.chk-bar-wrap{display:flex;align-items:center;gap:12px;margin-bottom:22px;flex-wrap:wrap}
+.chk-bar{flex:1;min-width:160px;height:12px;background:var(--bg3);border-radius:999px;overflow:hidden}
+.chk-bar-fill{height:100%;width:0;border-radius:999px;
+  background:linear-gradient(90deg,var(--orange),var(--teal));transition:width .5s ease}
+.chk-bar-label{font-size:.9rem;color:var(--muted);font-weight:700;min-width:42px;text-align:center}
+.chk-group{
+  background:var(--bg2);border:1px solid var(--bg3);border-radius:var(--radius);
+  box-shadow:var(--shadow);padding:16px 18px;margin-bottom:16px;
+}
+.chk-group-head{display:flex;align-items:center;gap:10px;margin-bottom:12px;flex-wrap:wrap}
+.chk-group-title{font-size:1.08rem;font-weight:800}
+.chk-group-count{font-size:.82rem;color:var(--muted);background:var(--bg);border-radius:999px;padding:2px 10px}
+.chk-item{
+  display:flex;align-items:flex-start;gap:11px;padding:10px 8px;border-radius:10px;
+  transition:background .2s;border:1px solid transparent;
+}
+.chk-item:hover{background:var(--bg3)}
+.chk-item input[type=checkbox]{
+  appearance:none;-webkit-appearance:none;flex:0 0 auto;
+  width:22px;height:22px;margin-top:2px;border:2px solid var(--teal);border-radius:7px;
+  cursor:pointer;position:relative;transition:background .2s,border-color .2s;
+}
+.chk-item input[type=checkbox]:hover{border-color:var(--orange)}
+.chk-item input[type=checkbox]:checked{background:var(--teal);border-color:var(--teal)}
+.chk-item input[type=checkbox]:checked::after{
+  content:"✓";position:absolute;inset:0;display:flex;align-items:center;justify-content:center;
+  color:#fff;font-size:14px;font-weight:800;
+}
+.chk-item label{flex:1;cursor:pointer;font-size:.97rem;line-height:1.55;padding-top:1px}
+.chk-item.done label{text-decoration:line-through;color:var(--muted)}
+.chk-item.done{opacity:.7}
+.chk-done-tag{
+  font-size:.72rem;font-weight:700;color:var(--teal);background:rgba(118,171,174,.15);
+  border-radius:999px;padding:1px 9px;align-self:center;white-space:nowrap;
+}
+.chk-del{
+  background:transparent;border:none;color:#ff8a70;cursor:pointer;font-size:1rem;
+  opacity:0;transition:opacity .2s;padding:2px 6px;border-radius:6px;align-self:center;
+}
+.chk-item:hover .chk-del{opacity:1}
+.chk-del:hover{background:rgba(255,87,34,.12)}
+.chk-add{display:flex;gap:8px;margin-top:10px}
+.chk-add input{
+  flex:1;background:var(--bg);border:1px solid var(--bg3);border-radius:9px;
+  color:var(--text);font-family:inherit;font-size:.92rem;padding:8px 12px;
+}
+.chk-add input:focus{outline:none;border-color:var(--teal)}
+.chk-add button{flex:0 0 auto}
+@media print{
+  .chk-del,.chk-add,#chkClearDone{display:none!important}
+  .chk-item input[type=checkbox]{border-color:#999}
+  .chk-group{box-shadow:none;border-color:#ccc}
+}
 
 /* ===== Sections ===== */
 section{padding:46px 0 14px}
@@ -85,7 +301,7 @@ h2.sec-title{
   font-size:1.55rem;font-weight:800;margin-bottom:6px;
   display:flex;align-items:center;gap:10px;flex-wrap:wrap;
 }
-h2.sec-title::before{content:"";width:6px;height:28px;border-radius:4px;background:var(--orange)}
+h2.sec-title::before{content:"";width:7px;height:28px;border-radius:6px;background:linear-gradient(var(--orange),var(--orange-soft))}
 .sec-desc{color:var(--muted);margin-bottom:22px;font-size:.97rem}
 
 /* ===== Map ===== */
@@ -127,18 +343,21 @@ h2.sec-title::before{content:"";width:6px;height:28px;border-radius:4px;backgrou
 .itin-controls{display:flex;gap:10px;align-items:center;flex-wrap:wrap;margin-bottom:18px}
 .day-card{
   background:var(--bg2);border:1px solid var(--bg3);border-radius:var(--radius);
-  margin-bottom:16px;overflow:hidden;transition:border-color .3s, box-shadow .3s;
-  scroll-margin-top:90px;
+  margin-bottom:18px;overflow:hidden;
+  transition:border-color .3s, box-shadow .3s, transform .25s;
+  scroll-margin-top:90px;box-shadow:0 10px 26px rgba(29,42,36,.06);
 }
-.day-card.flash{border-color:var(--orange);box-shadow:0 0 0 3px rgba(255,87,34,.25)}
+.day-card:hover{transform:translateY(-2px);box-shadow:0 18px 38px rgba(29,42,36,.11)}
+.day-card.flash{border-color:var(--orange);box-shadow:0 0 0 3px rgba(248,97,43,.25)}
 .day-head{
-  display:flex;align-items:center;gap:14px;padding:15px 20px;
-  background:linear-gradient(90deg,rgba(118,171,174,.10),transparent);
+  display:flex;align-items:center;gap:14px;padding:16px 22px;
+  background:linear-gradient(90deg,rgba(207,232,90,.40),rgba(207,232,90,.06) 70%,transparent);
   border-bottom:1px solid var(--bg3);flex-wrap:wrap;
 }
 .day-num{
-  background:var(--orange);color:#fff;font-weight:800;border-radius:10px;
-  min-width:62px;text-align:center;padding:6px 10px;font-size:.95rem;
+  background:var(--orange);color:#fff;font-weight:800;border-radius:12px;
+  min-width:62px;text-align:center;padding:7px 12px;font-size:.95rem;
+  box-shadow:0 6px 16px rgba(248,97,43,.30);
 }
 .day-head h3{font-size:1.12rem;font-weight:700;flex:1;min-width:200px}
 .day-head .date{color:var(--teal);font-size:.9rem;font-weight:500}
@@ -161,10 +380,20 @@ h2.sec-title::before{content:"";width:6px;height:28px;border-radius:4px;backgrou
 .day-imgs{display:flex;gap:10px;flex-wrap:wrap;margin:4px 0 12px}
 .day-imgs figure{width:160px}
 .day-imgs .ph{
-  width:160px;height:105px;border-radius:10px;border:1px solid var(--bg3);
-  background:linear-gradient(135deg,var(--bg3),#2a4a4c);
-  display:flex;align-items:center;justify-content:center;font-size:1.8rem;overflow:hidden;
+  width:160px;height:105px;border-radius:12px;border:1px solid var(--bg3);
+  background:linear-gradient(135deg,#f1efe8,#e7e3d9);
+  display:flex;flex-direction:column;align-items:center;justify-content:center;
+  gap:5px;overflow:hidden;cursor:default;
 }
+.ph-svg{width:30px;height:30px;color:var(--muted);opacity:.6}
+.ph-label{font-size:.65rem;color:var(--orange-soft);text-align:center;padding:0 6px;line-height:1.3;font-weight:700}
+/* home destination card image placeholder (gray frame until photo resolves) */
+.dest-card .dest-img.ph{
+  display:flex;align-items:center;justify-content:center;
+  background:linear-gradient(135deg,#efece5,#e2ddd1);
+}
+.dest-card .dest-img.ph .ph-svg{width:42px;height:42px;color:#9a948a;opacity:.55}
+.dest-img.loaded .ph-svg{display:none}
 .day-imgs img{width:100%;height:100%;object-fit:cover;display:block}
 .day-imgs figcaption{font-size:.75rem;color:var(--muted);text-align:center;margin-top:3px}
 .links-row{display:flex;gap:8px;flex-wrap:wrap;margin-top:12px}
@@ -182,7 +411,8 @@ h2.sec-title::before{content:"";width:6px;height:28px;border-radius:4px;backgrou
   display:none;border-top:1px dashed var(--orange);background:rgba(255,87,34,.04);
   padding:16px 22px;grid-template-columns:1fr 1fr;gap:12px;
 }
-.edit-on .day-edit{display:grid}
+/* inline day-edit panels hidden — plan sheet handles editing */
+.edit-on .day-edit{display:none}
 .day-edit .full{grid-column:1/-1}
 .day-edit label{display:block;font-size:.82rem;color:var(--orange-soft);margin-bottom:4px;font-weight:700}
 .day-edit input,.day-edit select,.day-edit textarea{
@@ -216,7 +446,7 @@ select{cursor:pointer}
   width:38px;height:38px;border-radius:10px;border:1px solid var(--bg3);
   background:var(--bg3);color:var(--text);font-size:1.2rem;cursor:pointer;font-weight:800;
 }
-.stepper button:hover{background:var(--teal);color:#1b2027}
+.stepper button:hover{background:var(--teal);color:#fff}
 .stepper .count{font-size:1.3rem;font-weight:800;min-width:36px;text-align:center;color:var(--orange)}
 .stepper .note{color:var(--muted);font-size:.85rem}
 
@@ -229,11 +459,12 @@ select{cursor:pointer}
 .hotel-row{display:flex;gap:14px;align-items:center}
 .hotel-img{
   width:92px;height:68px;border-radius:10px;flex-shrink:0;object-fit:cover;
-  background:linear-gradient(135deg,var(--bg3),#2a4a4c);
-  display:flex;align-items:center;justify-content:center;font-size:1.6rem;
+  background:linear-gradient(135deg,#efece5,#e2ddd1);
+  display:flex;align-items:center;justify-content:center;
   border:1px solid var(--bg3);overflow:hidden;
 }
 .hotel-img img{width:100%;height:100%;object-fit:cover}
+.hotel-img .ph-svg{width:30px;height:30px;color:#9a948a;opacity:.55}
 .hotel-main{flex:1;min-width:0}
 .hotel-price-line{display:flex;justify-content:space-between;align-items:center;margin-top:8px;font-size:.9rem;flex-wrap:wrap;gap:4px}
 .hotel-price-line .pn{color:var(--muted)}
@@ -252,7 +483,7 @@ select{cursor:pointer}
   width:26px;height:26px;border-radius:7px;border:1px solid var(--bg3);
   background:var(--bg3);color:var(--text);cursor:pointer;font-weight:800;font-size:.9rem;line-height:1;
 }
-.nights-ctl button:hover{background:var(--teal);color:#1b2027}
+.nights-ctl button:hover{background:var(--teal);color:#fff}
 
 /* driver */
 .drv-row{
@@ -277,7 +508,7 @@ select{cursor:pointer}
 /* activities catalog */
 .act-group{
   background:var(--bg2);border:1px solid var(--bg3);border-radius:var(--radius);
-  padding:18px 20px;margin-bottom:14px;
+  padding:18px 22px;margin-bottom:14px;box-shadow:0 10px 26px rgba(29,42,36,.06);
 }
 .act-group h3{color:var(--teal);font-size:1.05rem;margin-bottom:8px}
 .act-row{
@@ -428,7 +659,7 @@ table.budget tr.total td.zar{color:var(--teal);font-size:1rem;font-weight:700}
 .split-bar-wrap{border-radius:8px;overflow:hidden;height:28px;display:flex;margin-bottom:8px}
 .split-seg{display:flex;align-items:center;justify-content:center;font-size:.72rem;font-weight:700;transition:width .4s}
 .split-seg.inst{background:var(--orange)}
-.split-seg.dir{background:var(--teal);color:#1b2027}
+.split-seg.dir{background:var(--teal);color:#fff}
 .split-labels{display:flex;justify-content:space-between;font-size:.78rem;color:var(--muted);margin-top:4px}
 /* recommendation */
 .fin-rec{
@@ -454,8 +685,10 @@ table.budget tr.total td.zar{color:var(--teal);font-size:1rem;font-weight:700}
 @media(max-width:840px){.cards-3{grid-template-columns:1fr}}
 .info-card{
   background:var(--bg2);border:1px solid var(--bg3);border-radius:var(--radius);
-  padding:20px;
+  padding:22px;box-shadow:0 10px 26px rgba(29,42,36,.06);
+  transition:transform .25s, box-shadow .25s;
 }
+.info-card:hover{transform:translateY(-2px);box-shadow:0 18px 38px rgba(29,42,36,.10)}
 .info-card h3{color:var(--teal);font-size:1.05rem;margin-bottom:10px;display:flex;align-items:center;gap:8px}
 .info-card ul{list-style:none}
 .info-card li{padding:5px 0;font-size:.93rem;display:flex;gap:8px}
@@ -481,6 +714,103 @@ footer{
   margin-top:50px;padding:26px 0;border-top:1px solid var(--bg3);
   text-align:center;color:var(--muted);font-size:.85rem;
 }
+
+/* ===== Plan Sheet (bottom-slide day editor) ===== */
+.plan-overlay{
+  display:none;position:fixed;inset:0;z-index:190;
+  background:rgba(29,42,36,.38);backdrop-filter:blur(3px);
+}
+.edit-on .plan-overlay{display:block}
+.plan-sheet{
+  position:fixed;bottom:0;left:0;right:0;z-index:195;
+  background:var(--bg2);border-radius:26px 26px 0 0;
+  box-shadow:0 -12px 50px rgba(29,42,36,.22);
+  transform:translateY(100%);
+  transition:transform .38s cubic-bezier(.32,1,.6,1);
+  max-height:78vh;display:flex;flex-direction:column;
+}
+.edit-on .plan-sheet{transform:translateY(0)}
+.plan-handle{
+  width:48px;height:5px;border-radius:999px;
+  background:var(--bg3);margin:14px auto 0;flex-shrink:0;
+}
+.plan-head{
+  display:flex;align-items:center;gap:10px;
+  padding:12px 20px 10px;border-bottom:1px solid var(--bg3);
+  flex-shrink:0;
+}
+.plan-head-title{
+  font-size:1rem;font-weight:800;color:var(--text);
+  white-space:nowrap;flex-shrink:0;
+}
+.plan-tabs-wrap{
+  flex:1;overflow:hidden;position:relative;
+}
+.plan-tabs{
+  display:flex;gap:6px;overflow-x:auto;
+  scrollbar-width:none;padding:2px 0;
+}
+.plan-tabs::-webkit-scrollbar{display:none}
+.plan-tab{
+  flex-shrink:0;border:2px solid var(--bg3);border-radius:999px;
+  background:var(--bg);color:var(--muted);
+  padding:5px 14px;font-family:inherit;font-size:.82rem;font-weight:700;
+  cursor:pointer;transition:all .18s;white-space:nowrap;
+}
+.plan-tab:hover{border-color:var(--orange);color:var(--orange)}
+.plan-tab.active{
+  background:var(--orange);border-color:var(--orange);color:#fff;
+  box-shadow:0 4px 12px rgba(248,97,43,.30);
+}
+.plan-close-btn{
+  flex-shrink:0;width:32px;height:32px;border-radius:50%;
+  background:var(--bg3);border:none;cursor:pointer;
+  display:flex;align-items:center;justify-content:center;
+  font-size:.95rem;color:var(--muted);transition:all .18s;
+}
+.plan-close-btn:hover{background:rgba(248,97,43,.15);color:var(--orange)}
+.plan-body{
+  flex:1;overflow-y:auto;padding:18px 20px 8px;
+  scrollbar-width:thin;scrollbar-color:var(--bg3) transparent;
+}
+.plan-page{display:none}
+.plan-page.active{display:block}
+.plan-day-bar{
+  display:flex;align-items:center;gap:10px;margin-bottom:16px;
+  padding:10px 14px;
+  background:linear-gradient(90deg,rgba(207,232,90,.30),rgba(207,232,90,.06) 70%,transparent);
+  border-radius:12px;border:1px solid rgba(207,232,90,.38);
+}
+.plan-day-badge{
+  background:var(--orange);color:#fff;font-weight:800;
+  border-radius:10px;padding:5px 12px;font-size:.88rem;
+  box-shadow:0 4px 12px rgba(248,97,43,.28);flex-shrink:0;
+}
+.plan-day-date{font-size:.85rem;color:var(--teal);font-weight:600}
+.plan-day-city{font-size:.82rem;color:var(--muted);margin-inline-start:auto;white-space:nowrap}
+.plan-row2{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+@media(max-width:560px){.plan-row2{grid-template-columns:1fr}}
+.plan-field{margin-bottom:14px}
+.plan-field label{
+  display:block;font-size:.8rem;font-weight:700;
+  color:var(--orange-soft);margin-bottom:5px;
+}
+.plan-field input,.plan-field select,.plan-field textarea{
+  width:100%;background:var(--bg);border:1px solid var(--bg3);color:var(--text);
+  border-radius:10px;padding:9px 13px;font-family:inherit;font-size:.92rem;outline:none;
+  transition:border-color .2s;
+}
+.plan-field textarea{min-height:86px;resize:vertical;line-height:1.6}
+.plan-field input:focus,.plan-field select:focus,.plan-field textarea:focus{border-color:var(--orange)}
+.plan-day-actions{
+  display:flex;gap:8px;flex-wrap:wrap;margin-top:4px;
+  padding-top:14px;border-top:1px dashed var(--bg3);
+}
+.plan-foot{
+  display:flex;gap:10px;padding:12px 20px 16px;
+  border-top:1px solid var(--bg3);flex-shrink:0;align-items:center;flex-wrap:wrap;
+}
+@media print{.plan-sheet,.plan-overlay{display:none!important}}
 
 #backToMap{
   position:fixed;bottom:22px;inset-inline-start:22px;z-index:60;
@@ -523,12 +853,44 @@ footer{
 </head>
 <body>
 
-<!-- ============ HEADER ============ -->
-<header>
+<!-- hidden controls (edit mode triggered via FAB; kept for JS references) -->
+<div hidden>
+  <button id="editToggle">✏️ وضع تعديل الرحلة</button>
+  <button id="resetBtn">↺ استعادة الافتراضي</button>
+</div>
+<span class="save-indicator no-print" id="saveIndicator">✓ تم الحفظ تلقائياً</span>
+
+<!-- ===== PAGE: الرئيسية ===== -->
+<div class="page active" id="page-home">
+<header class="home-hero">
   <div class="container">
-    <h1>رحلة <span class="accent">كيب تاون</span> والجاردن روت 🇿🇦</h1>
-    <div class="sub" id="headerDates"></div>
-    <div class="badges">
+    <div class="home-top">
+      <div>
+        <div class="home-hello">أهلاً <b>بكم</b> 👋</div>
+        <div class="home-sub" id="headerDates"></div>
+      </div>
+      <div class="home-avatar" title="رحلات الربيش" aria-label="رحلات الربيش">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17.8 19.2 16 11l3.5-3.5C21 6 21.5 4 21 3c-1-.5-3 0-4.5 1.5L13 8 4.8 6.2c-.5-.1-.9.1-1.1.5l-.3.5c-.2.5-.1 1 .3 1.3L9 12l-2 3H4l-1 1 3 2 2 3 1-1v-3l3-2 3.5 5.3c.3.4.8.5 1.3.3l.5-.2c.4-.3.6-.7.5-1.2z"/></svg>
+      </div>
+    </div>
+
+    <div class="home-search-row">
+      <div class="home-search">
+        <span class="hs-ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg></span>
+        <input type="text" id="homeSearch" placeholder="ابحث عن وجهة أو نشاط...">
+      </div>
+      <button class="home-filter" id="homeFilterBtn" title="تعديل الرحلة" aria-label="تعديل الرحلة"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 20h9"/><path d="M16.5 3.5a2.12 2.12 0 0 1 3 3L7 19l-4 1 1-4z"/></svg></button>
+    </div>
+
+    <div class="home-chips" id="homeChips"></div>
+
+    <div class="home-pop-head">
+      <h2 class="home-pop-title">وجهات شائعة</h2>
+      <button class="home-seeall" onclick="switchPage('itinerary')">عرض الكل ←</button>
+    </div>
+    <div class="home-cards" id="homeCards"></div>
+
+    <div class="home-stats">
       <span class="badge">👥 المسافرون: <b id="travelersBadge">2</b></span>
       <span class="badge">📅 أيام الرحلة: <b id="daysBadge"></b></span>
       <span class="badge">🏨 <b id="nightsBadge"></b></span>
@@ -536,25 +898,10 @@ footer{
     </div>
   </div>
 </header>
+</div><!-- /page-home -->
 
-<!-- ============ TOOLBAR ============ -->
-<div class="toolbar no-print">
-  <div class="container">
-    <button class="btn btn-ghost btn-edit" id="editToggle">✏️ وضع تعديل الرحلة</button>
-    <button class="btn btn-teal" onclick="window.print()">🖨️ طباعة / PDF</button>
-    <button class="btn btn-ghost" id="resetBtn">↺ استعادة الافتراضي</button>
-    <nav class="quicknav">
-      <a href="#map">الخريطة</a>
-      <a href="#itinerary">الجدول</a>
-      <a href="#activities">الفعاليات</a>
-      <a href="#budget">الميزانية</a>
-      <a href="#weather">الطقس</a>
-      <a href="#safety">الأمان</a>
-    </nav>
-    <span class="save-indicator" id="saveIndicator">✓ تم الحفظ تلقائياً</span>
-  </div>
-</div>
-
+<!-- ===== PAGE: الجدول ===== -->
+<div class="page" id="page-itinerary">
 <main class="container">
 
 <!-- ============ MAP ============ -->
@@ -564,7 +911,7 @@ footer{
   </h2>
   <p class="sec-desc">اضغط على أي محطة للانتقال إلى يومها في الجدول، أو شغّل المحاكاة لمشاهدة مسار الرحلة يوماً بيوم. الخريطة تتحدث تلقائياً مع أي تعديل على الأيام.</p>
   <div class="map-card">
-    <svg id="routeSvg" viewBox="0 0 1000 430" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="خريطة مسار الرحلة من كيب تاون إلى الجاردن روت">
+    <svg id="routeSvg" viewBox="0 0 1000 430" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="خريطة مسار الرحلة — هيرمانوس وويلدرنيس وموسيل باي وكيب تاون">
       <path d="M30,395 C90,375 130,390 180,400 C240,412 300,395 380,388 C470,380 560,392 640,385 C730,377 820,388 900,378 C940,373 970,365 990,360"
             fill="none" stroke="#76ABAE" stroke-width="1.5" opacity=".25"/>
       <path d="M30,415 C120,400 250,420 400,408 C560,396 750,412 990,385"
@@ -583,15 +930,17 @@ footer{
     <div class="map-legend">
       <span><i class="lg-dot"></i> محطة على المسار</span>
       <span><i class="lg-line"></i> مسار القيادة (N2 والجاردن روت)</span>
-      <span>💡 المحطات النابضة = مدن المبيت (كيب تاون ونيسنا فقط)</span>
+      <span>💡 المحطات النابضة = مدن المبيت (هيرمانوس · ويلدرنيس · موسيل باي · كيب تاون)</span>
     </div>
   </div>
 </section>
 
 <!-- ============ ITINERARY ============ -->
 <section id="itinerary">
-  <h2 class="sec-title">جدول الرحلة اليومي</h2>
-  <p class="sec-desc">المبيت في كيب تاون ونيسنا (الجاردن روت) فقط — هيرمانوس وبقية المحطات زيارات على المسار. فعّل "وضع تعديل الرحلة" لتعديل أو حذف أو إضافة أيام ومواقع.</p>
+  <h2 class="sec-title">جدول الرحلة اليومي
+    <button class="btn btn-teal btn-sm no-print" onclick="window.print()" style="margin-inline-start:auto">🖨️ طباعة الجدول / PDF</button>
+  </h2>
+  <p class="sec-desc">المبيت في هيرمانوس (1 ليلة) · ويلدرنيس (2) · موسيل باي (2) · كيب تاون (3 ليالٍ). فعّل "وضع تعديل الرحلة" لتعديل أو حذف أو إضافة أيام ومواقع.</p>
   <div class="itin-controls">
     <span style="color:var(--muted);font-size:.92rem">📅 عدد أيام الرحلة:</span>
     <div class="stepper">
@@ -605,6 +954,27 @@ footer{
   <div class="add-day-wrap">
     <button class="btn btn-orange" id="addDayBtn">➕ إضافة يوم جديد</button>
   </div>
+</section>
+
+</main>
+</div><!-- /page-itinerary -->
+
+<!-- ===== PAGE: الأنشطة ===== -->
+<div class="page" id="page-activities">
+<main class="container">
+
+<!-- ============ CHECKLIST / TO-DO ============ -->
+<section id="checklist">
+  <h2 class="sec-title">قائمة مهام السفر ✅
+    <span class="chk-progress-badge" id="chkBadge"></span>
+  </h2>
+  <p class="sec-desc">كل ما تبقّى قبل الرحلة وخلالها في مكان واحد. علّم ✓ عند الانتهاء من أي مهمة وستُشطب تلقائياً، ويتحدّث شريط التقدّم. تقدر تضيف مهامك الخاصة أو تحذف أي مهمة — كل شيء يُحفظ تلقائياً.</p>
+  <div class="chk-bar-wrap">
+    <div class="chk-bar"><div class="chk-bar-fill" id="chkBarFill"></div></div>
+    <span class="chk-bar-label" id="chkBarLabel"></span>
+    <button class="btn btn-ghost btn-sm no-print" id="chkClearDone" title="حذف المهام المنتهية">🧹 مسح المنتهية</button>
+  </div>
+  <div id="checklistContainer"></div>
 </section>
 
 <!-- ============ ACTIVITIES ============ -->
@@ -621,6 +991,13 @@ footer{
     <span><b id="actTotalSar"></b> <span class="z" id="actTotalZar"></span></span>
   </div>
 </section>
+
+</main>
+</div><!-- /page-activities -->
+
+<!-- ===== PAGE: الميزانية ===== -->
+<div class="page" id="page-budget">
+<main class="container">
 
 <!-- ============ BUDGET ============ -->
 <section id="budget">
@@ -667,7 +1044,7 @@ footer{
           <input type="number" id="foodPrice" min="0" step="50">
         </div>
 
-        <h3 style="color:var(--teal);font-size:1.05rem;margin:18px 0 12px">🏨 السكن (كيب تاون والجاردن روت فقط)</h3>
+        <h3 style="color:var(--teal);font-size:1.05rem;margin:18px 0 12px">🏨 السكن في محطات المبيت الأربع</h3>
         <div id="hotelsContainer"></div>
       </div>
 
@@ -756,8 +1133,30 @@ footer{
 <!-- ============ WEATHER & INFO ============ -->
 <section id="weather">
   <h2 class="sec-title">دليل الطقس — يوليو (شتاء جنوب أفريقيا)</h2>
-  <p class="sec-desc">يوليو منتصف الشتاء هناك: أجواء لطيفة نهاراً وباردة ليلاً، مع أمطار متقطعة في كيب تاون وأجواء أكثر اعتدالاً على الجاردن روت.</p>
+  <p class="sec-desc">يوليو منتصف الشتاء هناك: أجواء لطيفة نهاراً وباردة ليلاً، مع أمطار متقطعة في كيب تاون وأجواء أكثر دفئاً واستقراراً في هيرمانوس وموسيل باي وويلدرنيس.</p>
   <div class="cards-3">
+    <div class="info-card">
+      <h3>🐋 هيرمانوس</h3>
+      <div class="temp-row"><span>العظمى نهاراً</span><span class="v">16–18°C</span></div>
+      <div class="temp-row"><span>الصغرى ليلاً</span><span class="v">8–10°C</span></div>
+      <div class="temp-row"><span>أيام المطر</span><span class="v">6–8 أيام</span></div>
+      <div class="temp-row"><span>حالة البحر</span><span class="v">🐋 ذروة الحيتان</span></div>
+      <ul style="margin-top:10px">
+        <li>يوليو ذروة موسم الحيتان الجنوبية — أفضل شهر للمشاهدة من الجرف أو البحر.</li>
+        <li>الرياح قد تكون قوية على الساحل — خذ معطفاً وسترة دافئة.</li>
+      </ul>
+    </div>
+    <div class="info-card">
+      <h3>⛅ ويلدرنيس وموسيل باي</h3>
+      <div class="temp-row"><span>العظمى نهاراً</span><span class="v">18–20°C</span></div>
+      <div class="temp-row"><span>الصغرى ليلاً</span><span class="v">8–10°C</span></div>
+      <div class="temp-row"><span>أيام المطر</span><span class="v">4–6 أيام</span></div>
+      <div class="temp-row"><span>حالة البحر</span><span class="v">🌊 هادئة نسبياً</span></div>
+      <ul style="margin-top:10px">
+        <li>أدفأ وأقل مطراً من كيب تاون — مثالية للمشي وتجديف الكاياك والسفاري.</li>
+        <li>موسيل باي محمية جزئياً من الرياح الغربية بفضل موقعها الجغرافي.</li>
+      </ul>
+    </div>
     <div class="info-card">
       <h3>🌧️ كيب تاون</h3>
       <div class="temp-row"><span>العظمى نهاراً</span><span class="v">17–18°C</span></div>
@@ -766,29 +1165,7 @@ footer{
       <div class="temp-row"><span>شروق / غروب</span><span class="v">7:50 / 17:50</span></div>
       <ul style="margin-top:10px">
         <li>أكثر مدن المسار مطراً في يوليو — خطط للأنشطة الداخلية كبديل.</li>
-        <li>الرياح قد توقف تلفريك جبل الطاولة مؤقتاً.</li>
-      </ul>
-    </div>
-    <div class="info-card">
-      <h3>⛅ الجاردن روت (نيسنا/بليتنبيرغ)</h3>
-      <div class="temp-row"><span>العظمى نهاراً</span><span class="v">18–19°C</span></div>
-      <div class="temp-row"><span>الصغرى ليلاً</span><span class="v">7–8°C</span></div>
-      <div class="temp-row"><span>أيام المطر</span><span class="v">5–7 أيام</span></div>
-      <div class="temp-row"><span>حالة البحر</span><span class="v">🐋 موسم الحيتان</span></div>
-      <ul style="margin-top:10px">
-        <li>أدفأ وأقل مطراً من كيب تاون — مثالية للمشي والرحلات البحرية.</li>
-        <li>يوليو–نوفمبر: ذروة الحيتان الجنوبية قرب هيرمانوس وبليتنبيرغ.</li>
-      </ul>
-    </div>
-    <div class="info-card">
-      <h3>🏜️ أودتشورن (رحلة يومية)</h3>
-      <div class="temp-row"><span>العظمى نهاراً</span><span class="v">18–20°C</span></div>
-      <div class="temp-row"><span>الصغرى ليلاً</span><span class="v">3–5°C</span></div>
-      <div class="temp-row"><span>أيام المطر</span><span class="v">2–3 أيام</span></div>
-      <div class="temp-row"><span>السماء</span><span class="v">✨ صافية غالباً</span></div>
-      <ul style="margin-top:10px">
-        <li>مناخ شبه صحراوي: شمس نهاراً وبرد ليلاً — خذوا طبقات دافئة ليوم الزيارة.</li>
-        <li>زيارة نهارية من نيسنا عبر ممر أوتينيكوا الجبلي (~ساعة ونصف).</li>
+        <li>الرياح قد توقف تلفريك جبل الطاولة مؤقتاً — تابع الموقع الرسمي.</li>
       </ul>
     </div>
   </div>
@@ -840,19 +1217,59 @@ footer{
 </section>
 
 </main>
+</div><!-- /page-budget -->
 
-<button class="btn btn-orange no-print" id="backToMap" onclick="document.getElementById('map').scrollIntoView({behavior:'smooth'})">🗺️ الخريطة</button>
+<!-- ===== Bottom App Nav ===== -->
+<nav class="appnav no-print" id="appNav" aria-label="التنقل السريع">
+  <button class="appnav-item active" data-page="home">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>
+    <span>الرئيسية</span>
+  </button>
+  <button class="appnav-item" data-page="itinerary">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
+    <span>الجدول</span>
+  </button>
+  <button class="appnav-fab" id="appFab" title="تعديل الرحلة" aria-label="تعديل الرحلة">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+  </button>
+  <button class="appnav-item" data-page="activities">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 11 12 14 22 4"/><path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"/></svg>
+    <span>الأنشطة</span>
+  </button>
+  <button class="appnav-item" data-page="budget">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="1" y="4" width="22" height="16" rx="2"/><line x1="1" y1="10" x2="23" y2="10"/></svg>
+    <span>الميزانية</span>
+  </button>
+</nav>
+
+<!-- ===== Plan Sheet ===== -->
+<div class="plan-overlay" id="planOverlay"></div>
+<div class="plan-sheet no-print" id="planSheet" role="dialog" aria-modal="true" aria-label="تعديل خطة الرحلة">
+  <div class="plan-handle"></div>
+  <div class="plan-head">
+    <span class="plan-head-title">📅 تعديل الرحلة</span>
+    <div class="plan-tabs-wrap">
+      <div class="plan-tabs" id="planTabs"></div>
+    </div>
+    <button class="plan-close-btn" id="planCloseBtn" title="إغلاق">✕</button>
+  </div>
+  <div class="plan-body" id="planPages"></div>
+  <div class="plan-foot">
+    <button class="btn btn-ghost btn-sm" id="planAddDayBtn2">➕ يوم جديد</button>
+    <button class="btn btn-orange" id="planDoneBtn" style="margin-inline-start:auto">✓ تم</button>
+  </div>
+</div>
 
 <footer>
   <div class="container">
-    خطة رحلة كيب تاون والجاردن روت · يوليو 2026 · الأسعار تقديرية وقابلة للتعديل — تُحفظ تعديلاتك تلقائياً في متصفحك 💾
+    خطة رحلة جنوب أفريقيا (هيرمانوس · ويلدرنيس · موسيل باي · كيب تاون) · يوليو 2026 · الأسعار تقديرية وقابلة للتعديل — تُحفظ تعديلاتك تلقائياً في متصفحك 💾
   </div>
 </footer>
 
 <script>
 'use strict';
 /* ================= Constants ================= */
-const STORAGE_KEY = 'capetown-trip-2026-v3';
+const STORAGE_KEY = 'capetown-trip-2026-v5';
 const START_DATE = new Date(2026, 6, 21); // 21 July 2026
 const WEEKDAYS = ['الأحد','الاثنين','الثلاثاء','الأربعاء','الخميس','الجمعة','السبت'];
 const MONTHS = ['يناير','فبراير','مارس','أبريل','مايو','يونيو','يوليو','أغسطس','سبتمبر','أكتوبر','نوفمبر','ديسمبر'];
@@ -860,79 +1277,107 @@ const MONTHS = ['يناير','فبراير','مارس','أبريل','مايو','
 /* Known places: map coordinates + Wikipedia title for photos */
 const PLACES = {
   capetown:    {name:'كيب تاون',        x:90,  y:300, emoji:'🏙️', stay:true},
+  franschhoek: {name:'فرانشهوك',        x:155, y:250, emoji:'🍷'},
   stellenbosch:{name:'ستيلينبوش',       x:175, y:240, emoji:'🍇'},
-  hermanus:    {name:'هيرمانوس',        x:235, y:330, emoji:'🐋'},
-  mosselbay:   {name:'موسيل باي',       x:520, y:310, emoji:'⚓'},
-  wilderness:  {name:'ويلدرنيس',        x:598, y:298, emoji:'🏖️'},
-  gamelodge:   {name:'Game Lodge',       x:440, y:318, emoji:'🦁'},
-  oudtshoorn:  {name:'أودتشورن',        x:590, y:200, emoji:'🦩'},
-  knysna:      {name:'نيسنا',           x:700, y:290, emoji:'🌉', stay:true},
+  hermanus:    {name:'هيرمانوس',        x:235, y:330, emoji:'🐋', stay:true},
+  mosselbay:   {name:'موسيل باي',       x:520, y:310, emoji:'⚓', stay:true},
+  wilderness:  {name:'ويلدرنيس',        x:598, y:298, emoji:'🏖️', stay:true},
+  knysna:      {name:'نيسنا',           x:700, y:290, emoji:'🌉'},
   plettenberg: {name:'بليتنبيرغ باي',   x:790, y:270, emoji:'🏝️'},
   tsitsikamma: {name:'تسيتسيكاما',      x:880, y:240, emoji:'🌲'}
 };
 
 /* ================= Default itinerary =================
-   المبيت في كيب تاون ونيسنا فقط — هيرمانوس محطة على المسار بدون نوم */
+   هيرمانوس 1 ليلة → ويلدرنيس 2 ليالٍ → موسيل باي 2 ليالٍ → كيب تاون 3 ليالٍ */
+/* Image sources = local bundled covers (served from the site's own origin),
+   so they always load with no external dependency, CORS, or link-rot. */
+const IMG = {
+  whales:      'img/whales.jpg',
+  table:       'img/table.jpg',
+  knysna:      'img/knysna.jpg',
+  mosselbay:   'img/mosselbay.jpg',
+  elephant:    'img/elephant.jpg',
+  lion:        'img/lion.jpg',
+  franschhoek: 'img/franschhoek.jpg',
+  stellenbosch:'img/stellenbosch.jpg',
+  bokaap:      'img/bokaap.jpg',
+  capepoint:   'img/capepoint.jpg',
+  penguins:    'img/penguins.jpg',
+  chapmans:    'img/chapmans.jpg',
+  waterfront:  'img/waterfront.jpg'
+};
 const DEFAULT_DAYS = [
-  {place:'capetown', title:'الوصول إلى كيب تاون والواجهة البحرية',
-   acts:['الوصول إلى مطار كيب تاون الدولي (CPT) واستلام السيارة المستأجرة.','تسجيل الدخول في الفندق والراحة من السفر.','جولة مسائية في V&A Waterfront: المطاعم، الأسواق، وعجلة كيب الدوارة.','عشاء على الواجهة البحرية مع إطلالة على جبل الطاولة.'],
-   links:[['موقع V&A Waterfront','https://www.waterfront.co.za'],['مطار كيب تاون','https://www.airports.co.za/airports/cape-town-international-airport']],
-   imgs:['Victoria & Alfred Waterfront','Cape Town'],
-   tip:'فعّل شريحة بيانات محلية (Vodacom أو MTN) من المطار مباشرة، واطلب سيارة مريحة لطرق الجاردن روت.'},
+  {place:'hermanus', title:'الوصول إلى هيرمانوس — بلدة الحيتان 🐋',
+   acts:['الوصول إلى مطار كيب تاون الدولي (CPT) من أديس أبابا، واستلام سيارة الإيجار.','القيادة (~120 كم، ساعة ونصف) عبر الطريق الساحلي R44/N2 المذهل نحو هيرمانوس.','تسجيل الدخول في الفندق والاسترخاء بعد رحلة الطيران.','جولة مسائية على ممشى الجرف (Cliff Path) المطل على خليج ووكر، وعشاء في وسط البلدة.'],
+   links:[['دليل هيرمانوس الرسمي','https://hermanus.co.za'],['مطار كيب تاون','https://www.airports.co.za/airports/cape-town-international-airport']],
+   imgs:[{c:'حيتان هيرمانوس الجنوبية',u:IMG.whales},{c:'جبل الطاولة عند الوصول',u:IMG.table}],
+   tip:'فعّل شريحة Vodacom أو MTN من المطار مباشرة. أنصت لـ"منادي الحيتان" (Whale Crier) في وسط هيرمانوس — ينفخ بوقاً كلما رصد حوتاً.'},
+
+  {place:'wilderness', title:'هيرمانوس → ويلدرنيس عبر ساحل الجاردن روت',
+   acts:['صباحاً: مشاهدة الحيتان الجنوبية من منحدرات هيرمانوس أو رحلة بحرية قصيرة.','زيارة Old Harbour Museum وسوق هيرمانوس الصباحي.','انطلاق على N2 شرقاً نحو ويلدرنيس (~250 كم، 3 ساعات) مع استراحة في سويلندام.','الوصول إلى ويلدرنيس مساءً وتسجيل الدخول — قرية ساحلية هادئة ذات شواطئ رملية ذهبية.'],
+   links:[['رحلات الحيتان البحرية','https://southernrightcharters.co.za'],['دليل ويلدرنيس','https://www.wilderness-info.com']],
+   imgs:[{c:'مشاهدة الحيتان',u:IMG.whales},{c:'ساحل الجاردن روت',u:IMG.knysna}],
+   tip:'لا تتأخر في هيرمانوس — اغادر بعد الظهر لتصل ويلدرنيس قبل المغرب. يوليو موسم ذروة الحيتان الجنوبية.'},
+
+  {place:'wilderness', title:'يوم حر في ويلدرنيس — ويمكن زيارة نيسنا',
+   acts:['استكشاف شاطئ ويلدرنيس الرملي الطويل المطل على المحيط الهندي.','جلسة كاياك أو تجديف في بحيرة ويلدرنيس الهادئة.','رحلة يومية اختيارية إلى نيسنا شرقاً (~80 كم، ساعة) لرؤية الرأسَين الصخريَّين الشهيرَين.','ليلة هادئة بمطعم محلي على الشاطئ.'],
+   links:[['حديقة ويلدرنيس الوطنية','https://www.sanparks.org/parks/garden_route'],['دليل نيسنا','https://www.visitknysna.co.za']],
+   imgs:[{c:'رأسا نيسنا الشهيران',u:IMG.knysna},{c:'الساحل الجنوبي',u:IMG.mosselbay}],
+   tip:'نيسنا شرق ويلدرنيس على N2 — اذهب صباحاً وعد ظهراً. اليوم مرن لأنك لا تنتقل للمبيت في مدينة أخرى.'},
+
+  {place:'mosselbay', title:'ويلدرنيس → موسيل باي (غرباً على N2)',
+   acts:['صباح هادئ في ويلدرنيس وفطور كامل.','القيادة غرباً على N2 نحو موسيل باي (~80 كم، ساعة واحدة) عبر جورج — عاصمة الجاردن روت.','الوصول إلى موسيل باي وتسجيل الدخول.','جولة في متحف بارتولوميو دياز (Dias Museum Complex) على الواجهة البحرية.'],
+   links:[['دليل موسيل باي','https://www.visitmosselbay.co.za'],['متحف ديسكوفري','https://diasmuseum.co.za']],
+   imgs:[{c:'موسيل باي',u:IMG.mosselbay},{c:'ساحل الجاردن روت',u:IMG.knysna}],
+   tip:'موسيل باي غرب ويلدرنيس وليس شرقها — المسافة قصيرة (~80 كم، ساعة). احجز السفاري مسبقاً إن أردت اليوم التالي.'},
+
+  {place:'mosselbay', title:'يوم السفاري الاختياري 🦁 — موسيل باي',
+   acts:['سفاري اختياري لشخصين في Botlierskop Private Game Reserve — انطلاق الساعة 11 صباحاً.','يمكن مشاهدة الخمسة الكبار (أسد، فيل، جاموس، فهد، كركدن) في محمية خالية من الملاريا.','(بديل) استكشاف Cape St Blaize Cave والممشى الساحلي البانورامي.','عشاء على ميناء موسيل باي مع إطلالة على المحيط الهندي.'],
+   links:[['Botlierskop Private Game Reserve (احجز مسبقاً)','https://www.botlierskop.co.za'],['دليل موسيل باي','https://www.visitmosselbay.co.za']],
+   imgs:[{c:'فيل أفريقي',u:IMG.elephant},{c:'أسد',u:IMG.lion}],
+   tip:'احجز السفاري مباشرة عبر موقع Botlierskop أو اتصل بهم — الأماكن محدودة. الجولة الصباحية (11 ص) مناسبة ولا تعيقكم لاحقاً.'},
+
+  {place:'capetown', title:'موسيل باي → فرانشهوك وستيلينبوش → كيب تاون',
+   acts:['انطلاقة مبكرة من موسيل باي نحو كيب تاون (~380 كم، 4 ساعات).','توقّف اختياري في فرانشهوك — القرية الفرنسية الساحرة وكروم العنب (~30 كم قبل كيب تاون).','جولة قصيرة في ستيلينبوش وبلدتها التاريخية ذات الطراز الهولندي.','الوصول إلى كيب تاون مساءً وتسجيل الدخول في الفندق.'],
+   links:[['دليل فرانشهوك','https://www.franschhoek.org.za'],['دليل ستيلينبوش','https://visitstellenbosch.org']],
+   imgs:[{c:'فرانشهوك',u:IMG.franschhoek},{c:'ستيلينبوش',u:IMG.stellenbosch}],
+   tip:'فرانشهوك وستيلينبوش على الطريق من موسيل باي إلى كيب تاون — خطط لساعة لكل منهما إن رغبتما.'},
 
   {place:'capetown', title:'جبل الطاولة وحي بوكاب الملوّن',
-   acts:['صعود جبل الطاولة بالتلفريك الدوّار صباحاً (الأجواء أصفى قبل الظهر).','جولة تصوير في حي بوكاب (Bo-Kaap) بمنازله الملوّنة وتاريخ مسلمي الكيب.','زيارة حديقة الشركة (Company\'s Garden) ووسط المدينة التاريخي.','غداء في سوق Greenmarket Square وتسوّق الهدايا التذكارية.'],
+   acts:['صعود جبل الطاولة بالتلفريك الدوّار صباحاً (الأجواء أصفى قبل الظهر).','جولة تصوير في حي بوكاب (Bo-Kaap) بمنازله الملوّنة وتاريخ مسلمي الكيب.','زيارة حديقة الشركة (Company\'s Garden) ووسط المدينة التاريخي.','عشاء في V&A Waterfront مع إطلالة على جبل الطاولة.'],
    links:[['حجز تلفريك جبل الطاولة','https://www.tablemountain.net'],['متحف بوكاب','https://www.iziko.org.za/museums/bo-kaap-museum']],
-   imgs:['Table Mountain','Bo-Kaap'],
-   tip:'تحقق من حالة التلفريك على موقعه قبل الذهاب — يتوقف عند الرياح القوية. في يوليو خذ سترة؛ القمة أبرد بـ 5–8 درجات.'},
+   imgs:[{c:'جبل الطاولة',u:IMG.table},{c:'حي بوكاب الملوّن',u:IMG.bokaap}],
+   tip:'تحقق من حالة التلفريك على موقعه قبل الذهاب — يتوقف عند الرياح القوية. في يوليو خذ سترة؛ قمة الجبل أبرد بـ 5–8 درجات.'},
 
   {place:'capetown', title:'شبه جزيرة الكيب وبطاريق بولدرز',
-   acts:['قيادة عبر طريق تشابمانز بيك (Chapman\'s Peak) — من أجمل الطرق الساحلية في العالم.','زيارة رأس الرجاء الصالح وكيب بوينت (Cape Point) وركوب القطار الجبلي.','مشاهدة مستعمرة البطاريق الأفريقية في شاطئ بولدرز (Boulders Beach).','جولة قصيرة في بلدة سايمونز تاون البحرية ثم العودة عبر ميزنبيرغ.'],
+   acts:['قيادة عبر طريق تشابمانز بيك (Chapman\'s Peak) — من أجمل الطرق الساحلية في العالم.','زيارة رأس الرجاء الصالح وكيب بوينت (Cape Point) وركوب القطار الجبلي.','مشاهدة مستعمرة البطاريق الأفريقية في شاطئ بولدرز (Boulders Beach).','ليلة وداع في كامبس باي أو واجهة V&A Waterfront.'],
    links:[['كيب بوينت','https://capepoint.co.za'],['طريق تشابمانز بيك','https://www.chapmanspeakdrive.co.za'],['شاطئ بولدرز (SANParks)','https://www.sanparks.org/parks/table_mountain/tourism/attractions.php']],
-   imgs:['Cape Point','Boulders Beach','Chapman\'s Peak'],
+   imgs:[{c:'كيب بوينت',u:IMG.capepoint},{c:'بطاريق بولدرز',u:IMG.penguins},{c:'طريق تشابمانز بيك',u:IMG.chapmans}],
    tip:'لا تترك أي أغراض ظاهرة في السيارة عند المواقف، وانتبه من قرود البابون عند كيب بوينت — لا تُطعمها أبداً.'},
 
-  {place:'stellenbosch', title:'كيرستنبوش والواينلاندز وكامبس باي',
-   acts:['صباحاً: حدائق كيرستنبوش النباتية الوطنية وممشى الجسر المعلّق (Boomslang).','رحلة قصيرة إلى ستيلينبوش: البلدة الجامعية التاريخية بطرازها الهولندي.','زيارة حديقة بابيلونستورن (Babylonstoren) وغداء ريفي في إحدى المزارع.','قهوة الغروب على شاطئ كامبس باي، وعشاء وداع كيب تاون في سي بوينت.'],
-   links:[['حدائق كيرستنبوش','https://www.sanbi.org/gardens/kirstenbosch'],['بابيلونستورن (احجز مسبقاً)','https://babylonstoren.com'],['دليل ستيلينبوش','https://visitstellenbosch.org']],
-   imgs:['Kirstenbosch National Botanical Garden','Stellenbosch','Camps Bay'],
-   tip:'احجز مدخل بابيلونستورن مسبقاً عبر الإنترنت. رتّب حقائبك الليلة — غداً تبدأ جولة الجاردن روت، وعبّئ وقود السيارة مساءً.'},
-
-  {place:'hermanus', title:'إلى الجاردن روت عبر هيرمانوس 🐋 (بدون مبيت)',
-   acts:['انطلاقة مبكرة (7 صباحاً) عبر الطريق الساحلي R44 (Clarence Drive) المذهل.','توقّف 3–4 ساعات في هيرمانوس: مشاهدة الحيتان الجنوبية من المنحدرات وممشى الجرف.','غداء سريع في هيرمانوس ثم مواصلة الطريق N2 شرقاً.','استراحة قهوة في سويلندام أو موسيل باي، والوصول إلى نيسنا مساءً (إجمالي ~500 كم).'],
-   links:[['رحلات الحيتان البحرية','https://southernrightcharters.co.za'],['دليل هيرمانوس','https://hermanus.co.za']],
-   imgs:['Hermanus','Walker Bay'],
-   tip:'أنصت لـ"منادي الحيتان" (Whale Crier) في وسط البلدة — ينفخ بوقاً عند رصد الحيتان. لا تتأخروا بعد الساعة 2 ظهراً لتجنب القيادة ليلاً.'},
-
-  {place:'knysna', title:'نيسنا: البحيرة والرأسان الصخريان',
-   acts:['صباح هادئ وفطور على بحيرة نيسنا.','رحلة بحرية في البحيرة حتى رأسَي نيسنا (Knysna Heads).','إطلالة بانورامية من نقطة المشاهدة الشرقية (East Head Viewpoint).','جولة في الواجهة البحرية (Knysna Waterfront) وجزيرة ثيسن.'],
-   links:[['دليل نيسنا الرسمي','https://www.visitknysna.co.za'],['رحلات فيذربيد البحرية','https://www.featherbed.co.za']],
-   imgs:['Knysna','Knysna River'],
-   tip:'احجز رحلة الغروب البحرية مسبقاً — الأماكن محدودة في يوليو وقت مهرجان المحار.'},
-
-  {place:'plettenberg', title:'بليتنبيرغ باي وحديقة تسيتسيكاما',
-   acts:['صباحاً: محمية روبرغ الطبيعية في بليتنبيرغ باي ومسار المشي الساحلي.','زيارة Monkeyland وBirds of Eden — أكبر قفص طيور حر في العالم.','حديقة تسيتسيكاما الوطنية: الجسور المعلقة فوق مصب نهر ستورمز.','اختياري للمغامرين: أعلى قفزة بنجي من جسر في العالم (بلوكرانس، 216م). العودة للمبيت في نيسنا.'],
-   links:[['حديقة تسيتسيكاما (SANParks)','https://www.sanparks.org/parks/garden_route'],['Monkeyland','https://www.monkeyland.co.za'],['قفزة بلوكرانس بنجي','https://faceadrenalin.com']],
-   imgs:['Tsitsikamma National Park','Plettenberg Bay'],
-   tip:'البس حذاء مشي مريحاً وخذ معطفاً مقاوماً للمطر — مسار الجسور المعلقة يستغرق ساعة تقريباً.'},
-
-  {place:'gamelodge', title:'كهوف كانغو + طريق 62 → Garden Route Game Lodge 🦁',
-   acts:['انطلاقة مبكرة (7 صباحاً) من نيسنا عبر ممر أوتينيكوا الجبلي إلى أودتشورن (~ساعة ونصف).','جولة في كهوف كانغو (Heritage Tour) وزيارة مزرعة نعام تفاعلية.','الغداء في أودتشورن ثم الانطلاق غرباً عبر طريق N2 إلى Garden Route Game Lodge قرب ألبرتينيا (~ساعتين).','تسجيل الدخول في المحمية وجولة سفاري مسائية مع الخمسة الكبار (أسد، فيل، جاموس، فهد، كركدن).'],
-   links:[['Garden Route Game Lodge (احجز مباشرة)','https://www.gardenroutegamelodge.co.za'],['كهوف كانغو','https://www.cangocaves.co.za'],['مزرعة سفاري النعام','https://www.safariostrich.co.za']],
-   imgs:['Garden Route Game Lodge','Cango Caves','Oudtshoorn'],
-   tip:'الجولة المسائية (Sundowner Safari) في المحمية من أجمل التجارب. احجز مسبقاً لأن أماكن اليوليو تمتلئ. المحمية خالية من الملاريا 🙌'},
-
-  {place:'capetown', title:'سفاري الفجر والعودة الأخيرة إلى كيب تاون 🏙️',
-   acts:['صفاري الفجر (6 صباحاً) في Garden Route Game Lodge — أفضل وقت لرؤية الحيوانات المفترسة.','فطور في المحمية ثم الانطلاق على طريق N2 / Route 62 غرباً نحو كيب تاون (~3 ساعات).','توقّف للقهوة في سويلندام أو مونتاغو — أقدم ثالث بلدة في جنوب أفريقيا.','الوصول لكيب تاون مساءً وتسجيل الدخول في الليلة الوداعية.'],
-   links:[['Garden Route Game Lodge','https://www.gardenroutegamelodge.co.za'],['Booking.com — كيب تاون','https://www.booking.com/searchresults.ar.html?ss=Cape+Town']],
-   imgs:['Garden Route Game Lodge','Swellendam','Cape Town'],
-   tip:'اطلب Sundowner Package (سفاري + عشاء + فطور) عند الحجز — يستحق. احرص على مغادرة المحمية قبل الساعة 10 لتصل كيب تاون قبل المساء.'},
-
-  {place:'capetown', title:'العودة إلى كيب تاون والمغادرة',
-   acts:['انطلاقة مبكرة على الطريق N2 غرباً نحو كيب تاون (~500 كم، 5–6 ساعات).','توقّف للغداء في سويلندام — أقدم ثالث بلدة في جنوب أفريقيا.','تعبئة الوقود وتسليم السيارة في مطار كيب تاون.','المغادرة مساءً — في حفظ الله.'],
+  {place:'capetown', title:'يوم المغادرة — وداع كيب تاون ✈️',
+   acts:['فطور مبكر وتعبئة الحقائب.','جولة أخيرة في V&A Waterfront أو شراء هدايا من الأسواق المحلية.','تعبئة وقود السيارة وتسليمها في مطار كيب تاون الدولي.','المغادرة عبر أديس أبابا نحو الرياض — في حفظ الله.'],
    links:[['مطار كيب تاون','https://www.airports.co.za/airports/cape-town-international-airport']],
-   imgs:['Cape Town International Airport','N2 (South Africa)'],
-   tip:'اتركوا هامش 4 ساعات قبل الإقلاع — الطريق طويل وتسليم السيارة وإجراءات المطار تحتاج وقتاً.'}
+   imgs:[{c:'V&A Waterfront',u:IMG.waterfront},{c:'وداعاً جبل الطاولة',u:IMG.table}],
+   tip:'اتركوا هامش 4 ساعات قبل الإقلاع — تسليم السيارة وإجراءات المطار تحتاج وقتاً.'}
+];
+
+/* ================= Home hero — categories & popular destinations ================= */
+const HOME_CATS = [
+  {key:'all',    label:'الكل',   icon:'🧭'},
+  {key:'whale',  label:'حيتان',  icon:'🐋'},
+  {key:'beach',  label:'شواطئ',  icon:'🏖️'},
+  {key:'city',   label:'مدينة',  icon:'🏙️'},
+  {key:'safari', label:'سفاري',  icon:'🦁'},
+  {key:'wine',   label:'كروم',   icon:'🍷'}
+];
+const HOME_DESTS = [
+  {name:'هيرمانوس',      tag:'بلدة الحيتان',   cat:'whale',  img:IMG.whales,      rating:'4.9', reviews:'2k',   target:'hermanus'},
+  {name:'كيب تاون',      tag:'جبل الطاولة',    cat:'city',   img:IMG.table,       rating:'4.8', reviews:'9k',   target:'capetown'},
+  {name:'ويلدرنيس',      tag:'الجاردن روت',    cat:'beach',  img:IMG.knysna,      rating:'4.7', reviews:'1.5k', target:'wilderness'},
+  {name:'موسيل باي',     tag:'سفاري ومحيط',    cat:'safari', img:IMG.mosselbay,   rating:'4.6', reviews:'1k',   target:'mosselbay'},
+  {name:'فرانشهوك',      tag:'كروم العنب',     cat:'wine',   img:IMG.franschhoek, rating:'4.8', reviews:'3k',   target:'capetown'},
+  {name:'بطاريق بولدرز', tag:'شبه جزيرة الكيب',cat:'beach',  img:IMG.penguins,    rating:'4.9', reviews:'6k',   target:'capetown'}
 ];
 
 /* ================= Activities catalog =================
@@ -979,6 +1424,45 @@ const DEFAULT_ACTIVITIES = [
   {id:'bungee',     group:'الجاردن روت', name:'قفزة بنجي بلوكرانس 216م (للمغامرين)', price:380, on:false, url:'https://faceadrenalin.com'}
 ];
 
+/* ================= Travel checklist (To-Do) ================= */
+const CHECKLIST_CATS = [
+  {key:'docs',   label:'📄 المستندات والحجوزات'},
+  {key:'before', label:'🧳 قبل السفر'},
+  {key:'pack',   label:'🎒 الأمتعة'},
+  {key:'trip',   label:'✈️ خلال الرحلة'}
+];
+const DEFAULT_CHECKLIST = [
+  // المستندات والحجوزات
+  {id:'d1', cat:'docs',   text:'التأكد من صلاحية جواز السفر (6 أشهر بعد تاريخ العودة)', done:false},
+  {id:'d2', cat:'docs',   text:'تأكيد حجز الطيران NHR1FH — الرياض ↔ كيب تاون عبر أديس أبابا', done:false},
+  {id:'d3', cat:'docs',   text:'التحقق من متطلبات تأشيرة جنوب أفريقيا وإصدارها', done:false},
+  {id:'d4', cat:'docs',   text:'طباعة/حفظ تذاكر الطيران وبطاقات الصعود', done:false},
+  {id:'d5', cat:'docs',   text:'حجز الفنادق (هيرمانوس / ويلدرنيس / موسيل باي / كيب تاون) وحفظ التأكيدات', done:false},
+  {id:'d6', cat:'docs',   text:'حجز/تأكيد سيارة الإيجار في مطار كيب تاون', done:false},
+  {id:'d7', cat:'docs',   text:'إصدار تأمين سفر يغطي مدة الرحلة', done:false},
+  // قبل السفر
+  {id:'b1', cat:'before', text:'التحقق من شهادة الحمى الصفراء (ترانزيت أديس أبابا) إن لزمت', done:false},
+  {id:'b2', cat:'before', text:'تحويل/سحب عملة الراند الجنوب أفريقي (ZAR)', done:false},
+  {id:'b3', cat:'before', text:'إبلاغ البنك بالسفر لتفعيل البطاقات في الخارج', done:false},
+  {id:'b4', cat:'before', text:'شراء شريحة eSIM أو شريحة محلية (Vodacom / MTN)', done:false},
+  {id:'b5', cat:'before', text:'إصدار رخصة قيادة دولية', done:false},
+  {id:'b6', cat:'before', text:'متابعة حالة الطقس (يوليو = شتاء جنوب أفريقيا)', done:false},
+  // الأمتعة
+  {id:'p1', cat:'pack',   text:'ملابس شتوية ومعطف دافئ (الأجواء باردة في يوليو)', done:false},
+  {id:'p2', cat:'pack',   text:'محول كهرباء Type M / N · 230 فولت', done:false},
+  {id:'p3', cat:'pack',   text:'الأدوية الشخصية وحقيبة إسعافات أولية', done:false},
+  {id:'p4', cat:'pack',   text:'كاميرا + شواحن + بطارية احتياطية (باوربانك)', done:false},
+  {id:'p5', cat:'pack',   text:'حذاء مشي مريح لمسارات الجاردن روت', done:false},
+  {id:'p6', cat:'pack',   text:'نظارة شمسية وواقٍ من الشمس', done:false},
+  // خلال الرحلة
+  {id:'t1', cat:'trip',   text:'استلام السيارة وتفعيل الشريحة من المطار', done:false},
+  {id:'t2', cat:'trip',   text:'جبل الطاولة وحي بوكاب 📸', done:false},
+  {id:'t3', cat:'trip',   text:'مشاهدة الحيتان في هيرمانوس 🐋', done:false},
+  {id:'t4', cat:'trip',   text:'سفاري قرب موسيل باي (Botlierskop) 🦁 اختياري', done:false},
+  {id:'t5', cat:'trip',   text:'تعبئة وقود السيارة قبل تسليمها', done:false},
+  {id:'t6', cat:'trip',   text:'الوصول للمطار قبل 4 ساعات من إقلاع العودة', done:false}
+];
+
 const DEFAULT_STATE = {
   travelers: 2,
   flightPrice: 4200,
@@ -987,7 +1471,7 @@ const DEFAULT_STATE = {
   foodPrice: 2700,
   payment: 'cash',
   rate: 4.75,
-  ctNights: 5,
+  checklist: DEFAULT_CHECKLIST,
   activities: DEFAULT_ACTIVITIES,
   driver: {
     capetown: {on:false, price:450},
@@ -998,28 +1482,36 @@ const DEFAULT_STATE = {
   days: DEFAULT_DAYS,
   customPlaces: {},
   hotels: {
+    hermanus: {
+      label: 'هيرمانوس 🐋', selected: 0,
+      options: [
+        {name:'The Marine Hermanus (فاخر)', price: 1800, img:''},
+        {name:'Windsor Hotel Hermanus', price: 900, img:''},
+        {name:'Harbour House Hotel', price: 700, img:''}
+      ]
+    },
+    wilderness: {
+      label: 'ويلدرنيس 🏖️', selected: 0,
+      options: [
+        {name:'Wilderness Hotel & Spa', price: 850, img:''},
+        {name:'Protea Hotel by Marriott Wilderness', price: 750, img:''},
+        {name:'Fairy Knowe Hotel', price: 450, img:''}
+      ]
+    },
+    mosselbay: {
+      label: 'موسيل باي ⚓', selected: 0,
+      options: [
+        {name:'Santos Express Train Lodge', price: 600, img:''},
+        {name:'Point Village Hotel & Resort', price: 800, img:''},
+        {name:'Blue Bay Lodge', price: 550, img:''}
+      ]
+    },
     capetown: {
-      label: 'كيب تاون', selected: 0,
+      label: 'كيب تاون 🏙️', selected: 0,
       options: [
         {name:'Radisson RED V&A Waterfront', price: 950, img:''},
         {name:'The Table Bay Hotel (فاخر)', price: 1600, img:''},
         {name:'Premier Hotel Cape Town', price: 600, img:''}
-      ]
-    },
-    knysna: {
-      label: 'الجاردن روت — نيسنا', selected: 0,
-      options: [
-        {name:'The Turbine Boutique Hotel', price: 850, img:''},
-        {name:'Premier Resort The Moorings', price: 700, img:''},
-        {name:'Knysna Log-Inn Hotel', price: 550, img:''}
-      ]
-    },
-    gamelodge: {
-      label: 'Garden Route Game Lodge 🦁', selected: 0,
-      options: [
-        {name:'Garden Route Game Lodge — Standard Chalet', price: 1800, img:'https://dynamic-media-cdn.tripadvisor.com/media/photo-o/29/5e/17/8a/exterior.jpg?w=1200&h=-1&s=1'},
-        {name:'Garden Route Game Lodge — Luxury Chalet', price: 2600, img:''},
-        {name:'Garden Route Game Lodge — Family Chalet', price: 2200, img:''}
       ]
     }
   }
@@ -1029,6 +1521,7 @@ const DEFAULT_STATE = {
 let state = loadState();
 let pickingForDay = null; // index of day waiting for a map click
 let _editingActId = null;
+const homeFilter = {cat:'all', q:''};
 
 function loadState(){
   try{
@@ -1048,6 +1541,16 @@ function loadState(){
     // preserve custom activities added by user
     const defaultIds = new Set(DEFAULT_ACTIVITIES.map(a=>a.id));
     (saved.activities||[]).filter(a=>a&&a.id&&!defaultIds.has(a.id)).forEach(a=>merged.activities.push(structuredClone(a)));
+    // checklist: keep default tasks (preserving done state) + any custom tasks the user added
+    const savedChk = {};
+    (saved.checklist || []).forEach(c=>{ if(c && c.id) savedChk[c.id] = c; });
+    merged.checklist = DEFAULT_CHECKLIST.map(c=>{
+      const s = savedChk[c.id];
+      return s ? Object.assign(structuredClone(c), {done:!!s.done}) : structuredClone(c);
+    });
+    const defaultChkIds = new Set(DEFAULT_CHECKLIST.map(c=>c.id));
+    (saved.checklist||[]).filter(c=>c&&c.id&&!defaultChkIds.has(c.id))
+      .forEach(c=>merged.checklist.push({id:c.id, cat:CHECKLIST_CATS.some(k=>k.key===c.cat)?c.cat:'before', text:String(c.text||''), done:!!c.done}));
     merged.driver = {};
     for(const key of Object.keys(DEFAULT_STATE.driver)){
       merged.driver[key] = Object.assign(structuredClone(DEFAULT_STATE.driver[key]), saved.driver?.[key]);
@@ -1084,14 +1587,16 @@ function dayDate(i){ const d = new Date(START_DATE); d.setDate(d.getDate()+i); r
 function fmtDate(d){ return `${WEEKDAYS[d.getDay()]} ${d.getDate()} ${MONTHS[d.getMonth()]}`; }
 function isoDate(d){ return d.toISOString().slice(0,10); }
 function totalNights(){ return Math.max(1, state.days.length - 1); }
-function ctNights(){ return Math.min(Math.max(1, state.ctNights), totalNights()); }
-const LODGE_NIGHTS = 1; // Garden Route Game Lodge — fixed 1 night on return
-function knNights(){ return Math.max(0, totalNights() - ctNights() - LODGE_NIGHTS); }
+const HM_NIGHTS = 1; // هيرمانوس — ليلة واحدة
+const WD_NIGHTS = 2; // ويلدرنيس — ليلتان
+const MB_NIGHTS = 2; // موسيل باي — ليلتان
+function ctNights(){ return Math.max(1, totalNights() - HM_NIGHTS - WD_NIGHTS - MB_NIGHTS); }
 function roomsCount(){ return Math.max(1, Math.ceil(state.travelers / 2)); }
 
-/* ================= Wikipedia images (free, CORS-enabled) ================= */
-const IMG_CACHE_PREFIX = 'wimg2:';
+/* ================= Images (Wikipedia API + direct URLs) ================= */
+const IMG_CACHE_PREFIX = 'wimg5:';
 async function wikiThumb(title){
+  if(title.startsWith('http')) return title; // direct URL — use as-is
   const ck = IMG_CACHE_PREFIX + title;
   const cached = localStorage.getItem(ck);
   if(cached) return cached === 'x' ? null : cached;
@@ -1099,22 +1604,39 @@ async function wikiThumb(title){
     const r = await fetch('https://en.wikipedia.org/api/rest_v1/page/summary/' + encodeURIComponent(title.replace(/ /g,'_')), {headers:{Accept:'application/json'}});
     if(!r.ok) throw 0;
     const j = await r.json();
-    const src = j.thumbnail?.source || j.originalimage?.source || null;
-    try{ localStorage.setItem(ck, src || 'x'); }catch(e){}
+    let src = j.thumbnail?.source || null;
+    if(src) src = src.replace(/\/\d+px-/, '/1200px-'); // request larger size
+    src = src || j.originalimage?.source || null;
+    if(src){ try{ localStorage.setItem(ck, src); }catch(e){} } // cache successes only — retry on failure
     return src;
   }catch(e){ return null; }
 }
+function tryLoadImage(ph, srcs){
+  if(!srcs || !srcs.length) return; // no source: keep the colored placeholder
+  const [src, ...rest] = srcs;
+  const img = new Image();
+  img.alt = '';
+  img.loading = 'lazy';
+  if(ph.dataset.imgclass) img.className = ph.dataset.imgclass;
+  img.onload = ()=>{ ph.innerHTML=''; ph.appendChild(img); ph.classList.add('loaded'); };
+  img.onerror = ()=>{ tryLoadImage(ph, rest); }; // try next source
+  img.src = src;
+}
+const PH_IMG_SVG = '<svg class="ph-svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><path d="M21 15l-5-5L5 21"/></svg>';
 function hydrateImages(root){
   (root || document).querySelectorAll('.ph[data-wiki]:not([data-done])').forEach(async ph=>{
     ph.dataset.done = '1';
-    const src = await wikiThumb(ph.dataset.wiki);
-    if(src){
-      const img = new Image();
-      img.alt = ph.dataset.wiki;
-      img.loading = 'lazy';
-      img.onload = ()=>{ ph.textContent=''; ph.appendChild(img); };
-      img.src = src;
+    const val = ph.dataset.wiki;
+    if(!val) return;
+    const srcs = [];
+    // direct URL or local path (has a slash or image extension) → load as-is
+    if(/^https?:|^\.?\/|\//.test(val) || /\.(jpe?g|png|webp|gif|svg|avif)$/i.test(val)){
+      srcs.push(val);
+    }else{
+      const wikiSrc = await wikiThumb(val);
+      if(wikiSrc) srcs.push(wikiSrc);
     }
+    tryLoadImage(ph, srcs);
   });
 }
 
@@ -1305,8 +1827,13 @@ function renderItinerary(){
     const card = document.createElement('div');
     card.className = 'day-card';
     card.id = 'day-' + (i+1);
-    const imgsHtml = (d.imgs||[]).slice(0,3).map(t=>
-      `<figure><div class="ph" data-wiki="${escapeAttr(t)}">📷</div><figcaption>${escapeHtml(t)}</figcaption></figure>`).join('');
+    const placeEmoji = p ? (p.emoji || '📍') : '📍';
+    const imgsHtml = (d.imgs||[]).slice(0,3).map(t=>{
+      const u = (t && typeof t === 'object') ? (t.u || '') : String(t || '');
+      const c = (t && typeof t === 'object') ? t.c : String(t || '');
+      const wikiAttr = u ? ` data-wiki="${escapeAttr(u)}"` : '';
+      return `<figure><div class="ph"${wikiAttr}><svg class="ph-svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><path d="M21 15l-5-5L5 21"/></svg><span class="ph-label">${escapeHtml(c)}</span></div><figcaption>${escapeHtml(c)}</figcaption></figure>`;
+    }).join('');
     const linksHtml = (d.links||[]).map(l=>
       `<a class="chip" href="${escapeAttr(l[1])}" target="_blank" rel="noopener">🔗 ${escapeHtml(l[0])}</a>`).join('');
     card.innerHTML = `
@@ -1327,7 +1854,7 @@ function renderItinerary(){
         <div><label>الموقع على الخريطة</label><select data-i="${i}" data-f="place">${placeOptionsHtml(d.place)}</select></div>
         <div><label>روابط (سطر لكل رابط: الاسم | الرابط)</label><textarea data-i="${i}" data-f="links">${escapeHtml((d.links||[]).map(l=>l[0]+' | '+l[1]).join('\n'))}</textarea></div>
         <div class="full"><label>الفعاليات والأنشطة (سطر لكل نشاط)</label><textarea data-i="${i}" data-f="acts">${escapeHtml((d.acts||[]).join('\n'))}</textarea></div>
-        <div class="full"><label>صور (عناوين صفحات ويكيبيديا بالإنجليزية، سطر لكل صورة — حتى 3)</label><textarea data-i="${i}" data-f="imgs" style="min-height:56px">${escapeHtml((d.imgs||[]).join('\n'))}</textarea></div>
+        <div class="full"><label>تعليقات الصور (سطر لكل صورة — حتى 3)</label><textarea data-i="${i}" data-f="imgs" style="min-height:56px">${escapeHtml((d.imgs||[]).map(t=>(t&&typeof t==='object')?t.c:t).join('\n'))}</textarea></div>
         <div class="full"><label>نصيحة اليوم</label><input type="text" data-i="${i}" data-f="tip" value="${escapeAttr(d.tip||'')}"></div>
         <div class="full row-btns">
           <button class="btn btn-sm btn-ghost" data-add="${i}">➕ إضافة يوم بعده</button>
@@ -1348,7 +1875,14 @@ function renderItinerary(){
         d.place = v;
       }
       else if(f === 'acts') d.acts = v.split('\n').map(s=>s.trim()).filter(Boolean);
-      else if(f === 'imgs') d.imgs = v.split('\n').map(s=>s.trim()).filter(Boolean).slice(0,3);
+      else if(f === 'imgs'){
+        const old = d.imgs||[];
+        d.imgs = v.split('\n').map(s=>s.trim()).filter(Boolean).slice(0,3).map((cap,idx)=>{
+          const prev = old[idx];
+          const u = (prev && typeof prev === 'object') ? prev.u : (cap.startsWith('http') ? cap : '');
+          return {c:cap, u:u};
+        });
+      }
       else if(f === 'links') d.links = v.split('\n').map(s=>{
         const parts = s.split('|').map(x=>x.trim());
         if(parts.length >= 2 && parts[1]) return [parts[0], parts.slice(1).join('|')];
@@ -1364,23 +1898,22 @@ function renderItinerary(){
     if(state.days.length <= 2) return;
     if(confirm(`حذف اليوم ${i+1} (${state.days[i].title})؟`)){
       state.days.splice(i,1);
-      state.ctNights = Math.min(state.ctNights, totalNights());
       saveState(); renderAll();
     }
   }));
   cont.querySelectorAll('[data-add]').forEach(b=>b.addEventListener('click', ()=> addDayAt(+b.dataset.add + 1)));
 
   document.getElementById('daysCount').textContent = state.days.length;
-  document.getElementById('daysNote').textContent = `(${totalNights()} ليالٍ: ${ctNights()} كيب تاون + ${knNights()} الجاردن روت)`;
+  document.getElementById('daysNote').textContent = `(${totalNights()} ليالٍ — هيرمانوس ${HM_NIGHTS} · ويلدرنيس ${WD_NIGHTS} · موسيل باي ${MB_NIGHTS} · كيب تاون ${ctNights()})`;
   hydrateImages(cont);
 }
 
 function addDayAt(idx){
   state.days.splice(idx, 0, {
-    place:'knysna',
+    place:'capetown',
     title:'يوم حر — استرخاء واستكشاف',
     acts:['وقت حر للتسوق أو الشواطئ أو تعويض الأنشطة المؤجلة.'],
-    links:[], imgs:['Garden Route'], tip:''
+    links:[], imgs:[], tip:''
   });
   saveState(); renderAll();
   setTimeout(()=>document.getElementById('day-'+(idx+1))?.scrollIntoView({behavior:'smooth'}), 100);
@@ -1392,42 +1925,36 @@ document.getElementById('daysPlus').addEventListener('click', ()=>{
 document.getElementById('daysMinus').addEventListener('click', ()=>{
   if(state.days.length > 2){
     state.days.splice(state.days.length - 2, 1); // remove last day before departure
-    state.ctNights = Math.min(state.ctNights, totalNights());
     saveState(); renderAll();
   }
 });
 
 /* ================= Hotels & booking ================= */
 function cityDates(key){
-  const n = totalNights();
-  const kn = knNights();
-  const firstCT = ctNights() - 1;          // nights 1…firstCT in Cape Town
-  const knStart = firstCT;                  // Knysna starts night firstCT+1
-  const lodgeStart = knStart + kn;          // Lodge night: after Knysna
-  if(key === 'capetown')  return [dayDate(0), dayDate(n)];      // full window for booking link
-  if(key === 'knysna')    return [dayDate(knStart), dayDate(knStart + kn)];
-  if(key === 'gamelodge') return [dayDate(lodgeStart), dayDate(lodgeStart + LODGE_NIGHTS)];
-  return [dayDate(0), dayDate(n)];
+  if(key === 'hermanus')   return [dayDate(0),                        dayDate(HM_NIGHTS)];
+  if(key === 'wilderness') return [dayDate(HM_NIGHTS),                dayDate(HM_NIGHTS + WD_NIGHTS)];
+  if(key === 'mosselbay')  return [dayDate(HM_NIGHTS + WD_NIGHTS),    dayDate(HM_NIGHTS + WD_NIGHTS + MB_NIGHTS)];
+  if(key === 'capetown')   return [dayDate(HM_NIGHTS + WD_NIGHTS + MB_NIGHTS), dayDate(totalNights())];
+  return [dayDate(0), dayDate(totalNights())];
 }
 function bookingLinks(key){
-  if(key === 'gamelodge'){
-    const [ci, co] = cityDates('gamelodge').map(isoDate);
-    return [
-      ['موقع المحمية الرسمي', 'https://www.gardenroutegamelodge.co.za'],
-      ['Booking.com', `https://www.booking.com/searchresults.ar.html?ss=Garden+Route+Game+Lodge&checkin=${ci}&checkout=${co}&group_adults=${state.travelers}&no_rooms=${roomsCount()}`],
-    ];
-  }
-  const cityEn = key === 'capetown' ? 'Cape Town, South Africa' : 'Knysna, South Africa';
-  const slug = key === 'capetown' ? 'Cape-Town--South-Africa' : 'Knysna--South-Africa';
+  const cityMap = {
+    hermanus:   {en:'Hermanus, South Africa',    slug:'Hermanus--South-Africa'},
+    wilderness: {en:'Wilderness, South Africa',  slug:'Wilderness--South-Africa'},
+    mosselbay:  {en:'Mossel Bay, South Africa',  slug:'Mossel-Bay--South-Africa'},
+    capetown:   {en:'Cape Town, South Africa',   slug:'Cape-Town--South-Africa'}
+  };
+  const info = cityMap[key];
+  if(!info) return [];
   const t = state.travelers, rooms = roomsCount();
   const nights = hotelNights(key);
   const [ciD, coD] = cityDates(key);
   const ci = isoDate(ciD), co = isoDate(coD);
   return [
-    ['Booking.com', `https://www.booking.com/searchresults.ar.html?ss=${encodeURIComponent(cityEn)}&checkin=${ci}&checkout=${co}&group_adults=${t}&no_rooms=${rooms}`],
-    ['Airbnb', `https://www.airbnb.com/s/${slug}/homes?checkin=${ci}&checkout=${co}&adults=${t}`],
-    ['Agoda', `https://www.agoda.com/ar-sa/search?textToSearch=${encodeURIComponent(cityEn)}&checkIn=${ci}&los=${Math.max(1,nights)}&adults=${t}&rooms=${rooms}`],
-    ['Expedia', `https://www.expedia.com/Hotel-Search?destination=${encodeURIComponent(cityEn)}&startDate=${ci}&endDate=${co}&adults=${t}`]
+    ['Booking.com', `https://www.booking.com/searchresults.ar.html?ss=${encodeURIComponent(info.en)}&checkin=${ci}&checkout=${co}&group_adults=${t}&no_rooms=${rooms}`],
+    ['Airbnb', `https://www.airbnb.com/s/${info.slug}/homes?checkin=${ci}&checkout=${co}&adults=${t}`],
+    ['Agoda', `https://www.agoda.com/ar-sa/search?textToSearch=${encodeURIComponent(info.en)}&checkIn=${ci}&los=${Math.max(1,nights)}&adults=${t}&rooms=${rooms}`],
+    ['Expedia', `https://www.expedia.com/Hotel-Search?destination=${encodeURIComponent(info.en)}&startDate=${ci}&endDate=${co}&adults=${t}`]
   ];
 }
 function flightLinksHtml(){
@@ -1447,25 +1974,14 @@ function renderHotels(){
     const sel = city.options[city.selected] || city.options[0];
     const total = sel.price * nights * roomsCount();
     const [ci, co] = cityDates(key);
-    const firstBlockNights = key === 'capetown' ? (ctNights()-1) : null;
-    const lastNightNote = key === 'capetown'
-      ? `<span style="color:var(--orange);font-size:.78rem;margin-inline-start:8px">🛏️ ${firstBlockNights} ليالٍ أول الرحلة + ليلة وداعية (${fmtDate(dayDate(totalNights()-1))})</span>`
-      : '';
-    const lodgeNote = key === 'gamelodge'
-      ? `<span style="color:var(--teal);font-size:.78rem;margin-inline-start:8px">🦁 ليلة واحدة في الطريق (${fmtDate(ci)} ← ${fmtDate(co)})</span>`
-      : '';
-    const nightsCtl = key === 'capetown'
-      ? `<span class="nights-ctl no-print"><button type="button" data-n="-1" aria-label="إنقاص الليالي">−</button><b style="color:var(--orange)">${nights}</b><button type="button" data-n="1" aria-label="زيادة الليالي">+</button> ليالٍ</span>`
-      : key === 'gamelodge'
-        ? `<span class="nights-tag">ليلة واحدة ثابتة</span>`
-        : `<span class="nights-tag">${nights} ${nights===1?'ليلة':'ليالٍ'} (تلقائياً)</span>`;
+    const nightsCtl = `<span class="nights-tag">${nights} ${nights===1?'ليلة':'ليالٍ'}</span>`;
     const block = document.createElement('div');
     block.className = 'hotel-block';
     block.innerHTML = `
       <h4>📍 ${escapeHtml(city.label)} ${nightsCtl}</h4>
-      <div style="color:var(--muted);font-size:.8rem;margin-bottom:8px">${key==='capetown' ? `${fmtDate(dayDate(0))} ← ${fmtDate(dayDate(totalNights()))}` : `${fmtDate(ci)} ← ${fmtDate(co)}`}${lastNightNote}${lodgeNote}</div>
+      <div style="color:var(--muted);font-size:.8rem;margin-bottom:8px">${fmtDate(ci)} ← ${fmtDate(co)}</div>
       <div class="hotel-row">
-        <div class="hotel-img">${sel.img ? `<img src="${escapeAttr(sel.img)}" alt="${escapeAttr(sel.name)}" onerror="this.parentElement.textContent='🏨'">` : '🏨'}</div>
+        <div class="hotel-img">${sel.img ? `<img src="${escapeAttr(sel.img)}" alt="${escapeAttr(sel.name)}" onerror="this.parentElement.innerHTML=PH_IMG_SVG">` : PH_IMG_SVG}</div>
         <div class="hotel-main">
           <select data-city="${key}" class="hotel-select" aria-label="اختيار فندق ${escapeAttr(city.label)}">
             ${city.options.map((o,i)=>`<option value="${i}" ${i===city.selected?'selected':''}>${escapeHtml(o.name)} — ${fmt(o.price)} ر.س/ليلة</option>`).join('')}
@@ -1484,10 +2000,6 @@ function renderHotels(){
         <div class="field"><label>رابط صورة الفندق (URL)</label><input type="url" dir="ltr" placeholder="https://..." data-city="${key}" data-edit="img" value="${escapeAttr(sel.img)}"></div>
       </div>`;
     cont.appendChild(block);
-    block.querySelectorAll('.nights-ctl button').forEach(b=>b.addEventListener('click', ()=>{
-      const next = ctNights() + (+b.dataset.n);
-      if(next >= 1 && next <= totalNights()-0){ state.ctNights = Math.min(next, totalNights()); saveState(); renderAll(); }
-    }));
   }
   cont.querySelectorAll('.hotel-select').forEach(s=>{
     s.addEventListener('change', e=>{
@@ -1677,13 +2189,11 @@ function initAddActBtn(){
 
 /* ================= Private driver ================= */
 function driverSegments(){
-  const ct = Math.max(1, ctNights() - 1); // أيام النشاط في كيب تاون (يوم الوصول منخفض النشاط)
-  const kn = knNights();
   return [
-    {key:'capetown', label:'كيب تاون (جولات المدينة وشبه الجزيرة)', days: ct},
-    {key:'transfer', label:'يوم الانتقال: كيب تاون ← نيسنا عبر هيرمانوس', days: 1},
-    {key:'garden',   label:'الجاردن روت (نيسنا وما حولها + كهوف كانغو)', days: kn},
-    {key:'return',   label:'يوم العودة: Game Lodge → سفاري → كيب تاون', days: LODGE_NIGHTS + 1}
+    {key:'capetown', label:'كيب تاون (جولات المدينة وشبه الجزيرة)', days: Math.max(1, ctNights()-1)},
+    {key:'transfer', label:'أيام التنقل: هيرمانوس → ويلدرنيس → موسيل باي', days: 2},
+    {key:'garden',   label:'موسيل باي (سفاري واستكشاف محلي)', days: 1},
+    {key:'return',   label:'العودة: موسيل باي → فرانشهوك/ستيلينبوش → كيب تاون', days: 1}
   ];
 }
 function driverTotal(){
@@ -1733,9 +2243,10 @@ function renderDriver(){
 
 /* ================= Budget ================= */
 function hotelNights(key){
-  if(key === 'capetown')  return ctNights();
-  if(key === 'knysna')    return knNights();
-  if(key === 'gamelodge') return LODGE_NIGHTS;
+  if(key === 'hermanus')   return HM_NIGHTS;
+  if(key === 'wilderness') return WD_NIGHTS;
+  if(key === 'mosselbay')  return MB_NIGHTS;
+  if(key === 'capetown')   return ctNights();
   return 0;
 }
 function hotelsTotal(){
@@ -1797,7 +2308,7 @@ function renderBudget(){
   document.getElementById('travCount').textContent = state.travelers;
   document.getElementById('roomsNote').textContent = `(${roomsCount()} ${roomsCount()===1?'غرفة':'غرف'} مزدوجة)`;
   document.getElementById('daysBadge').textContent = state.days.length;
-  document.getElementById('nightsBadge').textContent = `${ctNights()} كيب تاون + ${knNights()} نيسنا + ${LODGE_NIGHTS} Game Lodge`;
+  document.getElementById('nightsBadge').textContent = `${HM_NIGHTS} هيرمانوس + ${WD_NIGHTS} ويلدرنيس + ${MB_NIGHTS} موسيل باي + ${ctNights()} كيب تاون`;
   const end = dayDate(state.days.length - 1);
   document.getElementById('headerDates').textContent =
     `جنوب أفريقيا · ${START_DATE.getDate()} ${MONTHS[START_DATE.getMonth()]} – ${end.getDate()} ${MONTHS[end.getMonth()]} ${end.getFullYear()} · ${state.days.length} يوماً / ${totalNights()} ليالٍ`;
@@ -1931,12 +2442,148 @@ rateInput.addEventListener('input', ()=>{
   }
 });
 
+/* ===== Plan Sheet ===== */
+let activePlanDay = 0;
+
+function renderPlanSheet(){
+  const tabs = document.getElementById('planTabs');
+  const pages = document.getElementById('planPages');
+  if(!tabs || !pages) return;
+
+  tabs.innerHTML = state.days.map((d,i)=>{
+    const p = getPlace(d.place);
+    return `<button class="plan-tab${i===activePlanDay?' active':''}" data-ptab="${i}">اليوم ${i+1}${p?' · '+p.emoji:''}</button>`;
+  }).join('');
+
+  pages.innerHTML = state.days.map((d,i)=>{
+    const date = dayDate(i);
+    const p = getPlace(d.place);
+    return `<div class="plan-page${i===activePlanDay?' active':''}" data-page="${i}">
+      <div class="plan-day-bar">
+        <span class="plan-day-badge">اليوم ${i+1}</span>
+        <span class="plan-day-date">${fmtDate(date)}</span>
+        ${p?`<span class="plan-day-city">${escapeHtml(p.name)} ${p.emoji||''}</span>`:''}
+      </div>
+      <div class="plan-field">
+        <label>عنوان اليوم</label>
+        <input type="text" data-pi="${i}" data-pf="title" value="${escapeAttr(d.title)}">
+      </div>
+      <div class="plan-row2">
+        <div class="plan-field">
+          <label>الموقع على الخريطة</label>
+          <select data-pi="${i}" data-pf="place">${placeOptionsHtml(d.place)}</select>
+        </div>
+        <div class="plan-field">
+          <label>نصيحة اليوم</label>
+          <input type="text" data-pi="${i}" data-pf="tip" value="${escapeAttr(d.tip||'')}">
+        </div>
+      </div>
+      <div class="plan-field">
+        <label>الفعاليات والأنشطة (سطر لكل نشاط)</label>
+        <textarea data-pi="${i}" data-pf="acts">${escapeHtml((d.acts||[]).join('\n'))}</textarea>
+      </div>
+      <div class="plan-row2">
+        <div class="plan-field">
+          <label>روابط (الاسم | الرابط)</label>
+          <textarea data-pi="${i}" data-pf="links" style="min-height:70px">${escapeHtml((d.links||[]).map(l=>l[0]+' | '+l[1]).join('\n'))}</textarea>
+        </div>
+        <div class="plan-field">
+          <label>تعليقات الصور (حتى 3)</label>
+          <textarea data-pi="${i}" data-pf="imgs" style="min-height:70px">${escapeHtml((d.imgs||[]).map(t=>(t&&typeof t==='object')?t.c:t).join('\n'))}</textarea>
+        </div>
+      </div>
+      <div class="plan-day-actions">
+        <button class="btn btn-sm btn-ghost" data-padd="${i}">➕ إضافة يوم بعده</button>
+        <button class="btn btn-sm btn-danger" data-pdel="${i}" ${state.days.length<=2?'disabled':''}>🗑 حذف هذا اليوم</button>
+      </div>
+    </div>`;
+  }).join('');
+
+  /* tab switching */
+  tabs.querySelectorAll('.plan-tab').forEach(btn=>{
+    btn.addEventListener('click', ()=>{
+      activePlanDay = +btn.dataset.ptab;
+      renderPlanSheet();
+      document.getElementById('day-'+(activePlanDay+1))?.scrollIntoView({behavior:'smooth', block:'nearest'});
+    });
+  });
+
+  /* scroll active tab into view */
+  const activeTab = tabs.querySelector('.plan-tab.active');
+  if(activeTab) setTimeout(()=>activeTab.scrollIntoView({behavior:'smooth', inline:'nearest', block:'nearest'}), 80);
+
+  /* form field changes */
+  pages.querySelectorAll('[data-pf]').forEach(el=>{
+    el.addEventListener('change', e=>{
+      const i = +e.target.dataset.pi, f = e.target.dataset.pf, v = e.target.value;
+      const d = state.days[i];
+      if(!d) return;
+      if(f === 'place'){
+        if(v === '__pick__'){ startPick(i); return; }
+        d.place = v;
+      } else if(f === 'acts') d.acts = v.split('\n').map(s=>s.trim()).filter(Boolean);
+      else if(f === 'imgs'){
+        const old = d.imgs||[];
+        d.imgs = v.split('\n').map(s=>s.trim()).filter(Boolean).slice(0,3).map((cap,idx)=>{
+          const prev = old[idx];
+          const u = (prev && typeof prev === 'object') ? prev.u : (cap.startsWith('http') ? cap : '');
+          return {c:cap, u:u};
+        });
+      } else if(f === 'links') d.links = v.split('\n').map(s=>{
+        const parts = s.split('|').map(x=>x.trim());
+        if(parts.length >= 2 && parts[1]) return [parts[0], parts.slice(1).join('|')];
+        if(parts[0] && parts[0].startsWith('http')) return [parts[0], parts[0]];
+        return null;
+      }).filter(Boolean);
+      else d[f] = v;
+      saveState();
+      renderItinerary(); renderMap(); renderBudget();
+      renderPlanSheet();
+    });
+  });
+
+  /* add day after */
+  pages.querySelectorAll('[data-padd]').forEach(b=>b.addEventListener('click', ()=>{
+    const i = +b.dataset.padd;
+    addDayAt(i + 1);
+    activePlanDay = i + 1;
+    renderPlanSheet();
+  }));
+
+  /* delete day */
+  pages.querySelectorAll('[data-pdel]').forEach(b=>b.addEventListener('click', ()=>{
+    const i = +b.dataset.pdel;
+    if(state.days.length <= 2) return;
+    if(confirm(`حذف اليوم ${i+1} (${state.days[i].title})؟`)){
+      state.days.splice(i,1);
+      activePlanDay = Math.min(activePlanDay, state.days.length-1);
+      saveState(); renderAll();
+    }
+  }));
+}
+
+function closePlanSheet(){
+  document.body.classList.remove('edit-on');
+  document.getElementById('editToggle').innerHTML = '✏️ وضع تعديل الرحلة';
+  endPick();
+}
+
+document.getElementById('planCloseBtn').addEventListener('click', closePlanSheet);
+document.getElementById('planDoneBtn').addEventListener('click', closePlanSheet);
+document.getElementById('planOverlay').addEventListener('click', closePlanSheet);
+document.getElementById('planAddDayBtn2').addEventListener('click', ()=>{
+  addDayAt(state.days.length - 1);
+  activePlanDay = state.days.length - 2;
+  renderPlanSheet();
+});
+
 /* edit mode */
 document.getElementById('editToggle').addEventListener('click', ()=>{
   document.body.classList.toggle('edit-on');
   const on = document.body.classList.contains('edit-on');
   document.getElementById('editToggle').innerHTML = on ? '✅ إنهاء التعديل' : '✏️ وضع تعديل الرحلة';
   if(!on) endPick();
+  if(on) renderPlanSheet();
 });
 
 /* reset */
@@ -1954,27 +2601,220 @@ window.addEventListener('scroll', ()=>{
 }, {passive:true});
 
 /* ================= Master render ================= */
+/* ================= Checklist (To-Do) ================= */
+let _chkSeq = 0;
+function renderChecklist(){
+  const cont = document.getElementById('checklistContainer');
+  const list = state.checklist || (state.checklist = structuredClone(DEFAULT_CHECKLIST));
+  const total = list.length;
+  const done = list.filter(c=>c.done).length;
+  const pct = total ? Math.round(done/total*100) : 0;
+
+  document.getElementById('chkBarFill').style.width = pct + '%';
+  document.getElementById('chkBarLabel').textContent = pct + '%';
+  document.getElementById('chkBadge').textContent = `${done} / ${total} مكتملة`;
+  document.getElementById('chkClearDone').style.display = done ? '' : 'none';
+
+  cont.innerHTML = CHECKLIST_CATS.map(cat=>{
+    const items = list.filter(c=>c.cat===cat.key);
+    const cDone = items.filter(c=>c.done).length;
+    const rows = items.map(c=>`
+      <div class="chk-item ${c.done?'done':''}" data-id="${escapeAttr(c.id)}">
+        <input type="checkbox" id="chk_${escapeAttr(c.id)}" ${c.done?'checked':''} aria-label="${escapeAttr(c.text)}">
+        <label for="chk_${escapeAttr(c.id)}">${escapeHtml(c.text)}</label>
+        ${c.done?'<span class="chk-done-tag">تم ✓</span>':''}
+        <button class="chk-del no-print" data-del="${escapeAttr(c.id)}" title="حذف المهمة" aria-label="حذف">🗑️</button>
+      </div>`).join('') || '<div style="color:var(--muted);font-size:.9rem;padding:6px 8px">لا توجد مهام بعد — أضف مهمة بالأسفل.</div>';
+    return `
+      <div class="chk-group">
+        <div class="chk-group-head">
+          <span class="chk-group-title">${cat.label}</span>
+          <span class="chk-group-count">${cDone}/${items.length}</span>
+        </div>
+        ${rows}
+        <div class="chk-add no-print">
+          <input type="text" data-addinput="${cat.key}" placeholder="➕ أضف مهمة جديدة..." maxlength="160">
+          <button class="btn btn-teal btn-sm" data-addbtn="${cat.key}">إضافة</button>
+        </div>
+      </div>`;
+  }).join('');
+
+  // toggle done
+  cont.querySelectorAll('.chk-item input[type=checkbox]').forEach(cb=>{
+    cb.addEventListener('change', e=>{
+      const id = e.target.closest('.chk-item').dataset.id;
+      const item = state.checklist.find(c=>c.id===id);
+      if(item){ item.done = e.target.checked; saveState(); renderChecklist(); }
+    });
+  });
+  // delete
+  cont.querySelectorAll('[data-del]').forEach(b=>{
+    b.addEventListener('click', ()=>{
+      state.checklist = state.checklist.filter(c=>c.id!==b.dataset.del);
+      saveState(); renderChecklist();
+    });
+  });
+  // add (button + Enter)
+  const addFrom = key=>{
+    const inp = cont.querySelector(`[data-addinput="${key}"]`);
+    const text = (inp.value||'').trim();
+    if(!text) return;
+    state.checklist.push({id:'cu'+Date.now()+(_chkSeq++), cat:key, text, done:false});
+    saveState(); renderChecklist();
+  };
+  cont.querySelectorAll('[data-addbtn]').forEach(b=>b.addEventListener('click', ()=>addFrom(b.dataset.addbtn)));
+  cont.querySelectorAll('[data-addinput]').forEach(inp=>inp.addEventListener('keydown', e=>{
+    if(e.key==='Enter'){ e.preventDefault(); addFrom(inp.dataset.addinput); }
+  }));
+}
+document.getElementById('chkClearDone').addEventListener('click', ()=>{
+  if(!state.checklist.some(c=>c.done)) return;
+  if(confirm('حذف جميع المهام المنتهية؟')){
+    state.checklist = state.checklist.filter(c=>!c.done);
+    saveState(); renderChecklist();
+  }
+});
+
+/* ================= Home hero ================= */
+function homeScrollToDay(target){
+  switchPage('itinerary');
+  setTimeout(()=>{
+    const idx = state.days.findIndex(d=>d.place===target);
+    const el = idx>=0 ? document.getElementById('day-'+(idx+1)) : document.getElementById('itinerary');
+    if(!el) return;
+    el.scrollIntoView({behavior:'smooth', block:'start'});
+    if(idx>=0){
+      document.querySelectorAll('.day-card.flash').forEach(c=>c.classList.remove('flash'));
+      el.classList.add('flash');
+      setTimeout(()=>el.classList.remove('flash'), 2600);
+    }
+  }, 260);
+}
+function renderHomeCards(){
+  const wrap = document.getElementById('homeCards');
+  if(!wrap) return;
+  const q = homeFilter.q.trim();
+  const list = HOME_DESTS.filter(d=>
+    (homeFilter.cat==='all' || d.cat===homeFilter.cat) &&
+    (!q || (d.name+' '+d.tag).includes(q)));
+  if(!list.length){
+    wrap.innerHTML = `<div style="color:var(--muted);padding:30px 4px;font-size:.95rem">لا توجد وجهات مطابقة 🔍</div>`;
+    return;
+  }
+  wrap.innerHTML = list.map(d=>`
+    <div class="dest-card" data-target="${escapeAttr(d.target)}">
+      <div class="dest-img ph" data-wiki="${escapeAttr(d.img)}" data-imgclass="dest-img"><svg class="ph-svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><path d="M21 15l-5-5L5 21"/></svg></div>
+      <div class="dest-shade"></div>
+      <div class="dest-rating"><span class="star">★</span> ${d.rating} <small>(${d.reviews})</small></div>
+      <div class="dest-info">
+        <div class="dn">${escapeHtml(d.name)}</div>
+        <div class="dt">${escapeHtml(d.tag)} · اعرض الخطة</div>
+      </div>
+      <button class="dest-go" data-target="${escapeAttr(d.target)}" title="عرض في الجدول" aria-label="عرض ${escapeAttr(d.name)}">↗</button>
+    </div>`).join('');
+  wrap.querySelectorAll('.dest-card').forEach(card=>{
+    card.addEventListener('click', ()=> homeScrollToDay(card.dataset.target));
+  });
+  hydrateImages(wrap);
+}
+function renderHome(){
+  const chipsEl = document.getElementById('homeChips');
+  if(chipsEl){
+    chipsEl.innerHTML = HOME_CATS.map(c=>
+      `<button class="home-chip${c.key===homeFilter.cat?' active':''}" data-cat="${c.key}">${c.icon} ${c.label}</button>`).join('');
+    chipsEl.querySelectorAll('.home-chip').forEach(b=>b.addEventListener('click', ()=>{
+      homeFilter.cat = b.dataset.cat;
+      chipsEl.querySelectorAll('.home-chip').forEach(x=>x.classList.toggle('active', x.dataset.cat===homeFilter.cat));
+      renderHomeCards();
+    }));
+  }
+  renderHomeCards();
+}
+
+/* home search (bound once) */
+document.getElementById('homeSearch')?.addEventListener('input', e=>{
+  homeFilter.q = e.target.value;
+  renderHomeCards();
+});
+/* ===== SPA page switching ===== */
+function switchPage(id){
+  document.querySelectorAll('.page').forEach(p=>p.classList.remove('active'));
+  const pg = document.getElementById('page-'+id);
+  if(pg) pg.classList.add('active');
+  document.querySelectorAll('.appnav-item').forEach(b=>b.classList.toggle('active', b.dataset.page===id));
+  window.scrollTo({top:0, behavior:'instant'});
+}
+/* home filter button + FAB → toggle edit mode */
+document.getElementById('homeFilterBtn')?.addEventListener('click', ()=> document.getElementById('editToggle').click());
+document.getElementById('appFab')?.addEventListener('click', ()=> document.getElementById('editToggle').click());
+/* bottom app nav */
+document.querySelectorAll('.appnav-item').forEach(a=>a.addEventListener('click', ()=>{
+  const page = a.dataset.page;
+  if(page) switchPage(page);
+}));
+
 function renderAll(){
   document.getElementById('flightPrice').value = state.flightPrice;
   document.getElementById('transportPrice').value = state.transportPrice;
   document.getElementById('activitiesPrice').value = state.activitiesPrice;
   document.getElementById('foodPrice').value = state.foodPrice;
   rateInput.value = state.rate;
+  renderHome();
   renderPayment();
   renderMap();
   renderItinerary();
+  renderChecklist();
   renderActivities();
   initAddActBtn();
   renderHotels();
   renderDriver();
   renderBudget();
+  renderPlanSheet();
 }
 
 bindNumber('flightPrice','flightPrice');
 bindNumber('transportPrice','transportPrice');
 bindNumber('activitiesPrice','activitiesPrice');
 bindNumber('foodPrice','foodPrice');
+
+/* ================= Emoji cleanup =================
+   Strip decorative emoji from all text so the UI stays orange/gray + minimal.
+   Keeps functional glyphs (★ rating, ✓/✕ marks, arrows ← → ↗ ⇄, − steppers).
+   The interactive map SVG is excluded so the route markers & sim car keep working. */
+const EMOJI_RE = /[\u{1F000}-\u{1FAFF}\u{2B00}-\u{2BFF}\u{2300}-\u{23FF}\u{2600}-\u{2604}\u{2606}-\u{26FF}\u{2700}-\u{2712}\u{2717}-\u{27BF}\u{FE0F}\u{200D}\u{20E3}]/gu;
+function stripEmojiText(node){
+  const s = node.nodeValue.replace(EMOJI_RE, '');
+  if(s !== node.nodeValue) node.nodeValue = s.replace(/ {2,}/g, ' ');
+}
+function stripEmoji(root){
+  if(!root) return;
+  if(root.nodeType === 3){ stripEmojiText(root); return; }
+  if(root.nodeType !== 1) return;
+  const tw = document.createTreeWalker(root, NodeFilter.SHOW_TEXT, {
+    acceptNode(n){
+      for(let p = n.parentNode; p && p !== root.parentNode; p = p.parentNode){
+        if(p.nodeName === 'SCRIPT' || p.nodeName === 'STYLE') return NodeFilter.FILTER_REJECT;
+        if(p.classList && p.classList.contains('map-card')) return NodeFilter.FILTER_REJECT;
+      }
+      return NodeFilter.FILTER_ACCEPT;
+    }
+  });
+  const list = [];
+  for(let n = tw.nextNode(); n; n = tw.nextNode()) list.push(n);
+  list.forEach(stripEmojiText);
+}
+/* clean dynamically-rendered content too */
+const _emojiObserver = new MutationObserver(muts=>{
+  for(const m of muts){
+    for(const node of m.addedNodes){
+      if(node.nodeType === 1 || node.nodeType === 3) stripEmoji(node);
+    }
+  }
+});
+
 renderAll();
+stripEmoji(document.body);
+_emojiObserver.observe(document.body, {childList:true, subtree:true});
 </script>
 </body>
 </html>
