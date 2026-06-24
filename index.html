@@ -211,8 +211,15 @@ body{padding-bottom:74px}
 .btn-danger{background:transparent;color:#ff8a70;border:1px solid #ff8a70}
 .btn-danger:hover{background:rgba(255,87,34,.12)}
 .edit-on .btn-edit{background:var(--orange);color:#fff;border-color:var(--orange)}
-.save-indicator{margin-inline-start:auto;color:var(--muted);font-size:.85rem;opacity:0;transition:opacity .4s}
-.save-indicator.show{opacity:1;color:var(--teal)}
+.save-indicator{
+  position:fixed;top:14px;inset-inline-start:14px;z-index:130;
+  background:rgba(255,255,255,.95);backdrop-filter:blur(8px);
+  border:1px solid var(--bg3);border-radius:999px;padding:7px 16px;
+  color:var(--teal);font-size:.82rem;font-weight:700;
+  box-shadow:0 8px 22px rgba(29,42,36,.12);
+  opacity:0;transform:translateY(-8px);transition:opacity .35s, transform .35s;pointer-events:none;
+}
+.save-indicator.show{opacity:1;transform:translateY(0)}
 nav.quicknav{display:flex;gap:4px;flex-wrap:wrap}
 nav.quicknav a{color:var(--muted);text-decoration:none;font-size:.88rem;padding:6px 10px;border-radius:8px}
 nav.quicknav a:hover{color:var(--orange);background:rgba(248,97,43,.1)}
@@ -826,24 +833,12 @@ footer{
 </head>
 <body>
 
-<!-- ============ TOOLBAR ============ -->
-<div class="toolbar no-print">
-  <div class="container">
-    <button class="btn btn-ghost btn-edit" id="editToggle">✏️ وضع تعديل الرحلة</button>
-    <button class="btn btn-teal" onclick="window.print()">🖨️ طباعة / PDF</button>
-    <button class="btn btn-ghost" id="resetBtn">↺ استعادة الافتراضي</button>
-    <nav class="quicknav">
-      <a href="#" onclick="event.preventDefault();switchPage('itinerary')">الخريطة</a>
-      <a href="#" onclick="event.preventDefault();switchPage('itinerary')">الجدول</a>
-      <a href="#" onclick="event.preventDefault();switchPage('activities')">المهام</a>
-      <a href="#" onclick="event.preventDefault();switchPage('activities')">الفعاليات</a>
-      <a href="#" onclick="event.preventDefault();switchPage('budget')">الميزانية</a>
-      <a href="#" onclick="event.preventDefault();switchPage('budget')">الطقس</a>
-      <a href="#" onclick="event.preventDefault();switchPage('budget')">الأمان</a>
-    </nav>
-    <span class="save-indicator" id="saveIndicator">✓ تم الحفظ تلقائياً</span>
-  </div>
+<!-- hidden controls (edit mode triggered via FAB; kept for JS references) -->
+<div hidden>
+  <button id="editToggle">✏️ وضع تعديل الرحلة</button>
+  <button id="resetBtn">↺ استعادة الافتراضي</button>
 </div>
+<span class="save-indicator no-print" id="saveIndicator">✓ تم الحفظ تلقائياً</span>
 
 <!-- ===== PAGE: الرئيسية ===== -->
 <div class="page active" id="page-home">
@@ -920,7 +915,9 @@ footer{
 
 <!-- ============ ITINERARY ============ -->
 <section id="itinerary">
-  <h2 class="sec-title">جدول الرحلة اليومي</h2>
+  <h2 class="sec-title">جدول الرحلة اليومي
+    <button class="btn btn-teal btn-sm no-print" onclick="window.print()" style="margin-inline-start:auto">🖨️ طباعة الجدول / PDF</button>
+  </h2>
   <p class="sec-desc">المبيت في هيرمانوس (1 ليلة) · ويلدرنيس (2) · موسيل باي (2) · كيب تاون (3 ليالٍ). فعّل "وضع تعديل الرحلة" لتعديل أو حذف أو إضافة أيام ومواقع.</p>
   <div class="itin-controls">
     <span style="color:var(--muted);font-size:.92rem">📅 عدد أيام الرحلة:</span>
