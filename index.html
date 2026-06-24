@@ -378,12 +378,19 @@ h2.sec-title::before{content:"";width:7px;height:28px;border-radius:6px;backgrou
 .day-imgs figure{width:160px}
 .day-imgs .ph{
   width:160px;height:105px;border-radius:12px;border:1px solid var(--bg3);
-  background:linear-gradient(135deg,#eef3e6,#e6efe0);
+  background:linear-gradient(135deg,#f1efe8,#e7e3d9);
   display:flex;flex-direction:column;align-items:center;justify-content:center;
   gap:5px;overflow:hidden;cursor:default;
 }
-.ph-em{font-size:2.2rem;line-height:1}
-.ph-label{font-size:.65rem;color:var(--teal-soft);text-align:center;padding:0 6px;line-height:1.3;font-weight:600}
+.ph-em{font-size:2rem;line-height:1;filter:grayscale(1);opacity:.55}
+.ph-label{font-size:.65rem;color:var(--orange-soft);text-align:center;padding:0 6px;line-height:1.3;font-weight:700}
+/* home destination card image placeholder (gray frame until photo resolves) */
+.dest-card .dest-img.ph{
+  display:flex;align-items:center;justify-content:center;
+  background:linear-gradient(135deg,#efece5,#e2ddd1);
+}
+.dest-ph-em{font-size:2.4rem;filter:grayscale(1);opacity:.45}
+.dest-img.loaded .dest-ph-em{display:none}
 .day-imgs img{width:100%;height:100%;object-fit:cover;display:block}
 .day-imgs figcaption{font-size:.75rem;color:var(--muted);text-align:center;margin-top:3px}
 .links-row{display:flex;gap:8px;flex-wrap:wrap;margin-top:12px}
@@ -1277,21 +1284,23 @@ const PLACES = {
 /* ================= Default itinerary =================
    هيرمانوس 1 ليلة → ويلدرنيس 2 ليالٍ → موسيل باي 2 ليالٍ → كيب تاون 3 ليالٍ */
 /* صور مباشرة من Wikimedia CDN — بدون أي طلب API أو redirect */
-const _W = 'https://upload.wikimedia.org/wikipedia/commons/thumb/';
+/* Image sources = Wikipedia article titles. Resolved at runtime via the
+   Wikipedia REST summary API to the article's current canonical lead photo —
+   robust against thumbnail link-rot. See wikiThumb() / hydrateImages(). */
 const IMG = {
-  whales:      _W+'a/a9/Southern_Right_Whales_%28Hermanus%29.jpg/800px-Southern_Right_Whales_%28Hermanus%29.jpg',
-  table:       _W+'a/a9/Table_mountain_and_the_ocean_cape_town.JPG/800px-Table_mountain_and_the_ocean_cape_town.JPG',
-  knysna:      _W+'a/a9/Knysna%27s_Western_Head.JPG/800px-Knysna%27s_Western_Head.JPG',
-  mosselbay:   _W+'c/c6/Mossel_Bay%2C_6506%2C_South_Africa_-_panoramio.jpg/800px-Mossel_Bay%2C_6506%2C_South_Africa_-_panoramio.jpg',
-  elephant:    _W+'2/22/Elephant_side-view_Kruger.jpg/800px-Elephant_side-view_Kruger.jpg',
-  lion:        _W+'f/f8/Lion_in_masai_mara.jpg/800px-Lion_in_masai_mara.jpg',
-  franschhoek: _W+'2/22/Franschhoek%2C_Western_Cape%2C_South_Africa_%2820318451198%29.jpg/800px-Franschhoek%2C_Western_Cape%2C_South_Africa_%2820318451198%29.jpg',
-  stellenbosch:_W+'2/28/Stellenbosch-region.JPG/800px-Stellenbosch-region.JPG',
-  bokaap:      _W+'6/6d/Cape_Town_Bo-Kaap_city_street.jpg/800px-Cape_Town_Bo-Kaap_city_street.jpg',
-  capepoint:   _W+'9/95/Lighthouse_Cape_Point%2C_South_Africa.JPG/800px-Lighthouse_Cape_Point%2C_South_Africa.JPG',
-  penguins:    _W+'4/4a/African_penguin_near_Boulders_Beach.jpg/800px-African_penguin_near_Boulders_Beach.jpg',
-  chapmans:    _W+'e/e7/ChapmansPeakDrive_View.jpg/800px-ChapmansPeakDrive_View.jpg',
-  waterfront:  _W+'b/bb/Victorian_Clock_Tower%2C_1883._Table_Bay_Harbour%2C_Cape_Town%2C_Western_Cape._Gothic_Style._Painted_Red_previously._02.JPG/800px-Victorian_Clock_Tower%2C_1883._Table_Bay_Harbour%2C_Cape_Town%2C_Western_Cape._Gothic_Style._Painted_Red_previously._02.JPG'
+  whales:      'Southern right whale',
+  table:       'Table Mountain',
+  knysna:      'Knysna',
+  mosselbay:   'Mossel Bay',
+  elephant:    'African bush elephant',
+  lion:        'Lion',
+  franschhoek: 'Franschhoek',
+  stellenbosch:'Stellenbosch',
+  bokaap:      'Bo-Kaap',
+  capepoint:   'Cape Point',
+  penguins:    'African penguin',
+  chapmans:    "Chapman's Peak",
+  waterfront:  'Victoria & Alfred Waterfront'
 };
 const DEFAULT_DAYS = [
   {place:'hermanus', title:'الوصول إلى هيرمانوس — بلدة الحيتان 🐋',
@@ -1581,7 +1590,7 @@ function ctNights(){ return Math.max(1, totalNights() - HM_NIGHTS - WD_NIGHTS - 
 function roomsCount(){ return Math.max(1, Math.ceil(state.travelers / 2)); }
 
 /* ================= Images (Wikipedia API + direct URLs) ================= */
-const IMG_CACHE_PREFIX = 'wimg4:';
+const IMG_CACHE_PREFIX = 'wimg5:';
 async function wikiThumb(title){
   if(title.startsWith('http')) return title; // direct URL — use as-is
   const ck = IMG_CACHE_PREFIX + title;
@@ -1599,13 +1608,13 @@ async function wikiThumb(title){
   }catch(e){ return null; }
 }
 function tryLoadImage(ph, srcs){
-  if(!srcs || !srcs.length) return;
+  if(!srcs || !srcs.length) return; // no source: keep the colored placeholder
   const [src, ...rest] = srcs;
   const img = new Image();
   img.alt = '';
   img.loading = 'lazy';
-  img.crossOrigin = '';
-  img.onload = ()=>{ ph.innerHTML=''; ph.appendChild(img); };
+  if(ph.dataset.imgclass) img.className = ph.dataset.imgclass;
+  img.onload = ()=>{ ph.innerHTML=''; ph.appendChild(img); ph.classList.add('loaded'); };
   img.onerror = ()=>{ tryLoadImage(ph, rest); }; // try next source
   img.src = src;
 }
@@ -2687,7 +2696,7 @@ function renderHomeCards(){
   }
   wrap.innerHTML = list.map(d=>`
     <div class="dest-card" data-target="${escapeAttr(d.target)}">
-      <img class="dest-img" src="${escapeAttr(d.img)}" alt="${escapeAttr(d.name)}" loading="lazy" onerror="this.style.display='none'">
+      <div class="dest-img ph" data-wiki="${escapeAttr(d.img)}" data-imgclass="dest-img"><span class="dest-ph-em">📷</span></div>
       <div class="dest-shade"></div>
       <div class="dest-rating"><span class="star">★</span> ${d.rating} <small>(${d.reviews})</small></div>
       <div class="dest-info">
@@ -2699,6 +2708,7 @@ function renderHomeCards(){
   wrap.querySelectorAll('.dest-card').forEach(card=>{
     card.addEventListener('click', ()=> homeScrollToDay(card.dataset.target));
   });
+  hydrateImages(wrap);
 }
 function renderHome(){
   const chipsEl = document.getElementById('homeChips');
