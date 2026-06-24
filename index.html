@@ -262,7 +262,8 @@ h2.sec-title::before{content:"";width:7px;height:28px;border-radius:6px;backgrou
   display:none;border-top:1px dashed var(--orange);background:rgba(255,87,34,.04);
   padding:16px 22px;grid-template-columns:1fr 1fr;gap:12px;
 }
-.edit-on .day-edit{display:grid}
+/* inline day-edit panels hidden — plan sheet handles editing */
+.edit-on .day-edit{display:none}
 .day-edit .full{grid-column:1/-1}
 .day-edit label{display:block;font-size:.82rem;color:var(--orange-soft);margin-bottom:4px;font-weight:700}
 .day-edit input,.day-edit select,.day-edit textarea{
@@ -563,6 +564,103 @@ footer{
   margin-top:50px;padding:26px 0;border-top:1px solid var(--bg3);
   text-align:center;color:var(--muted);font-size:.85rem;
 }
+
+/* ===== Plan Sheet (bottom-slide day editor) ===== */
+.plan-overlay{
+  display:none;position:fixed;inset:0;z-index:190;
+  background:rgba(29,42,36,.38);backdrop-filter:blur(3px);
+}
+.edit-on .plan-overlay{display:block}
+.plan-sheet{
+  position:fixed;bottom:0;left:0;right:0;z-index:195;
+  background:var(--bg2);border-radius:26px 26px 0 0;
+  box-shadow:0 -12px 50px rgba(29,42,36,.22);
+  transform:translateY(100%);
+  transition:transform .38s cubic-bezier(.32,1,.6,1);
+  max-height:78vh;display:flex;flex-direction:column;
+}
+.edit-on .plan-sheet{transform:translateY(0)}
+.plan-handle{
+  width:48px;height:5px;border-radius:999px;
+  background:var(--bg3);margin:14px auto 0;flex-shrink:0;
+}
+.plan-head{
+  display:flex;align-items:center;gap:10px;
+  padding:12px 20px 10px;border-bottom:1px solid var(--bg3);
+  flex-shrink:0;
+}
+.plan-head-title{
+  font-size:1rem;font-weight:800;color:var(--text);
+  white-space:nowrap;flex-shrink:0;
+}
+.plan-tabs-wrap{
+  flex:1;overflow:hidden;position:relative;
+}
+.plan-tabs{
+  display:flex;gap:6px;overflow-x:auto;
+  scrollbar-width:none;padding:2px 0;
+}
+.plan-tabs::-webkit-scrollbar{display:none}
+.plan-tab{
+  flex-shrink:0;border:2px solid var(--bg3);border-radius:999px;
+  background:var(--bg);color:var(--muted);
+  padding:5px 14px;font-family:inherit;font-size:.82rem;font-weight:700;
+  cursor:pointer;transition:all .18s;white-space:nowrap;
+}
+.plan-tab:hover{border-color:var(--orange);color:var(--orange)}
+.plan-tab.active{
+  background:var(--orange);border-color:var(--orange);color:#fff;
+  box-shadow:0 4px 12px rgba(248,97,43,.30);
+}
+.plan-close-btn{
+  flex-shrink:0;width:32px;height:32px;border-radius:50%;
+  background:var(--bg3);border:none;cursor:pointer;
+  display:flex;align-items:center;justify-content:center;
+  font-size:.95rem;color:var(--muted);transition:all .18s;
+}
+.plan-close-btn:hover{background:rgba(248,97,43,.15);color:var(--orange)}
+.plan-body{
+  flex:1;overflow-y:auto;padding:18px 20px 8px;
+  scrollbar-width:thin;scrollbar-color:var(--bg3) transparent;
+}
+.plan-page{display:none}
+.plan-page.active{display:block}
+.plan-day-bar{
+  display:flex;align-items:center;gap:10px;margin-bottom:16px;
+  padding:10px 14px;
+  background:linear-gradient(90deg,rgba(207,232,90,.30),rgba(207,232,90,.06) 70%,transparent);
+  border-radius:12px;border:1px solid rgba(207,232,90,.38);
+}
+.plan-day-badge{
+  background:var(--orange);color:#fff;font-weight:800;
+  border-radius:10px;padding:5px 12px;font-size:.88rem;
+  box-shadow:0 4px 12px rgba(248,97,43,.28);flex-shrink:0;
+}
+.plan-day-date{font-size:.85rem;color:var(--teal);font-weight:600}
+.plan-day-city{font-size:.82rem;color:var(--muted);margin-inline-start:auto;white-space:nowrap}
+.plan-row2{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+@media(max-width:560px){.plan-row2{grid-template-columns:1fr}}
+.plan-field{margin-bottom:14px}
+.plan-field label{
+  display:block;font-size:.8rem;font-weight:700;
+  color:var(--orange-soft);margin-bottom:5px;
+}
+.plan-field input,.plan-field select,.plan-field textarea{
+  width:100%;background:var(--bg);border:1px solid var(--bg3);color:var(--text);
+  border-radius:10px;padding:9px 13px;font-family:inherit;font-size:.92rem;outline:none;
+  transition:border-color .2s;
+}
+.plan-field textarea{min-height:86px;resize:vertical;line-height:1.6}
+.plan-field input:focus,.plan-field select:focus,.plan-field textarea:focus{border-color:var(--orange)}
+.plan-day-actions{
+  display:flex;gap:8px;flex-wrap:wrap;margin-top:4px;
+  padding-top:14px;border-top:1px dashed var(--bg3);
+}
+.plan-foot{
+  display:flex;gap:10px;padding:12px 20px 16px;
+  border-top:1px solid var(--bg3);flex-shrink:0;align-items:center;flex-wrap:wrap;
+}
+@media print{.plan-sheet,.plan-overlay{display:none!important}}
 
 #backToMap{
   position:fixed;bottom:22px;inset-inline-start:22px;z-index:60;
@@ -939,6 +1037,24 @@ footer{
 </main>
 
 <button class="btn btn-orange no-print" id="backToMap" onclick="document.getElementById('map').scrollIntoView({behavior:'smooth'})">🗺️ الخريطة</button>
+
+<!-- ===== Plan Sheet ===== -->
+<div class="plan-overlay" id="planOverlay"></div>
+<div class="plan-sheet no-print" id="planSheet" role="dialog" aria-modal="true" aria-label="تعديل خطة الرحلة">
+  <div class="plan-handle"></div>
+  <div class="plan-head">
+    <span class="plan-head-title">📅 تعديل الرحلة</span>
+    <div class="plan-tabs-wrap">
+      <div class="plan-tabs" id="planTabs"></div>
+    </div>
+    <button class="plan-close-btn" id="planCloseBtn" title="إغلاق">✕</button>
+  </div>
+  <div class="plan-body" id="planPages"></div>
+  <div class="plan-foot">
+    <button class="btn btn-ghost btn-sm" id="planAddDayBtn2">➕ يوم جديد</button>
+    <button class="btn btn-orange" id="planDoneBtn" style="margin-inline-start:auto">✓ تم</button>
+  </div>
+</div>
 
 <footer>
   <div class="container">
@@ -2100,12 +2216,148 @@ rateInput.addEventListener('input', ()=>{
   }
 });
 
+/* ===== Plan Sheet ===== */
+let activePlanDay = 0;
+
+function renderPlanSheet(){
+  const tabs = document.getElementById('planTabs');
+  const pages = document.getElementById('planPages');
+  if(!tabs || !pages) return;
+
+  tabs.innerHTML = state.days.map((d,i)=>{
+    const p = getPlace(d.place);
+    return `<button class="plan-tab${i===activePlanDay?' active':''}" data-ptab="${i}">اليوم ${i+1}${p?' · '+p.emoji:''}</button>`;
+  }).join('');
+
+  pages.innerHTML = state.days.map((d,i)=>{
+    const date = dayDate(i);
+    const p = getPlace(d.place);
+    return `<div class="plan-page${i===activePlanDay?' active':''}" data-page="${i}">
+      <div class="plan-day-bar">
+        <span class="plan-day-badge">اليوم ${i+1}</span>
+        <span class="plan-day-date">${fmtDate(date)}</span>
+        ${p?`<span class="plan-day-city">${escapeHtml(p.name)} ${p.emoji||''}</span>`:''}
+      </div>
+      <div class="plan-field">
+        <label>عنوان اليوم</label>
+        <input type="text" data-pi="${i}" data-pf="title" value="${escapeAttr(d.title)}">
+      </div>
+      <div class="plan-row2">
+        <div class="plan-field">
+          <label>الموقع على الخريطة</label>
+          <select data-pi="${i}" data-pf="place">${placeOptionsHtml(d.place)}</select>
+        </div>
+        <div class="plan-field">
+          <label>نصيحة اليوم</label>
+          <input type="text" data-pi="${i}" data-pf="tip" value="${escapeAttr(d.tip||'')}">
+        </div>
+      </div>
+      <div class="plan-field">
+        <label>الفعاليات والأنشطة (سطر لكل نشاط)</label>
+        <textarea data-pi="${i}" data-pf="acts">${escapeHtml((d.acts||[]).join('\n'))}</textarea>
+      </div>
+      <div class="plan-row2">
+        <div class="plan-field">
+          <label>روابط (الاسم | الرابط)</label>
+          <textarea data-pi="${i}" data-pf="links" style="min-height:70px">${escapeHtml((d.links||[]).map(l=>l[0]+' | '+l[1]).join('\n'))}</textarea>
+        </div>
+        <div class="plan-field">
+          <label>تعليقات الصور (حتى 3)</label>
+          <textarea data-pi="${i}" data-pf="imgs" style="min-height:70px">${escapeHtml((d.imgs||[]).map(t=>(t&&typeof t==='object')?t.c:t).join('\n'))}</textarea>
+        </div>
+      </div>
+      <div class="plan-day-actions">
+        <button class="btn btn-sm btn-ghost" data-padd="${i}">➕ إضافة يوم بعده</button>
+        <button class="btn btn-sm btn-danger" data-pdel="${i}" ${state.days.length<=2?'disabled':''}>🗑 حذف هذا اليوم</button>
+      </div>
+    </div>`;
+  }).join('');
+
+  /* tab switching */
+  tabs.querySelectorAll('.plan-tab').forEach(btn=>{
+    btn.addEventListener('click', ()=>{
+      activePlanDay = +btn.dataset.ptab;
+      renderPlanSheet();
+      document.getElementById('day-'+(activePlanDay+1))?.scrollIntoView({behavior:'smooth', block:'nearest'});
+    });
+  });
+
+  /* scroll active tab into view */
+  const activeTab = tabs.querySelector('.plan-tab.active');
+  if(activeTab) setTimeout(()=>activeTab.scrollIntoView({behavior:'smooth', inline:'nearest', block:'nearest'}), 80);
+
+  /* form field changes */
+  pages.querySelectorAll('[data-pf]').forEach(el=>{
+    el.addEventListener('change', e=>{
+      const i = +e.target.dataset.pi, f = e.target.dataset.pf, v = e.target.value;
+      const d = state.days[i];
+      if(!d) return;
+      if(f === 'place'){
+        if(v === '__pick__'){ startPick(i); return; }
+        d.place = v;
+      } else if(f === 'acts') d.acts = v.split('\n').map(s=>s.trim()).filter(Boolean);
+      else if(f === 'imgs'){
+        const old = d.imgs||[];
+        d.imgs = v.split('\n').map(s=>s.trim()).filter(Boolean).slice(0,3).map((cap,idx)=>{
+          const prev = old[idx];
+          const u = (prev && typeof prev === 'object') ? prev.u : (cap.startsWith('http') ? cap : '');
+          return {c:cap, u:u};
+        });
+      } else if(f === 'links') d.links = v.split('\n').map(s=>{
+        const parts = s.split('|').map(x=>x.trim());
+        if(parts.length >= 2 && parts[1]) return [parts[0], parts.slice(1).join('|')];
+        if(parts[0] && parts[0].startsWith('http')) return [parts[0], parts[0]];
+        return null;
+      }).filter(Boolean);
+      else d[f] = v;
+      saveState();
+      renderItinerary(); renderMap(); renderBudget();
+      renderPlanSheet();
+    });
+  });
+
+  /* add day after */
+  pages.querySelectorAll('[data-padd]').forEach(b=>b.addEventListener('click', ()=>{
+    const i = +b.dataset.padd;
+    addDayAt(i + 1);
+    activePlanDay = i + 1;
+    renderPlanSheet();
+  }));
+
+  /* delete day */
+  pages.querySelectorAll('[data-pdel]').forEach(b=>b.addEventListener('click', ()=>{
+    const i = +b.dataset.pdel;
+    if(state.days.length <= 2) return;
+    if(confirm(`حذف اليوم ${i+1} (${state.days[i].title})؟`)){
+      state.days.splice(i,1);
+      activePlanDay = Math.min(activePlanDay, state.days.length-1);
+      saveState(); renderAll();
+    }
+  }));
+}
+
+function closePlanSheet(){
+  document.body.classList.remove('edit-on');
+  document.getElementById('editToggle').innerHTML = '✏️ وضع تعديل الرحلة';
+  endPick();
+}
+
+document.getElementById('planCloseBtn').addEventListener('click', closePlanSheet);
+document.getElementById('planDoneBtn').addEventListener('click', closePlanSheet);
+document.getElementById('planOverlay').addEventListener('click', closePlanSheet);
+document.getElementById('planAddDayBtn2').addEventListener('click', ()=>{
+  addDayAt(state.days.length - 1);
+  activePlanDay = state.days.length - 2;
+  renderPlanSheet();
+});
+
 /* edit mode */
 document.getElementById('editToggle').addEventListener('click', ()=>{
   document.body.classList.toggle('edit-on');
   const on = document.body.classList.contains('edit-on');
   document.getElementById('editToggle').innerHTML = on ? '✅ إنهاء التعديل' : '✏️ وضع تعديل الرحلة';
   if(!on) endPick();
+  if(on) renderPlanSheet();
 });
 
 /* reset */
@@ -2212,6 +2464,7 @@ function renderAll(){
   renderHotels();
   renderDriver();
   renderBudget();
+  renderPlanSheet();
 }
 
 bindNumber('flightPrice','flightPrice');
