@@ -62,6 +62,123 @@ header .sub{color:var(--teal);font-size:1.1rem;margin-top:10px;font-weight:600}
 }
 .badge b{color:var(--teal);font-weight:700}
 
+/* ===== Home Hero (app-style) ===== */
+.home-hero{
+  position:relative;overflow:hidden;
+  background:
+    radial-gradient(120% 140% at 0% 0%, rgba(207,232,90,.30) 0%, transparent 52%),
+    radial-gradient(120% 150% at 100% 0%, rgba(248,97,43,.14) 0%, transparent 48%),
+    linear-gradient(135deg,#f3f7ea 0%,#fdf7f0 100%);
+  border-bottom:1px solid var(--bg3);
+  padding:26px 0 30px;
+}
+.home-top{display:flex;align-items:center;gap:14px;margin-bottom:20px}
+.home-hello{font-size:1.7rem;font-weight:800;line-height:1.2}
+.home-hello b{color:var(--orange)}
+.home-sub{color:var(--teal);font-size:.9rem;font-weight:600;margin-top:5px}
+.home-avatar{
+  margin-inline-start:auto;width:54px;height:54px;border-radius:50%;flex-shrink:0;
+  background:linear-gradient(135deg,var(--lime),var(--teal));
+  display:flex;align-items:center;justify-content:center;font-size:1.6rem;
+  box-shadow:0 8px 20px rgba(31,146,119,.30);border:3px solid #fff;
+}
+.home-search-row{display:flex;gap:12px;margin-bottom:18px}
+.home-search{
+  flex:1;display:flex;align-items:center;gap:10px;background:#fff;
+  border:1px solid var(--bg3);border-radius:999px;padding:13px 20px;
+  box-shadow:0 8px 22px rgba(29,42,36,.06);
+}
+.home-search .hs-ic{font-size:1.02rem;color:var(--muted)}
+.home-search input{
+  flex:1;border:none;outline:none;background:transparent;
+  font-family:inherit;font-size:.96rem;color:var(--text);
+}
+.home-filter{
+  width:54px;height:54px;flex-shrink:0;border:none;border-radius:18px;cursor:pointer;
+  background:var(--orange);color:#fff;font-size:1.25rem;
+  display:flex;align-items:center;justify-content:center;
+  box-shadow:0 10px 24px rgba(248,97,43,.34);transition:transform .15s, background .2s;
+}
+.home-filter:hover{transform:translateY(-2px);background:var(--orange-soft)}
+.edit-on .home-filter{background:var(--teal);box-shadow:0 10px 24px rgba(31,146,119,.34)}
+.home-chips{display:flex;gap:10px;overflow-x:auto;padding:2px 0 6px;scrollbar-width:none}
+.home-chips::-webkit-scrollbar{display:none}
+.home-chip{
+  flex-shrink:0;display:inline-flex;align-items:center;gap:6px;
+  border:1px solid var(--bg3);background:#fff;color:var(--text);
+  border-radius:999px;padding:9px 18px;font-family:inherit;font-size:.88rem;font-weight:700;
+  cursor:pointer;transition:all .18s;box-shadow:0 4px 12px rgba(29,42,36,.05);white-space:nowrap;
+}
+.home-chip:hover{border-color:var(--orange)}
+.home-chip.active{background:var(--orange);border-color:var(--orange);color:#fff;box-shadow:0 8px 18px rgba(248,97,43,.30)}
+.home-pop-head{display:flex;align-items:center;justify-content:space-between;margin:18px 0 14px}
+.home-pop-title{font-size:1.4rem;font-weight:800}
+.home-seeall{color:var(--teal);font-size:.86rem;font-weight:700;text-decoration:none}
+.home-seeall:hover{color:var(--orange)}
+.home-cards{display:flex;gap:16px;overflow-x:auto;padding:4px 0 10px;scroll-snap-type:x mandatory;scrollbar-width:none}
+.home-cards::-webkit-scrollbar{display:none}
+.dest-card{
+  position:relative;flex:0 0 78%;max-width:340px;height:230px;border-radius:24px;overflow:hidden;
+  scroll-snap-align:start;cursor:pointer;background:linear-gradient(135deg,#cfe0d6,#a9c2b4);
+  box-shadow:0 16px 36px rgba(29,42,36,.16);transition:transform .25s, box-shadow .25s;
+}
+@media(min-width:760px){.dest-card{flex-basis:42%}}
+.dest-card:hover{transform:translateY(-4px);box-shadow:0 22px 46px rgba(29,42,36,.22)}
+.dest-card .dest-img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;display:block}
+.dest-card .dest-shade{position:absolute;inset:0;background:linear-gradient(to top, rgba(0,0,0,.62) 0%, rgba(0,0,0,.12) 46%, transparent 70%)}
+.dest-rating{
+  position:absolute;top:14px;inset-inline-start:14px;z-index:2;
+  background:rgba(255,255,255,.93);border-radius:999px;padding:5px 12px;
+  font-size:.82rem;font-weight:800;color:var(--text);display:flex;align-items:center;gap:5px;
+  box-shadow:0 4px 12px rgba(0,0,0,.18);direction:ltr;
+}
+.dest-rating .star{color:#f5a623}
+.dest-rating small{color:var(--muted);font-weight:600}
+.dest-info{position:absolute;bottom:0;inset-inline-start:0;z-index:2;padding:18px 20px;color:#fff;max-width:75%}
+.dest-info .dn{font-size:1.55rem;font-weight:800;line-height:1.1;text-shadow:0 2px 10px rgba(0,0,0,.4)}
+.dest-info .dt{font-size:.86rem;opacity:.94;margin-top:4px;text-shadow:0 1px 6px rgba(0,0,0,.4)}
+.dest-go{
+  position:absolute;bottom:16px;inset-inline-end:16px;z-index:3;
+  width:46px;height:46px;border-radius:50%;border:none;cursor:pointer;
+  background:#fff;color:var(--text);font-size:1.15rem;
+  display:flex;align-items:center;justify-content:center;
+  box-shadow:0 6px 16px rgba(0,0,0,.22);transition:transform .15s, background .2s, color .2s;
+}
+.dest-go:hover{background:var(--orange);color:#fff;transform:scale(1.08)}
+.home-stats{display:flex;gap:10px;flex-wrap:wrap;margin-top:18px}
+@media print{
+  .home-search-row,.home-chips,.home-cards,.home-pop-head{display:none!important}
+  .home-hero{background:#fff;border-bottom:2px solid #c53d12;padding:12px 0}
+  .home-hello{font-size:1.4rem}
+}
+
+/* ===== Bottom App Nav ===== */
+.appnav{
+  position:fixed;bottom:0;left:0;right:0;z-index:120;
+  background:rgba(255,255,255,.95);backdrop-filter:blur(14px);
+  border-top:1px solid var(--bg3);box-shadow:0 -8px 28px rgba(29,42,36,.10);
+  display:flex;align-items:center;justify-content:space-around;
+  padding:8px 12px;padding-bottom:calc(8px + env(safe-area-inset-bottom,0px));
+}
+.appnav-item{
+  display:flex;flex-direction:column;align-items:center;gap:2px;flex:1;
+  color:var(--muted);text-decoration:none;font-size:1.2rem;cursor:pointer;
+  background:none;border:none;font-family:inherit;transition:color .2s;
+}
+.appnav-item span{font-size:.64rem;font-weight:700}
+.appnav-item:hover,.appnav-item.active{color:var(--orange)}
+.appnav-fab{
+  flex:0 0 auto;width:58px;height:58px;border-radius:50%;border:none;cursor:pointer;
+  background:var(--orange);color:#fff;font-size:1.9rem;font-weight:300;line-height:1;
+  margin-top:-26px;box-shadow:0 10px 24px rgba(248,97,43,.42);
+  display:flex;align-items:center;justify-content:center;transition:transform .2s, background .2s;
+}
+.appnav-fab:hover{transform:translateY(-2px) rotate(90deg);background:var(--orange-soft)}
+.edit-on .appnav-fab{background:var(--teal);box-shadow:0 10px 24px rgba(31,146,119,.42)}
+body{padding-bottom:74px}
+#backToMap{bottom:88px}
+@media print{.appnav{display:none!important}body{padding-bottom:0}}
+
 /* ===== Toolbar ===== */
 .toolbar{
   position:sticky;top:0;z-index:50;
@@ -703,12 +820,34 @@ footer{
 </head>
 <body>
 
-<!-- ============ HEADER ============ -->
-<header>
+<!-- ============ HEADER / HOME HERO ============ -->
+<header class="home-hero">
   <div class="container">
-    <h1>رحلة <span class="accent">جنوب أفريقيا</span> — هيرمانوس · ويلدرنيس · موسيل باي · كيب تاون 🇿🇦</h1>
-    <div class="sub" id="headerDates"></div>
-    <div class="badges">
+    <div class="home-top">
+      <div>
+        <div class="home-hello">أهلاً <b>بكم</b> 👋</div>
+        <div class="home-sub" id="headerDates"></div>
+      </div>
+      <div class="home-avatar" title="رحلة جنوب أفريقيا 🇿🇦">🇿🇦</div>
+    </div>
+
+    <div class="home-search-row">
+      <div class="home-search">
+        <span class="hs-ic">🔍</span>
+        <input type="text" id="homeSearch" placeholder="ابحث عن وجهة أو نشاط...">
+      </div>
+      <button class="home-filter" id="homeFilterBtn" title="تعديل الرحلة" aria-label="تعديل الرحلة">⚙️</button>
+    </div>
+
+    <div class="home-chips" id="homeChips"></div>
+
+    <div class="home-pop-head">
+      <h2 class="home-pop-title">وجهات شائعة</h2>
+      <a href="#itinerary" class="home-seeall">عرض الكل ←</a>
+    </div>
+    <div class="home-cards" id="homeCards"></div>
+
+    <div class="home-stats">
       <span class="badge">👥 المسافرون: <b id="travelersBadge">2</b></span>
       <span class="badge">📅 أيام الرحلة: <b id="daysBadge"></b></span>
       <span class="badge">🏨 <b id="nightsBadge"></b></span>
@@ -1038,6 +1177,15 @@ footer{
 
 <button class="btn btn-orange no-print" id="backToMap" onclick="document.getElementById('map').scrollIntoView({behavior:'smooth'})">🗺️ الخريطة</button>
 
+<!-- ===== Bottom App Nav ===== -->
+<nav class="appnav no-print" id="appNav" aria-label="التنقل السريع">
+  <button class="appnav-item active" data-go="top">🏠<span>الرئيسية</span></button>
+  <button class="appnav-item" data-go="#itinerary">📅<span>الجدول</span></button>
+  <button class="appnav-fab" id="appFab" title="تعديل الرحلة" aria-label="تعديل الرحلة">+</button>
+  <button class="appnav-item" data-go="#activities">🎟️<span>الفعاليات</span></button>
+  <button class="appnav-item" data-go="#budget">💰<span>الميزانية</span></button>
+</nav>
+
 <!-- ===== Plan Sheet ===== -->
 <div class="plan-overlay" id="planOverlay"></div>
 <div class="plan-sheet no-print" id="planSheet" role="dialog" aria-modal="true" aria-label="تعديل خطة الرحلة">
@@ -1156,6 +1304,24 @@ const DEFAULT_DAYS = [
    links:[['مطار كيب تاون','https://www.airports.co.za/airports/cape-town-international-airport']],
    imgs:[{c:'V&A Waterfront',u:IMG.waterfront},{c:'وداعاً جبل الطاولة',u:IMG.table}],
    tip:'اتركوا هامش 4 ساعات قبل الإقلاع — تسليم السيارة وإجراءات المطار تحتاج وقتاً.'}
+];
+
+/* ================= Home hero — categories & popular destinations ================= */
+const HOME_CATS = [
+  {key:'all',    label:'الكل',   icon:'🧭'},
+  {key:'whale',  label:'حيتان',  icon:'🐋'},
+  {key:'beach',  label:'شواطئ',  icon:'🏖️'},
+  {key:'city',   label:'مدينة',  icon:'🏙️'},
+  {key:'safari', label:'سفاري',  icon:'🦁'},
+  {key:'wine',   label:'كروم',   icon:'🍷'}
+];
+const HOME_DESTS = [
+  {name:'هيرمانوس',      tag:'بلدة الحيتان',   cat:'whale',  img:IMG.whales,      rating:'4.9', reviews:'2k',   target:'hermanus'},
+  {name:'كيب تاون',      tag:'جبل الطاولة',    cat:'city',   img:IMG.table,       rating:'4.8', reviews:'9k',   target:'capetown'},
+  {name:'ويلدرنيس',      tag:'الجاردن روت',    cat:'beach',  img:IMG.knysna,      rating:'4.7', reviews:'1.5k', target:'wilderness'},
+  {name:'موسيل باي',     tag:'سفاري ومحيط',    cat:'safari', img:IMG.mosselbay,   rating:'4.6', reviews:'1k',   target:'mosselbay'},
+  {name:'فرانشهوك',      tag:'كروم العنب',     cat:'wine',   img:IMG.franschhoek, rating:'4.8', reviews:'3k',   target:'capetown'},
+  {name:'بطاريق بولدرز', tag:'شبه جزيرة الكيب',cat:'beach',  img:IMG.penguins,    rating:'4.9', reviews:'6k',   target:'capetown'}
 ];
 
 /* ================= Activities catalog =================
@@ -1299,6 +1465,7 @@ const DEFAULT_STATE = {
 let state = loadState();
 let pickingForDay = null; // index of day waiting for a map click
 let _editingActId = null;
+const homeFilter = {cat:'all', q:''};
 
 function loadState(){
   try{
@@ -2449,12 +2616,82 @@ document.getElementById('chkClearDone').addEventListener('click', ()=>{
   }
 });
 
+/* ================= Home hero ================= */
+function homeScrollToDay(target){
+  const idx = state.days.findIndex(d=>d.place===target);
+  const el = idx>=0 ? document.getElementById('day-'+(idx+1)) : document.getElementById('itinerary');
+  if(!el) return;
+  el.scrollIntoView({behavior:'smooth', block:'start'});
+  if(idx>=0){
+    document.querySelectorAll('.day-card.flash').forEach(c=>c.classList.remove('flash'));
+    el.classList.add('flash');
+    setTimeout(()=>el.classList.remove('flash'), 2600);
+  }
+}
+function renderHomeCards(){
+  const wrap = document.getElementById('homeCards');
+  if(!wrap) return;
+  const q = homeFilter.q.trim();
+  const list = HOME_DESTS.filter(d=>
+    (homeFilter.cat==='all' || d.cat===homeFilter.cat) &&
+    (!q || (d.name+' '+d.tag).includes(q)));
+  if(!list.length){
+    wrap.innerHTML = `<div style="color:var(--muted);padding:30px 4px;font-size:.95rem">لا توجد وجهات مطابقة 🔍</div>`;
+    return;
+  }
+  wrap.innerHTML = list.map(d=>`
+    <div class="dest-card" data-target="${escapeAttr(d.target)}">
+      <img class="dest-img" src="${escapeAttr(d.img)}" alt="${escapeAttr(d.name)}" loading="lazy" onerror="this.style.display='none'">
+      <div class="dest-shade"></div>
+      <div class="dest-rating"><span class="star">★</span> ${d.rating} <small>(${d.reviews})</small></div>
+      <div class="dest-info">
+        <div class="dn">${escapeHtml(d.name)}</div>
+        <div class="dt">${escapeHtml(d.tag)} · اعرض الخطة</div>
+      </div>
+      <button class="dest-go" data-target="${escapeAttr(d.target)}" title="عرض في الجدول" aria-label="عرض ${escapeAttr(d.name)}">↗</button>
+    </div>`).join('');
+  wrap.querySelectorAll('.dest-card').forEach(card=>{
+    card.addEventListener('click', ()=> homeScrollToDay(card.dataset.target));
+  });
+}
+function renderHome(){
+  const chipsEl = document.getElementById('homeChips');
+  if(chipsEl){
+    chipsEl.innerHTML = HOME_CATS.map(c=>
+      `<button class="home-chip${c.key===homeFilter.cat?' active':''}" data-cat="${c.key}">${c.icon} ${c.label}</button>`).join('');
+    chipsEl.querySelectorAll('.home-chip').forEach(b=>b.addEventListener('click', ()=>{
+      homeFilter.cat = b.dataset.cat;
+      chipsEl.querySelectorAll('.home-chip').forEach(x=>x.classList.toggle('active', x.dataset.cat===homeFilter.cat));
+      renderHomeCards();
+    }));
+  }
+  renderHomeCards();
+}
+
+/* home search (bound once) */
+document.getElementById('homeSearch')?.addEventListener('input', e=>{
+  homeFilter.q = e.target.value;
+  renderHomeCards();
+});
+/* home filter button + FAB → toggle edit mode */
+document.getElementById('homeFilterBtn')?.addEventListener('click', ()=> document.getElementById('editToggle').click());
+document.getElementById('appFab')?.addEventListener('click', ()=> document.getElementById('editToggle').click());
+/* bottom app nav */
+document.querySelectorAll('.appnav-item').forEach(a=>a.addEventListener('click', ()=>{
+  const go = a.dataset.go;
+  if(go==='top') window.scrollTo({top:0, behavior:'smooth'});
+  else document.querySelector(go)?.scrollIntoView({behavior:'smooth'});
+  document.querySelectorAll('.appnav-item').forEach(x=>x.classList.remove('active'));
+  a.classList.add('active');
+}));
+
 function renderAll(){
   document.getElementById('flightPrice').value = state.flightPrice;
   document.getElementById('transportPrice').value = state.transportPrice;
   document.getElementById('activitiesPrice').value = state.activitiesPrice;
   document.getElementById('foodPrice').value = state.foodPrice;
   rateInput.value = state.rate;
+  renderHome();
   renderPayment();
   renderMap();
   renderItinerary();
