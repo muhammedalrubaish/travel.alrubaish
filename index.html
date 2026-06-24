@@ -1283,24 +1283,25 @@ const PLACES = {
 
 /* ================= Default itinerary =================
    هيرمانوس 1 ليلة → ويلدرنيس 2 ليالٍ → موسيل باي 2 ليالٍ → كيب تاون 3 ليالٍ */
-/* صور مباشرة من Wikimedia CDN — بدون أي طلب API أو redirect */
-/* Image sources = Wikipedia article titles. Resolved at runtime via the
-   Wikipedia REST summary API to the article's current canonical lead photo —
-   robust against thumbnail link-rot. See wikiThumb() / hydrateImages(). */
+/* Image sources = stable Wikimedia Special:FilePath links. This canonical
+   endpoint redirects to the file's current location, so it doesn't rot like
+   deep /thumb/ URLs. ?width=900 returns a downscaled JPEG. If any link fails
+   to load, the loader falls back to a neutral gray placeholder. */
+const _FP = 'https://commons.wikimedia.org/wiki/Special:FilePath/';
 const IMG = {
-  whales:      'Southern right whale',
-  table:       'Table Mountain',
-  knysna:      'Knysna',
-  mosselbay:   'Mossel Bay',
-  elephant:    'African bush elephant',
-  lion:        'Lion',
-  franschhoek: 'Franschhoek',
-  stellenbosch:'Stellenbosch',
-  bokaap:      'Bo-Kaap',
-  capepoint:   'Cape Point',
-  penguins:    'African penguin',
-  chapmans:    "Chapman's Peak",
-  waterfront:  'Victoria & Alfred Waterfront'
+  whales:      _FP+'Southern_Right_Whales_%28Hermanus%29.jpg?width=900',
+  table:       _FP+'Table_mountain_and_the_ocean_cape_town.JPG?width=900',
+  knysna:      _FP+'Knysna%27s_Western_Head.JPG?width=900',
+  mosselbay:   _FP+'Mossel_Bay%2C_6506%2C_South_Africa_-_panoramio.jpg?width=900',
+  elephant:    _FP+'Elephant_side-view_Kruger.jpg?width=900',
+  lion:        _FP+'Lion_waiting_in_Namibia.jpg?width=900',
+  franschhoek: _FP+'Franschhoek%2C_Western_Cape%2C_South_Africa_%2820318451198%29.jpg?width=900',
+  stellenbosch:_FP+'Stellenbosch-region.JPG?width=900',
+  bokaap:      _FP+'Cape_Town_Bo-Kaap_city_street.jpg?width=900',
+  capepoint:   _FP+'Lighthouse_Cape_Point%2C_South_Africa.JPG?width=900',
+  penguins:    _FP+'African_penguin_near_Boulders_Beach.jpg?width=900',
+  chapmans:    _FP+'ChapmansPeakDrive_View.jpg?width=900',
+  waterfront:  _FP+'Victoria_%26_Alfred_Waterfront%2C_Cape_Town_%282%29.jpg?width=900'
 };
 const DEFAULT_DAYS = [
   {place:'hermanus', title:'الوصول إلى هيرمانوس — بلدة الحيتان 🐋',
