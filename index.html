@@ -685,7 +685,7 @@ footer{
 <!-- ============ ITINERARY ============ -->
 <section id="itinerary">
   <h2 class="sec-title">جدول الرحلة اليومي</h2>
-  <p class="sec-desc">المبيت في كيب تاون ونيسنا (الجاردن روت) فقط — هيرمانوس وبقية المحطات زيارات على المسار. فعّل "وضع تعديل الرحلة" لتعديل أو حذف أو إضافة أيام ومواقع.</p>
+  <p class="sec-desc">الرحلة تبدأ بالجاردن روت (21–26 يوليو، واليوم الأول هيرمانوس من المطار مباشرة) وتُختم بكيب تاون (27–29 يوليو) ثم المغادرة إلى الرياض. المبيت في نيسنا وGame Lodge وكيب تاون — هيرمانوس وبقية المحطات زيارات على المسار. فعّل "وضع تعديل الرحلة" لتعديل أو حذف أو إضافة أيام ومواقع.</p>
   <div class="itin-controls">
     <span style="color:var(--muted);font-size:.92rem">📅 عدد أيام الرحلة:</span>
     <div class="stepper">
@@ -952,7 +952,7 @@ footer{
 <script>
 'use strict';
 /* ================= Constants ================= */
-const STORAGE_KEY = 'capetown-trip-2026-v3';
+const STORAGE_KEY = 'capetown-trip-2026-v4'; // v4: الجاردن روت أولاً ثم كيب تاون
 const START_DATE = new Date(2026, 6, 21); // 21 July 2026
 const WEEKDAYS = ['الأحد','الاثنين','الثلاثاء','الأربعاء','الخميس','الجمعة','السبت'];
 const MONTHS = ['يناير','فبراير','مارس','أبريل','مايو','يونيو','يوليو','أغسطس','سبتمبر','أكتوبر','نوفمبر','ديسمبر'];
@@ -972,37 +972,14 @@ const PLACES = {
 };
 
 /* ================= Default itinerary =================
-   المبيت في كيب تاون ونيسنا فقط — هيرمانوس محطة على المسار بدون نوم */
+   ٢١–٢٦ يوليو: الجاردن روت (اليوم الأول هيرمانوس من المطار مباشرة، المبيت في نيسنا + ليلة Game Lodge)
+   ٢٧–٢٩ يوليو: كيب تاون ثم المغادرة إلى الرياض */
 const DEFAULT_DAYS = [
-  {place:'capetown', title:'الوصول إلى كيب تاون والواجهة البحرية',
-   acts:['الوصول إلى مطار كيب تاون الدولي (CPT) واستلام السيارة المستأجرة.','تسجيل الدخول في الفندق والراحة من السفر.','جولة مسائية في V&A Waterfront: المطاعم، الأسواق، وعجلة كيب الدوارة.','عشاء على الواجهة البحرية مع إطلالة على جبل الطاولة.'],
-   links:[['موقع V&A Waterfront','https://www.waterfront.co.za'],['مطار كيب تاون','https://www.airports.co.za/airports/cape-town-international-airport']],
-   imgs:['Victoria & Alfred Waterfront','Cape Town'],
-   tip:'فعّل شريحة بيانات محلية (Vodacom أو MTN) من المطار مباشرة، واطلب سيارة مريحة لطرق الجاردن روت.'},
-
-  {place:'capetown', title:'جبل الطاولة وحي بوكاب الملوّن',
-   acts:['صعود جبل الطاولة بالتلفريك الدوّار صباحاً (الأجواء أصفى قبل الظهر).','جولة تصوير في حي بوكاب (Bo-Kaap) بمنازله الملوّنة وتاريخ مسلمي الكيب.','زيارة حديقة الشركة (Company\'s Garden) ووسط المدينة التاريخي.','غداء في سوق Greenmarket Square وتسوّق الهدايا التذكارية.'],
-   links:[['حجز تلفريك جبل الطاولة','https://www.tablemountain.net'],['متحف بوكاب','https://www.iziko.org.za/museums/bo-kaap-museum']],
-   imgs:['Table Mountain','Bo-Kaap'],
-   tip:'تحقق من حالة التلفريك على موقعه قبل الذهاب — يتوقف عند الرياح القوية. في يوليو خذ سترة؛ القمة أبرد بـ 5–8 درجات.'},
-
-  {place:'capetown', title:'شبه جزيرة الكيب وبطاريق بولدرز',
-   acts:['قيادة عبر طريق تشابمانز بيك (Chapman\'s Peak) — من أجمل الطرق الساحلية في العالم.','زيارة رأس الرجاء الصالح وكيب بوينت (Cape Point) وركوب القطار الجبلي.','مشاهدة مستعمرة البطاريق الأفريقية في شاطئ بولدرز (Boulders Beach).','جولة قصيرة في بلدة سايمونز تاون البحرية ثم العودة عبر ميزنبيرغ.'],
-   links:[['كيب بوينت','https://capepoint.co.za'],['طريق تشابمانز بيك','https://www.chapmanspeakdrive.co.za'],['شاطئ بولدرز (SANParks)','https://www.sanparks.org/parks/table_mountain/tourism/attractions.php']],
-   imgs:['Cape Point','Boulders Beach','Chapman\'s Peak'],
-   tip:'لا تترك أي أغراض ظاهرة في السيارة عند المواقف، وانتبه من قرود البابون عند كيب بوينت — لا تُطعمها أبداً.'},
-
-  {place:'stellenbosch', title:'كيرستنبوش والواينلاندز وكامبس باي',
-   acts:['صباحاً: حدائق كيرستنبوش النباتية الوطنية وممشى الجسر المعلّق (Boomslang).','رحلة قصيرة إلى ستيلينبوش: البلدة الجامعية التاريخية بطرازها الهولندي.','زيارة حديقة بابيلونستورن (Babylonstoren) وغداء ريفي في إحدى المزارع.','قهوة الغروب على شاطئ كامبس باي، وعشاء وداع كيب تاون في سي بوينت.'],
-   links:[['حدائق كيرستنبوش','https://www.sanbi.org/gardens/kirstenbosch'],['بابيلونستورن (احجز مسبقاً)','https://babylonstoren.com'],['دليل ستيلينبوش','https://visitstellenbosch.org']],
-   imgs:['Kirstenbosch National Botanical Garden','Stellenbosch','Camps Bay'],
-   tip:'احجز مدخل بابيلونستورن مسبقاً عبر الإنترنت. رتّب حقائبك الليلة — غداً تبدأ جولة الجاردن روت، وعبّئ وقود السيارة مساءً.'},
-
-  {place:'hermanus', title:'إلى الجاردن روت عبر هيرمانوس 🐋 (بدون مبيت)',
-   acts:['انطلاقة مبكرة (7 صباحاً) عبر الطريق الساحلي R44 (Clarence Drive) المذهل.','توقّف 3–4 ساعات في هيرمانوس: مشاهدة الحيتان الجنوبية من المنحدرات وممشى الجرف.','غداء سريع في هيرمانوس ثم مواصلة الطريق N2 شرقاً.','استراحة قهوة في سويلندام أو موسيل باي، والوصول إلى نيسنا مساءً (إجمالي ~500 كم).'],
-   links:[['رحلات الحيتان البحرية','https://southernrightcharters.co.za'],['دليل هيرمانوس','https://hermanus.co.za']],
+  {place:'hermanus', title:'الوصول → هيرمانوس مباشرة 🐋 ثم نيسنا',
+   acts:['الوصول إلى مطار كيب تاون الدولي (CPT) واستلام السيارة المستأجرة.','الانطلاق مباشرة من المطار إلى هيرمانوس عبر الطريق الساحلي R44 المذهل (~ساعة ونصف).','مشاهدة الحيتان الجنوبية من المنحدرات وممشى الجرف، وغداء في هيرمانوس.','مواصلة الطريق N2 شرقاً مع استراحة في موسيل باي، والوصول إلى نيسنا مساءً.'],
+   links:[['دليل هيرمانوس','https://hermanus.co.za'],['رحلات الحيتان البحرية','https://southernrightcharters.co.za'],['مطار كيب تاون','https://www.airports.co.za/airports/cape-town-international-airport']],
    imgs:['Hermanus','Walker Bay'],
-   tip:'أنصت لـ"منادي الحيتان" (Whale Crier) في وسط البلدة — ينفخ بوقاً عند رصد الحيتان. لا تتأخروا بعد الساعة 2 ظهراً لتجنب القيادة ليلاً.'},
+   tip:'فعّلوا شريحة بيانات محلية من المطار مباشرة. اليوم طويل (~500 كم) — الأفضل رحلة تصل صباحاً، ولا تغادروا هيرمانوس بعد الساعة 2 ظهراً لتجنب القيادة ليلاً.'},
 
   {place:'knysna', title:'نيسنا: البحيرة والرأسان الصخريان',
    acts:['صباح هادئ وفطور على بحيرة نيسنا.','رحلة بحرية في البحيرة حتى رأسَي نيسنا (Knysna Heads).','إطلالة بانورامية من نقطة المشاهدة الشرقية (East Head Viewpoint).','جولة في الواجهة البحرية (Knysna Waterfront) وجزيرة ثيسن.'],
@@ -1016,23 +993,41 @@ const DEFAULT_DAYS = [
    imgs:['Tsitsikamma National Park','Plettenberg Bay'],
    tip:'البس حذاء مشي مريحاً وخذ معطفاً مقاوماً للمطر — مسار الجسور المعلقة يستغرق ساعة تقريباً.'},
 
-  {place:'gamelodge', title:'كهوف كانغو + طريق 62 → Garden Route Game Lodge 🦁',
-   acts:['انطلاقة مبكرة (7 صباحاً) من نيسنا عبر ممر أوتينيكوا الجبلي إلى أودتشورن (~ساعة ونصف).','جولة في كهوف كانغو (Heritage Tour) وزيارة مزرعة نعام تفاعلية.','الغداء في أودتشورن ثم الانطلاق غرباً عبر طريق N2 إلى Garden Route Game Lodge قرب ألبرتينيا (~ساعتين).','تسجيل الدخول في المحمية وجولة سفاري مسائية مع الخمسة الكبار (أسد، فيل، جاموس، فهد، كركدن).'],
-   links:[['Garden Route Game Lodge (احجز مباشرة)','https://www.gardenroutegamelodge.co.za'],['كهوف كانغو','https://www.cangocaves.co.za'],['مزرعة سفاري النعام','https://www.safariostrich.co.za']],
-   imgs:['Garden Route Game Lodge','Cango Caves','Oudtshoorn'],
-   tip:'الجولة المسائية (Sundowner Safari) في المحمية من أجمل التجارب. احجز مسبقاً لأن أماكن اليوليو تمتلئ. المحمية خالية من الملاريا 🙌'},
+  {place:'oudtshoorn', title:'أودتشورن: كهوف كانغو والنعام (رحلة يومية)',
+   acts:['انطلاقة مبكرة من نيسنا عبر ممر أوتينيكوا الجبلي إلى أودتشورن (~ساعة ونصف).','جولة في كهوف كانغو (Heritage Tour) — من أقدم وأجمل الكهوف في العالم.','زيارة مزرعة نعام تفاعلية وغداء في أودتشورن.','العودة إلى نيسنا عصراً عبر ممر جبلي بإطلالات بانورامية.'],
+   links:[['كهوف كانغو','https://www.cangocaves.co.za'],['مزرعة سفاري النعام','https://www.safariostrich.co.za']],
+   imgs:['Cango Caves','Oudtshoorn'],
+   tip:'أودتشورن شبه صحراوية: شمس نهاراً وبرد ليلاً — خذوا طبقات دافئة. احجزوا جولة الكهوف مسبقاً في يوليو.'},
 
-  {place:'capetown', title:'سفاري الفجر والعودة الأخيرة إلى كيب تاون 🏙️',
-   acts:['صفاري الفجر (6 صباحاً) في Garden Route Game Lodge — أفضل وقت لرؤية الحيوانات المفترسة.','فطور في المحمية ثم الانطلاق على طريق N2 / Route 62 غرباً نحو كيب تاون (~3 ساعات).','توقّف للقهوة في سويلندام أو مونتاغو — أقدم ثالث بلدة في جنوب أفريقيا.','الوصول لكيب تاون مساءً وتسجيل الدخول في الليلة الوداعية.'],
-   links:[['Garden Route Game Lodge','https://www.gardenroutegamelodge.co.za'],['Booking.com — كيب تاون','https://www.booking.com/searchresults.ar.html?ss=Cape+Town']],
-   imgs:['Garden Route Game Lodge','Swellendam','Cape Town'],
-   tip:'اطلب Sundowner Package (سفاري + عشاء + فطور) عند الحجز — يستحق. احرص على مغادرة المحمية قبل الساعة 10 لتصل كيب تاون قبل المساء.'},
+  {place:'wilderness', title:'ويلدرنيس والشواطئ — يوم استرخاء',
+   acts:['فطور متأخر ثم شاطئ ويلدرنيس الممتد — من أجمل شواطئ الجاردن روت.','إطلالة "خريطة أفريقيا" (Map of Africa Viewpoint) فوق منحنيات نهر كايمانز.','اختياري: تجديف في نهر توو (Touw River) أو ممشى Half-Collared Kingfisher.','مساءً: عشاء وداع الجاردن روت على واجهة نيسنا البحرية.'],
+   links:[['دليل ويلدرنيس','https://www.wilderness-info.com'],['حديقة الجاردن روت (SANParks)','https://www.sanparks.org/parks/garden_route']],
+   imgs:['Wilderness, Western Cape','Garden Route'],
+   tip:'يوم مرن — لو فاتكم نشاط في الأيام السابقة (فيذربيد، الفيلة، الزبلاين) فهذا يومه. رتبوا الحقائب مساءً؛ غداً المغادرة نحو المحمية.'},
 
-  {place:'capetown', title:'العودة إلى كيب تاون والمغادرة',
-   acts:['انطلاقة مبكرة على الطريق N2 غرباً نحو كيب تاون (~500 كم، 5–6 ساعات).','توقّف للغداء في سويلندام — أقدم ثالث بلدة في جنوب أفريقيا.','تعبئة الوقود وتسليم السيارة في مطار كيب تاون.','المغادرة مساءً — في حفظ الله.'],
-   links:[['مطار كيب تاون','https://www.airports.co.za/airports/cape-town-international-airport']],
-   imgs:['Cape Town International Airport','N2 (South Africa)'],
-   tip:'اتركوا هامش 4 ساعات قبل الإقلاع — الطريق طويل وتسليم السيارة وإجراءات المطار تحتاج وقتاً.'}
+  {place:'gamelodge', title:'إلى Garden Route Game Lodge 🦁 وسفاري المساء',
+   acts:['مغادرة نيسنا صباحاً غرباً على طريق N2 مع استراحة في موسيل باي (~ساعتان ونصف).','الوصول إلى Garden Route Game Lodge قرب ألبرتينيا وتسجيل الدخول والغداء.','جولة سفاري مسائية (Sundowner Safari) مع الخمسة الكبار: أسد، فيل، جاموس، فهد، كركدن.','عشاء في المحمية ومبيت في شاليهات السفاري.'],
+   links:[['Garden Route Game Lodge (احجز مباشرة)','https://www.gardenroutegamelodge.co.za']],
+   imgs:['Garden Route Game Lodge','Mossel Bay'],
+   tip:'اطلبوا Sundowner Package (سفاري + عشاء + فطور) عند الحجز — يستحق. المحمية خالية من الملاريا 🙌'},
+
+  {place:'capetown', title:'سفاري الفجر ثم كيب تاون والواجهة البحرية 🏙️',
+   acts:['سفاري الفجر (6 صباحاً) — أفضل وقت لرؤية الحيوانات المفترسة.','فطور في المحمية ثم الانطلاق غرباً إلى كيب تاون (~3 ساعات) مع استراحة في سويلندام.','تسجيل الدخول في فندق كيب تاون والراحة.','جولة مسائية في V&A Waterfront: المطاعم، الأسواق، وعجلة كيب الدوارة.'],
+   links:[['Garden Route Game Lodge','https://www.gardenroutegamelodge.co.za'],['موقع V&A Waterfront','https://www.waterfront.co.za']],
+   imgs:['Garden Route Game Lodge','Victoria & Alfred Waterfront'],
+   tip:'غادروا المحمية قبل الساعة 10 لتصلوا كيب تاون بعد الظهر وتستمتعوا بالمساء على الواجهة البحرية.'},
+
+  {place:'capetown', title:'شبه جزيرة الكيب وبطاريق بولدرز',
+   acts:['قيادة عبر طريق تشابمانز بيك (Chapman\'s Peak) — من أجمل الطرق الساحلية في العالم.','زيارة رأس الرجاء الصالح وكيب بوينت (Cape Point) وركوب القطار الجبلي.','مشاهدة مستعمرة البطاريق الأفريقية في شاطئ بولدرز (Boulders Beach).','قهوة الغروب في كامبس باي وعشاء في سي بوينت.'],
+   links:[['كيب بوينت','https://capepoint.co.za'],['طريق تشابمانز بيك','https://www.chapmanspeakdrive.co.za'],['شاطئ بولدرز (SANParks)','https://www.sanparks.org/parks/table_mountain/tourism/attractions.php']],
+   imgs:['Cape Point','Boulders Beach','Chapman\'s Peak'],
+   tip:'لا تترك أي أغراض ظاهرة في السيارة عند المواقف، وانتبه من قرود البابون عند كيب بوينت — لا تُطعمها أبداً.'},
+
+  {place:'capetown', title:'جبل الطاولة وبوكاب ثم المغادرة إلى الرياض ✈️',
+   acts:['صعود جبل الطاولة بالتلفريك صباحاً (الأجواء أصفى قبل الظهر).','جولة تصوير سريعة في حي بوكاب (Bo-Kaap) الملوّن.','غداء وتسوق هدايا في الواترفرونت أو Greenmarket Square.','تعبئة الوقود وتسليم السيارة في المطار، والمغادرة إلى الرياض مساءً — في حفظ الله.'],
+   links:[['حجز تلفريك جبل الطاولة','https://www.tablemountain.net'],['مطار كيب تاون','https://www.airports.co.za/airports/cape-town-international-airport']],
+   imgs:['Table Mountain','Bo-Kaap','Cape Town International Airport'],
+   tip:'تحققوا من حالة التلفريك قبل الذهاب — يتوقف عند الرياح. اتركوا هامش 4 ساعات قبل الإقلاع لتسليم السيارة وإجراءات المطار.'}
 ];
 
 /* ================= Activities catalog =================
@@ -1087,7 +1082,7 @@ const DEFAULT_STATE = {
   foodPrice: 2700,
   payment: 'cash',
   rate: 4.75,
-  ctNights: 5,
+  ctNights: 2,
   activities: DEFAULT_ACTIVITIES,
   driver: {
     capetown: {on:false, price:450},
@@ -1098,16 +1093,8 @@ const DEFAULT_STATE = {
   days: DEFAULT_DAYS,
   customPlaces: {},
   hotels: {
-    capetown: {
-      label: 'كيب تاون', selected: 0,
-      options: [
-        {name:'Radisson RED V&A Waterfront', price: 950, img:''},
-        {name:'The Table Bay Hotel (فاخر)', price: 1600, img:''},
-        {name:'Premier Hotel Cape Town', price: 600, img:''}
-      ]
-    },
     knysna: {
-      label: 'الجاردن روت — نيسنا', selected: 0,
+      label: 'الجاردن روت — نيسنا (أول الرحلة)', selected: 0,
       options: [
         {name:'The Turbine Boutique Hotel', price: 850, img:''},
         {name:'Premier Resort The Moorings', price: 700, img:''},
@@ -1120,6 +1107,14 @@ const DEFAULT_STATE = {
         {name:'Garden Route Game Lodge — Standard Chalet', price: 1800, img:'https://dynamic-media-cdn.tripadvisor.com/media/photo-o/29/5e/17/8a/exterior.jpg?w=1200&h=-1&s=1'},
         {name:'Garden Route Game Lodge — Luxury Chalet', price: 2600, img:''},
         {name:'Garden Route Game Lodge — Family Chalet', price: 2200, img:''}
+      ]
+    },
+    capetown: {
+      label: 'كيب تاون (ختام الرحلة)', selected: 0,
+      options: [
+        {name:'Radisson RED V&A Waterfront', price: 950, img:''},
+        {name:'The Table Bay Hotel (فاخر)', price: 1600, img:''},
+        {name:'Premier Hotel Cape Town', price: 600, img:''}
       ]
     }
   }
@@ -1544,7 +1539,7 @@ function renderItinerary(){
   cont.querySelectorAll('[data-down]').forEach(b=>b.addEventListener('click', ()=> moveDay(+b.dataset.down, 1)));
 
   document.getElementById('daysCount').textContent = state.days.length;
-  document.getElementById('daysNote').textContent = `(${totalNights()} ليالٍ: ${ctNights()} كيب تاون + ${knNights()} الجاردن روت + ${lodgeNights()} سفاري)`;
+  document.getElementById('daysNote').textContent = `(${totalNights()} ليالٍ: ${knNights()} الجاردن روت + ${lodgeNights()} سفاري + ${ctNights()} كيب تاون)`;
   hydrateImages(cont);
   observeReveals(cont);
 }
@@ -1572,15 +1567,15 @@ document.getElementById('daysMinus').addEventListener('click', ()=>{
 });
 
 /* ================= Hotels & booking ================= */
+/* ترتيب الليالي: نيسنا أولاً ← ليلة Game Lodge ← كيب تاون في الختام */
 function cityDates(key){
   const n = totalNights();
   const kn = knNights();
-  const firstCT = ctNights() - 1;          // nights 1…firstCT in Cape Town
-  const knStart = firstCT;                  // Knysna starts night firstCT+1
-  const lodgeStart = knStart + kn;          // Lodge night: after Knysna
-  if(key === 'capetown')  return [dayDate(0), dayDate(n)];      // full window for booking link
-  if(key === 'knysna')    return [dayDate(knStart), dayDate(knStart + kn)];
+  const lodgeStart = kn;
+  const ctStart = kn + lodgeNights();
+  if(key === 'knysna')    return [dayDate(0), dayDate(kn)];
   if(key === 'gamelodge') return [dayDate(lodgeStart), dayDate(lodgeStart + Math.max(1, lodgeNights()))];
+  if(key === 'capetown')  return [dayDate(ctStart), dayDate(n)];
   return [dayDate(0), dayDate(n)];
 }
 function bookingLinks(key){
@@ -1608,8 +1603,8 @@ function flightLinksHtml(){
   const dep = isoDate(dayDate(0)), ret = isoDate(dayDate(totalNights()));
   const yymmdd = s => s.slice(2).replace(/-/g,'');
   return [
-    ['Google Flights', `https://www.google.com/travel/flights?q=${encodeURIComponent(`flights from Jeddah to Cape Town on ${dep} return ${ret}`)}`],
-    ['Skyscanner', `https://www.skyscanner.com.sa/transport/flights/jed/cpt/${yymmdd(dep)}/${yymmdd(ret)}/?adults=${state.travelers}`]
+    ['Google Flights', `https://www.google.com/travel/flights?q=${encodeURIComponent(`flights from Riyadh to Cape Town on ${dep} return ${ret}`)}`],
+    ['Skyscanner', `https://www.skyscanner.com.sa/transport/flights/ruh/cpt/${yymmdd(dep)}/${yymmdd(ret)}/?adults=${state.travelers}`]
   ].map(l=>`<a class="chip book" href="${escapeAttr(l[1])}" target="_blank" rel="noopener">✈️ ${escapeHtml(l[0])}</a>`).join('');
 }
 
@@ -1621,12 +1616,11 @@ function renderHotels(){
     const sel = city.options[city.selected] || city.options[0];
     const total = sel.price * nights * roomsCount();
     const [ci, co] = cityDates(key);
-    const firstBlockNights = key === 'capetown' ? (ctNights()-1) : null;
     const lastNightNote = key === 'capetown'
-      ? `<span style="color:var(--orange);font-size:.78rem;margin-inline-start:8px">🛏️ ${firstBlockNights} ليالٍ أول الرحلة + ليلة وداعية (${fmtDate(dayDate(totalNights()-1))})</span>`
+      ? `<span style="color:var(--orange);font-size:.78rem;margin-inline-start:8px">🏙️ ختام الرحلة ثم المغادرة إلى الرياض</span>`
       : '';
     const lodgeNote = key === 'gamelodge'
-      ? `<span style="color:var(--teal);font-size:.78rem;margin-inline-start:8px">🦁 ليلة واحدة في الطريق (${fmtDate(ci)} ← ${fmtDate(co)})</span>`
+      ? `<span style="color:var(--teal);font-size:.78rem;margin-inline-start:8px">🦁 ليلة واحدة في طريق العودة</span>`
       : '';
     const nightsCtl = key === 'capetown'
       ? `<span class="nights-ctl no-print"><button type="button" data-n="-1" aria-label="إنقاص الليالي">−</button><b style="color:var(--orange)">${nights}</b><button type="button" data-n="1" aria-label="زيادة الليالي">+</button> ليالٍ</span>`
@@ -1637,7 +1631,7 @@ function renderHotels(){
     block.className = 'hotel-block';
     block.innerHTML = `
       <h4>📍 ${escapeHtml(city.label)} ${nightsCtl}</h4>
-      <div style="color:var(--muted);font-size:.8rem;margin-bottom:8px">${key==='capetown' ? `${fmtDate(dayDate(0))} ← ${fmtDate(dayDate(totalNights()))}` : `${fmtDate(ci)} ← ${fmtDate(co)}`}${lastNightNote}${lodgeNote}</div>
+      <div style="color:var(--muted);font-size:.8rem;margin-bottom:8px">${fmtDate(ci)} ← ${fmtDate(co)}${lastNightNote}${lodgeNote}</div>
       <div class="hotel-row">
         <div class="hotel-img${sel.img ? '' : ' ph'}" ${sel.img ? '' : `data-wiki="${escapeAttr(sel.name)}" data-alt="${escapeAttr(sel.name)}"`}>${sel.img ? `<img src="${escapeAttr(sel.img)}" alt="${escapeAttr(sel.name)}" referrerpolicy="no-referrer" onerror="hotelImgFallback(this)">` : '🏨'}</div>
         <div class="hotel-main">
@@ -1854,13 +1848,12 @@ function initAddActBtn(){
 
 /* ================= Private driver ================= */
 function driverSegments(){
-  const ct = Math.max(1, ctNights() - 1); // أيام النشاط في كيب تاون (يوم الوصول منخفض النشاط)
   const kn = knNights();
   return [
-    {key:'capetown', label:'كيب تاون (جولات المدينة وشبه الجزيرة)', days: ct},
-    {key:'transfer', label:'يوم الانتقال: كيب تاون ← نيسنا عبر هيرمانوس', days: 1},
-    {key:'garden',   label:'الجاردن روت (نيسنا وما حولها + كهوف كانغو)', days: kn},
-    {key:'return',   label:'يوم العودة: Game Lodge → سفاري → كيب تاون', days: lodgeNights() + 1}
+    {key:'transfer', label:'يوم الوصول: المطار ← هيرمانوس ← نيسنا', days: 1},
+    {key:'garden',   label:'الجاردن روت (نيسنا وما حولها + كهوف كانغو)', days: Math.max(0, kn - 1)},
+    {key:'return',   label:'Game Lodge والسفاري ثم العودة إلى كيب تاون', days: lodgeNights() + 1},
+    {key:'capetown', label:'كيب تاون (شبه الجزيرة والمدينة حتى المغادرة)', days: Math.max(1, ctNights())}
   ];
 }
 function driverTotal(){
@@ -1974,7 +1967,7 @@ function renderBudget(){
   document.getElementById('travCount').textContent = state.travelers;
   document.getElementById('roomsNote').textContent = `(${roomsCount()} ${roomsCount()===1?'غرفة':'غرف'} مزدوجة)`;
   document.getElementById('daysBadge').textContent = state.days.length;
-  document.getElementById('nightsBadge').textContent = `${ctNights()} كيب تاون + ${knNights()} نيسنا + ${lodgeNights()} Game Lodge`;
+  document.getElementById('nightsBadge').textContent = `${knNights()} نيسنا + ${lodgeNights()} Game Lodge + ${ctNights()} كيب تاون`;
   const end = dayDate(state.days.length - 1);
   document.getElementById('headerDates').textContent =
     `جنوب أفريقيا · ${START_DATE.getDate()} ${MONTHS[START_DATE.getMonth()]} – ${end.getDate()} ${MONTHS[end.getMonth()]} ${end.getFullYear()} · ${state.days.length} يوماً / ${totalNights()} ليالٍ`;
