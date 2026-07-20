@@ -87,14 +87,23 @@ header .sub{color:var(--teal);font-size:1.12rem;margin-top:10px;font-weight:500}
 .badge:hover{border-color:var(--teal);transform:translateY(-1px)}
 .badge b{color:var(--teal)}
 
-/* ===== Toolbar ===== */
+/* ===== Toolbar (شريط سفلي مصغّر) ===== */
 .toolbar{
-  position:sticky;top:0;z-index:50;
-  background:rgba(34,40,49,.92);backdrop-filter:blur(8px);
-  border-bottom:1px solid var(--bg3);
-  padding:10px 0;
+  position:fixed;bottom:0;right:0;left:0;top:auto;z-index:50;
+  background:rgba(30,36,44,.96);backdrop-filter:blur(10px);
+  border-top:1px solid var(--bg3);
+  padding:6px 0 calc(6px + env(safe-area-inset-bottom));
+  box-shadow:0 -8px 26px rgba(0,0,0,.4);
 }
-.toolbar .container{display:flex;gap:10px;align-items:center;flex-wrap:wrap}
+.toolbar .container{display:flex;gap:6px;align-items:center;justify-content:center;flex-wrap:wrap}
+.toolbar .btn{padding:5px 11px;font-size:.78rem;border-radius:8px}
+body{padding-bottom:112px}
+@media(max-width:520px){
+  .toolbar .container{gap:4px}
+  .toolbar .btn{padding:4px 9px;font-size:.72rem}
+  nav.quicknav a{font-size:.73rem;padding:3px 6px}
+  body{padding-bottom:122px}
+}
 .btn{
   border:none;border-radius:10px;padding:9px 18px;cursor:pointer;
   font-family:inherit;font-size:.95rem;font-weight:700;
@@ -113,10 +122,15 @@ header .sub{color:var(--teal);font-size:1.12rem;margin-top:10px;font-weight:500}
 .btn-danger{background:transparent;color:#ff8a70;border:1px solid #ff8a70}
 .btn-danger:hover{background:rgba(255,87,34,.12)}
 .edit-on .btn-edit{background:var(--orange);color:#fff;border-color:var(--orange)}
-.save-indicator{margin-inline-start:auto;color:var(--muted);font-size:.85rem;opacity:0;transition:opacity .4s}
-.save-indicator.show{opacity:1;color:var(--teal)}
-nav.quicknav{display:flex;gap:4px;flex-wrap:wrap}
-nav.quicknav a{color:var(--muted);text-decoration:none;font-size:.88rem;padding:6px 10px;border-radius:8px;transition:color .2s, background .2s}
+.save-indicator{
+  position:fixed;bottom:calc(64px + env(safe-area-inset-bottom));right:16px;z-index:49;
+  background:var(--bg2);border:1px solid var(--teal);border-radius:999px;
+  padding:4px 14px;color:var(--teal);font-size:.78rem;
+  opacity:0;transition:opacity .4s;pointer-events:none;
+}
+.save-indicator.show{opacity:1}
+nav.quicknav{display:flex;gap:2px;flex-wrap:wrap;justify-content:center}
+nav.quicknav a{color:var(--muted);text-decoration:none;font-size:.8rem;padding:4px 8px;border-radius:8px;transition:color .2s, background .2s}
 nav.quicknav a:hover{color:var(--orange);background:var(--bg2)}
 nav.quicknav a.active{color:var(--orange);background:var(--bg2);font-weight:700}
 
@@ -170,7 +184,7 @@ h2.sec-title::before{content:"";width:6px;height:28px;border-radius:4px;backgrou
   background:var(--bg2);border:1px solid var(--bg3);border-radius:var(--radius);
   margin-bottom:16px;overflow:hidden;
   transition:border-color .3s, box-shadow .3s, transform .3s;
-  scroll-margin-top:90px;
+  scroll-margin-top:14px;
 }
 .day-card:hover{border-color:rgba(118,171,174,.45);box-shadow:0 10px 30px rgba(0,0,0,.3);transform:translateY(-2px)}
 .day-card.flash{border-color:var(--orange);box-shadow:0 0 0 3px rgba(255,87,34,.25)}
@@ -560,17 +574,17 @@ footer{
 }
 
 #backToMap{
-  position:fixed;bottom:22px;inset-inline-start:22px;z-index:60;
-  box-shadow:var(--shadow);display:none;
+  position:fixed;bottom:calc(64px + env(safe-area-inset-bottom));inset-inline-start:16px;z-index:49;
+  box-shadow:var(--shadow);display:none;padding:6px 13px;font-size:.8rem;
 }
 #backToMap.show{display:inline-flex}
 
 /* ===================== PRINT ===================== */
 @media print{
   :root{--bg:#fff;--bg2:#fff;--bg3:#ccc;--text:#111;--muted:#444;--teal:#0a6b6e;--orange:#c53d12;--shadow:none}
-  body{background:#fff;color:#111;font-size:11pt}
+  body{background:#fff;color:#111;font-size:11pt;padding-bottom:0}
   .reveal{opacity:1 !important;transform:none !important}
-  .toolbar,.no-print,#backToMap,#scrollProgress,#lightbox,.edit-hint,.hotel-edit,.day-edit,.add-day-wrap,.converter,
+  .toolbar,.no-print,#backToMap,#scrollProgress,#lightbox,.save-indicator,.edit-hint,.hotel-edit,.day-edit,.add-day-wrap,.converter,
   .stepper button,.map-card,.sec-desc,.links-row,.nights-ctl button,#simCaption,#pickBanner,.itin-controls{display:none !important}
   header{background:#fff;border-bottom:2px solid #c53d12;padding:10px 0}
   header h1{color:#111;font-size:1.5rem}
