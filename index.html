@@ -561,6 +561,102 @@ table.budget tr.total td.zar{color:var(--teal);font-size:1rem;font-weight:700}
 .converter .swap{font-size:1.4rem;color:var(--orange);padding-bottom:8px}
 .rate-field{max-width:170px}
 
+/* ===== Flight countdown (رحلة العودة + الترانزيت) ===== */
+.fl-hero{
+  background:linear-gradient(135deg,#1c222a,#2d343f);
+  border:1px solid var(--bg3);border-radius:var(--radius);box-shadow:var(--shadow);
+  padding:22px;position:relative;overflow:hidden;text-align:center;
+}
+.fl-hero::before{
+  content:"";position:absolute;inset:0;pointer-events:none;
+  background:radial-gradient(ellipse 60% 70% at 50% -20%,rgba(255,87,34,.16),transparent 70%),
+             radial-gradient(ellipse 50% 60% at 90% 120%,rgba(118,171,174,.14),transparent 70%);
+}
+.fl-hero>*{position:relative}
+.fl-status{
+  display:inline-flex;align-items:center;gap:8px;font-size:.85rem;font-weight:700;
+  background:rgba(118,171,174,.12);border:1px solid var(--teal);color:var(--teal-soft);
+  border-radius:999px;padding:5px 16px;margin-bottom:12px;
+}
+.fl-status.hot{background:rgba(255,87,34,.12);border-color:var(--orange);color:var(--orange-soft)}
+.fl-status .dot{width:8px;height:8px;border-radius:50%;background:currentColor;animation:blink 1.6s infinite}
+@keyframes blink{0%,100%{opacity:1}50%{opacity:.25}}
+.fl-label{color:var(--muted);font-size:.95rem;margin-bottom:12px}
+.fl-label b{color:var(--text)}
+.cd-grid{display:flex;gap:10px;justify-content:center;flex-wrap:wrap;direction:ltr}
+.cd-box{
+  background:rgba(0,0,0,.28);border:1px solid var(--bg3);border-radius:12px;
+  min-width:86px;padding:10px 6px;
+}
+.cd-box .n{
+  font-size:2.1rem;font-weight:800;line-height:1.1;font-variant-numeric:tabular-nums;
+  background:var(--grad-orange);-webkit-background-clip:text;background-clip:text;
+  -webkit-text-fill-color:transparent;color:var(--orange);
+}
+.cd-box .u{font-size:.75rem;color:var(--muted);font-weight:600}
+@media(max-width:520px){.cd-box{min-width:68px;padding:8px 4px}.cd-box .n{font-size:1.6rem}}
+.fl-target{color:var(--teal);font-size:.92rem;margin-top:14px;font-weight:500}
+.fl-target small{color:var(--muted);display:block;font-size:.8rem;margin-top:3px}
+.fl-progress{margin-top:16px}
+.fl-bar{height:10px;border-radius:999px;background:var(--bg3);overflow:hidden;direction:ltr}
+.fl-bar span{display:block;height:100%;border-radius:999px;background:var(--grad-orange);transition:width .6s ease;width:0}
+.fl-bar-lbl{display:flex;justify-content:space-between;font-size:.78rem;color:var(--muted);margin-top:6px;direction:ltr}
+
+/* clocks */
+.fl-clocks{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-top:16px}
+@media(max-width:520px){.fl-clocks{gap:6px}}
+.clk{background:var(--bg);border:1px solid var(--bg3);border-radius:12px;padding:10px 6px;text-align:center}
+.clk .c-city{font-size:.78rem;color:var(--muted)}
+.clk .c-time{font-size:1.15rem;font-weight:800;color:var(--teal);direction:ltr;font-variant-numeric:tabular-nums}
+.clk .c-off{font-size:.68rem;color:var(--muted);direction:ltr}
+
+/* segment cards */
+.fl-seg{
+  background:var(--bg2);border:1px solid var(--bg3);border-radius:var(--radius);
+  padding:18px;margin-top:16px;transition:border-color .3s, box-shadow .3s;
+}
+.fl-seg.live{border-color:var(--orange);box-shadow:0 0 0 3px rgba(255,87,34,.14)}
+.fl-seg.done{opacity:.62}
+.fl-seg-head{display:flex;align-items:center;gap:10px;flex-wrap:wrap;margin-bottom:14px}
+.fl-no{background:var(--grad-orange);color:#fff;font-weight:800;border-radius:9px;padding:4px 12px;font-size:.9rem;direction:ltr}
+.fl-air{color:var(--teal);font-weight:700;font-size:.95rem}
+.fl-date{color:var(--muted);font-size:.85rem;margin-inline-start:auto}
+.fl-route{display:flex;align-items:center;gap:10px;flex-wrap:nowrap;direction:ltr}
+.fl-node{flex:1;min-width:0;text-align:center}
+.fl-node .code{font-size:1.5rem;font-weight:800;color:var(--text);direction:ltr}
+.fl-node .city{font-size:.8rem;color:var(--muted)}
+.fl-node .t{font-size:1.05rem;font-weight:700;color:var(--teal);direction:ltr;font-variant-numeric:tabular-nums}
+.fl-node .d{font-size:.72rem;color:var(--muted);direction:ltr}
+.fl-line{flex:1.2;position:relative;text-align:center;color:var(--muted);font-size:.75rem;min-width:70px}
+.fl-line::before{content:"";position:absolute;top:14px;right:0;left:0;border-top:2px dashed var(--bg3)}
+.fl-line .plane{position:relative;background:var(--bg2);padding:0 6px;font-size:1.1rem}
+.fl-line .dur{display:block;margin-top:2px}
+.fl-meta{display:flex;flex-wrap:wrap;gap:8px;margin-top:14px}
+.fl-chip{
+  background:var(--bg);border:1px solid var(--bg3);border-radius:999px;
+  padding:4px 13px;font-size:.8rem;color:var(--muted);
+}
+.fl-chip b{color:var(--teal);font-weight:700;direction:ltr;display:inline-block}
+.fl-seg-bar{margin-top:12px;display:none}
+.fl-seg.live .fl-seg-bar{display:block}
+
+/* transit card */
+.fl-transit{
+  background:linear-gradient(135deg,rgba(118,171,174,.10),rgba(255,87,34,.05));
+  border:1px dashed var(--teal);border-radius:var(--radius);padding:18px;margin-top:16px;
+}
+.fl-transit.live{border-style:solid;border-color:var(--orange);box-shadow:0 0 0 3px rgba(255,87,34,.14)}
+.fl-transit h3{color:var(--teal);font-size:1.05rem;display:flex;align-items:center;gap:8px;flex-wrap:wrap}
+.fl-transit h3 .len{margin-inline-start:auto;color:var(--orange);font-weight:800;font-size:1rem}
+.fl-transit .tr-sub{color:var(--muted);font-size:.88rem;margin-top:6px}
+.fl-transit ul{list-style:none;margin-top:10px}
+.fl-transit li{font-size:.88rem;padding:4px 0;display:flex;gap:8px;color:var(--text)}
+.fl-transit li::before{content:"›";color:var(--orange);font-weight:800}
+.fl-note{
+  background:rgba(255,87,34,.08);border-inline-start:3px solid var(--orange);
+  border-radius:8px;padding:10px 14px;font-size:.86rem;color:var(--orange-soft);margin-top:14px;
+}
+
 /* ===== Weather ===== */
 .cards-3{display:grid;grid-template-columns:repeat(3,1fr);gap:16px}
 @media(max-width:840px){.cards-3{grid-template-columns:1fr}}
@@ -630,6 +726,12 @@ footer{
   .pay-opt:not(.active){display:none}
   .hotel-img{border:1px solid #bbb}
   a{color:#111;text-decoration:none}
+  /* مؤقت الرحلة: نطبع تفاصيل الرحلات فقط بدون العدّاد الحي */
+  .fl-hero,.fl-progress,.fl-clocks,.fl-seg-bar{display:none !important}
+  .fl-seg,.fl-transit{background:#fff;border:1px solid #bbb;box-shadow:none;break-inside:avoid;opacity:1}
+  .fl-no{background:#c53d12;color:#fff;-webkit-print-color-adjust:exact;print-color-adjust:exact}
+  .fl-chip{border:1px solid #bbb;color:#333}
+  .fl-note{background:#fff;border-inline-start:3px solid #c53d12;color:#111}
 }
 .print-hotel-name{display:none}
 </style>
@@ -663,6 +765,36 @@ footer{
 </div>
 
 <main class="container">
+
+<!-- ============ FLIGHT COUNTDOWN (رحلة العودة + الترانزيت) ============ -->
+<section id="flight">
+  <h2 class="sec-title">مؤقت رحلتي القادمة ⏱️</h2>
+  <p class="sec-desc">العودة من كيب تاون إلى الرياض عبر أديس أبابا — العدّاد يعمل مباشرة بتوقيت كل مدينة، ويعرض المتبقي على الصعود والإقلاع والهبوط ومدة الترانزيت.</p>
+
+  <div class="fl-hero">
+    <div class="fl-status" id="flStatus"><span class="dot"></span><span id="flStatusTxt">—</span></div>
+    <div class="fl-label" id="flLabel">المتبقي على…</div>
+    <div class="cd-grid" id="flCountdown"></div>
+    <div class="fl-target" id="flTarget"></div>
+
+    <div class="fl-progress">
+      <div class="fl-bar"><span id="flBar"></span></div>
+      <div class="fl-bar-lbl"><span>CPT · كيب تاون</span><span id="flBarPct">0%</span><span>RUH · الرياض</span></div>
+    </div>
+
+    <div class="fl-clocks">
+      <div class="clk"><div class="c-city">كيب تاون</div><div class="c-time" id="clkCPT">--:--</div><div class="c-off">GMT+2</div></div>
+      <div class="clk"><div class="c-city">أديس أبابا</div><div class="c-time" id="clkADD">--:--</div><div class="c-off">GMT+3</div></div>
+      <div class="clk"><div class="c-city">الرياض</div><div class="c-time" id="clkRUH">--:--</div><div class="c-off">GMT+3</div></div>
+    </div>
+  </div>
+
+  <div id="flSegments"></div>
+
+  <div class="fl-note">
+    ⚠️ بوابة الصعود تُغلق قبل 15 دقيقة من موعد الإقلاع. أوقات الوصول والإقلاع بتوقيت المدينة نفسها كما في بطاقات الصعود — الفرق بين كيب تاون وأديس أبابا ساعة واحدة.
+  </div>
+</section>
 
 <!-- ============ MAP ============ -->
 <section id="map">
@@ -952,6 +1084,7 @@ footer{
 
 <!-- ============ BOTTOM APP TAB BAR ============ -->
 <nav class="tabbar no-print" aria-label="التنقل بين أقسام الرحلة">
+  <a href="#flight"><span class="ic">⏱️</span><span>المؤقت</span></a>
   <a href="#map"><span class="ic">🗺️</span><span>الخريطة</span></a>
   <a href="#itinerary"><span class="ic">📅</span><span>الجدول</span></a>
   <a href="#activities"><span class="ic">🎟️</span><span>الفعاليات</span></a>
@@ -2174,7 +2307,7 @@ if('IntersectionObserver' in window){
       quickLinks.forEach(a=>a.classList.toggle('active', a.getAttribute('href') === '#' + en.target.id));
     });
   }, {rootMargin:'-25% 0px -65% 0px'});
-  ['map','itinerary','activities','budget','weather','safety'].forEach(id=>{
+  ['flight','map','itinerary','activities','budget','weather','safety'].forEach(id=>{
     const el = document.getElementById(id);
     if(el) secObs.observe(el);
   });
@@ -2193,6 +2326,201 @@ function observeReveals(root){
 }
 document.querySelectorAll('.map-card,.info-card,.budget-card').forEach(el=>el.classList.add('reveal'));
 observeReveals();
+
+/* ================= Flight countdown (رحلة العودة + الترانزيت) =================
+   الأوقات مأخوذة من بطاقات الصعود، وكل وقت بتوقيت مدينته (كيب تاون GMT+2،
+   أديس أبابا والرياض GMT+3) — نحوّلها إلى UTC ليعمل العدّاد صحيحاً من أي جهاز. */
+const FLIGHT_PLAN = {
+  passengers:'ALRUBAISH/MUHAMMED · ALMOHAIMEED/RUBA',
+  segments:[
+    {
+      no:'ET846', airline:'Ethiopian Airlines — الإثيوبية', booking:'MHLVQN',
+      from:{code:'CPT', city:'كيب تاون', tz:2},
+      to:  {code:'ADD', city:'أديس أبابا', tz:3},
+      board:{y:2026,mo:7,d:29,h:14,mi:10},
+      dep:  {y:2026,mo:7,d:29,h:15,mi:10},
+      arr:  {y:2026,mo:7,d:29,h:22,mi:35},
+      meta:[['المقاعد','34A · 34B'],['البوابة','A3'],['الصالة','Terminal 1'],['الأولوية','Zone 4'],['الدرجة','اقتصادي Y'],['الأمتعة','قطعة لكل مسافر']]
+    },
+    {
+      no:'XY348', airline:'flynas — طيران ناس', booking:'NHR1FH',
+      from:{code:'ADD', city:'أديس أبابا', tz:3},
+      to:  {code:'RUH', city:'الرياض', tz:3},
+      board:{y:2026,mo:7,d:30,h:4,mi:10},
+      dep:  {y:2026,mo:7,d:30,h:5,mi:10},
+      arr:  {y:2026,mo:7,d:30,h:8,mi:25},
+      meta:[['المقاعد','15E · 15F'],['الأولوية','Zone 2'],['الدرجة','اقتصادي Y'],['رقم التذكرة','5932100161135']]
+    }
+  ]
+};
+
+/* {y,mo,d,h,mi} بتوقيت مدينة إزاحتها tz ساعة → طابع زمني UTC */
+function flTs(o, tz){ return Date.UTC(o.y, o.mo - 1, o.d, o.h - tz, o.mi); }
+function flPad(n){ return String(n).padStart(2,'0'); }
+function flClock(o){ return `${flPad(o.h)}:${flPad(o.mi)}`; }
+function flDay(o){
+  const w = WEEKDAYS[new Date(Date.UTC(o.y, o.mo - 1, o.d)).getUTCDay()];
+  return `${w} ${o.d} ${MONTHS[o.mo - 1]}`;
+}
+function flDur(ms){
+  const m = Math.max(0, Math.round(ms / 60000));
+  const h = Math.floor(m / 60);
+  return h ? `${h} س ${flPad(m % 60)} د` : `${m} د`;
+}
+/* صيغة لاتينية للمدة — تُستعمل داخل الصفوف ذات الاتجاه LTR (مسار الرحلة) */
+function flDurLtr(ms){
+  const m = Math.max(0, Math.round(ms / 60000));
+  return `${Math.floor(m / 60)}h ${flPad(m % 60)}m`;
+}
+/* الساعة الحالية في مدينة إزاحتها tz */
+function flCityTime(tz){
+  const d = new Date(Date.now() + tz * 3600000);
+  return `${flPad(d.getUTCHours())}:${flPad(d.getUTCMinutes())}`;
+}
+
+const FL = FLIGHT_PLAN.segments.map(s => ({
+  ...s,
+  boardT: flTs(s.board, s.from.tz),
+  depT:   flTs(s.dep,   s.from.tz),
+  arrT:   flTs(s.arr,   s.to.tz)
+}));
+const FL_TRANSIT = FL[1].depT - FL[0].arrT;
+
+function renderFlightSegments(){
+  const seg = (s, i) => `
+    <div class="fl-seg" data-seg="${i}">
+      <div class="fl-seg-head">
+        <span class="fl-no">${escapeHtml(s.no)}</span>
+        <span class="fl-air">${escapeHtml(s.airline)}</span>
+        <span class="fl-date">${flDay(s.dep)} ${s.dep.y}</span>
+      </div>
+      <div class="fl-route">
+        <div class="fl-node">
+          <div class="code">${escapeHtml(s.from.code)}</div>
+          <div class="city">${escapeHtml(s.from.city)}</div>
+          <div class="t">${flClock(s.dep)}</div>
+          <div class="d">إقلاع · صعود ${flClock(s.board)}</div>
+        </div>
+        <div class="fl-line">
+          <span class="plane">✈️</span>
+          <span class="dur">${flDurLtr(s.arrT - s.depT)}</span>
+        </div>
+        <div class="fl-node">
+          <div class="code">${escapeHtml(s.to.code)}</div>
+          <div class="city">${escapeHtml(s.to.city)}</div>
+          <div class="t">${flClock(s.arr)}</div>
+          <div class="d">وصول · ${flDay(s.arr)}</div>
+        </div>
+      </div>
+      <div class="fl-seg-bar">
+        <div class="fl-bar"><span data-segbar="${i}"></span></div>
+        <div class="fl-bar-lbl"><span>${escapeHtml(s.from.code)}</span><span dir="rtl" data-segleft="${i}"></span><span>${escapeHtml(s.to.code)}</span></div>
+      </div>
+      <div class="fl-meta">
+        ${s.meta.map(([k,v]) => `<span class="fl-chip">${escapeHtml(k)}: <b>${escapeHtml(v)}</b></span>`).join('')}
+        <span class="fl-chip">رمز الحجز: <b>${escapeHtml(s.booking)}</b></span>
+      </div>
+    </div>`;
+
+  const transit = `
+    <div class="fl-transit" id="flTransit">
+      <h3>🛄 ترانزيت في مطار بولي — أديس أبابا <span class="len">${flDur(FL_TRANSIT)}</span></h3>
+      <div class="tr-sub" id="flTransitSub">
+        الهبوط ${flClock(FL[0].arr)} مساءً ثم الإقلاع ${flClock(FL[1].dep)} فجراً (${flDay(FL[1].dep)}) — ليلة كاملة داخل المطار.
+      </div>
+      <ul>
+        <li>ابقوا داخل منطقة الترانزيت — لا حاجة لدخول إثيوبيا ولا لاستلام الحقائب (مُسجّلة حتى الرياض).</li>
+        <li>تأكدوا من بوابة رحلة <b>XY348</b> على الشاشات فور الهبوط؛ البوابات تتغيّر كثيراً في بولي.</li>
+        <li>صالات الانتظار والمقاعد المستلقية في الطابق العلوي، والمطاعم تعمل ليلاً.</li>
+        <li>الصعود يبدأ ${flClock(FL[1].board)} والبوابة تُغلق قبل الإقلاع بـ 15 دقيقة — اضبطوا منبهاً.</li>
+      </ul>
+    </div>`;
+
+  document.getElementById('flSegments').innerHTML = seg(FL[0], 0) + transit + seg(FL[1], 1);
+}
+
+function flTick(){
+  const now = Date.now();
+  const s0 = FL[0], s1 = FL[1];
+
+  const steps = [
+    {t:s0.boardT, label:`بدء الصعود إلى الطائرة — ${s0.no}`,  at:`${flClock(s0.board)} بتوقيت ${s0.from.city} · ${flDay(s0.board)}`, status:'قبل الرحلة — لم يبدأ الصعود بعد', hot:false},
+    {t:s0.depT,   label:`إقلاع ${s0.no} من ${s0.from.city}`,   at:`${flClock(s0.dep)} بتوقيت ${s0.from.city} · ${flDay(s0.dep)}`,    status:'الصعود مفتوح الآن 🎫',        hot:true},
+    {t:s0.arrT,   label:`الهبوط في ${s0.to.city}`,             at:`${flClock(s0.arr)} بتوقيت ${s0.to.city} · ${flDay(s0.arr)}`,      status:'في الجو ✈️ إلى أديس أبابا',   hot:true},
+    {t:s1.boardT, label:`بدء الصعود — ${s1.no} إلى الرياض`,    at:`${flClock(s1.board)} بتوقيت ${s1.from.city} · ${flDay(s1.board)}`, status:'ترانزيت في أديس أبابا ⏳',    hot:false},
+    {t:s1.depT,   label:`إقلاع ${s1.no} من ${s1.from.city}`,   at:`${flClock(s1.dep)} بتوقيت ${s1.from.city} · ${flDay(s1.dep)}`,    status:'الصعود مفتوح — الرحلة الأخيرة 🎫', hot:true},
+    {t:s1.arrT,   label:'الوصول إلى الرياض 🇸🇦',                at:`${flClock(s1.arr)} بتوقيت ${s1.to.city} · ${flDay(s1.arr)}`,      status:'في الجو ✈️ إلى الرياض',       hot:true}
+  ];
+
+  const next = steps.find(s => s.t > now);
+  const statusEl = document.getElementById('flStatus');
+  const cdEl = document.getElementById('flCountdown');
+
+  if(next){
+    let ms = next.t - now;
+    const dd = Math.floor(ms / 86400000); ms -= dd * 86400000;
+    const hh = Math.floor(ms / 3600000);  ms -= hh * 3600000;
+    const mm = Math.floor(ms / 60000);
+    const ss = Math.floor((ms - mm * 60000) / 1000);
+    const boxes = [];
+    if(dd > 0) boxes.push([dd,'يوم']);
+    boxes.push([flPad(hh),'ساعة'], [flPad(mm),'دقيقة'], [flPad(ss),'ثانية']);
+    cdEl.innerHTML = boxes.map(([n,u]) => `<div class="cd-box"><div class="n">${n}</div><div class="u">${u}</div></div>`).join('');
+    document.getElementById('flLabel').innerHTML = `المتبقي على <b>${escapeHtml(next.label)}</b>`;
+    document.getElementById('flTarget').innerHTML =
+      `${escapeHtml(next.at)}<small>الوصول النهائي إلى الرياض: ${flClock(s1.arr)} — بعد ${flDur(s1.arrT - now)} من الآن</small>`;
+    document.getElementById('flStatusTxt').textContent = next.status;
+    statusEl.classList.toggle('hot', !!next.hot);
+  } else {
+    cdEl.innerHTML = `<div class="cd-box" style="min-width:auto;padding:10px 22px"><div class="n">🎉</div><div class="u">وصلتم بالسلامة</div></div>`;
+    document.getElementById('flLabel').innerHTML = '<b>انتهت رحلة العودة</b> — الحمد لله على السلامة';
+    document.getElementById('flTarget').innerHTML = `الوصول إلى الرياض كان ${flClock(s1.arr)} · ${flDay(s1.arr)} ${s1.arr.y}`;
+    document.getElementById('flStatusTxt').textContent = 'الرحلة اكتملت ✅';
+    statusEl.classList.remove('hot');
+  }
+
+  /* شريط الرحلة الكاملة: من إقلاع كيب تاون حتى الهبوط في الرياض */
+  const total = s1.arrT - s0.depT;
+  const pct = Math.max(0, Math.min(100, (now - s0.depT) / total * 100));
+  document.getElementById('flBar').style.width = pct + '%';
+  document.getElementById('flBarPct').textContent = Math.round(pct) + '%';
+
+  /* الساعات المحلية */
+  document.getElementById('clkCPT').textContent = flCityTime(2);
+  document.getElementById('clkADD').textContent = flCityTime(3);
+  document.getElementById('clkRUH').textContent = flCityTime(3);
+
+  /* حالة كل رحلة + شريط تقدمها */
+  FL.forEach((s, i) => {
+    const el = document.querySelector(`[data-seg="${i}"]`);
+    if(!el) return;
+    const live = now >= s.boardT && now < s.arrT;
+    el.classList.toggle('live', live);
+    el.classList.toggle('done', now >= s.arrT);
+    if(live){
+      const p = Math.max(0, Math.min(100, (now - s.depT) / (s.arrT - s.depT) * 100));
+      el.querySelector(`[data-segbar="${i}"]`).style.width = p + '%';
+      el.querySelector(`[data-segleft="${i}"]`).textContent =
+        now < s.depT ? `الإقلاع بعد ${flDur(s.depT - now)}` : `المتبقي للهبوط ${flDur(s.arrT - now)}`;
+    }
+  });
+
+  /* الترانزيت */
+  const tr = document.getElementById('flTransit');
+  if(tr){
+    const inTransit = now >= s0.arrT && now < s1.depT;
+    tr.classList.toggle('live', inTransit);
+    if(inTransit){
+      document.getElementById('flTransitSub').innerHTML =
+        `أنتم الآن في الترانزيت — المتبقي على الإقلاع <b style="color:var(--orange)">${flDur(s1.depT - now)}</b> ` +
+        `(الصعود بعد ${flDur(Math.max(0, s1.boardT - now))}).`;
+    }
+  }
+}
+
+renderFlightSegments();
+flTick();
+setInterval(flTick, 1000);
 
 /* ================= Master render ================= */
 function renderAll(){
